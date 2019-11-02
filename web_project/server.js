@@ -16,8 +16,8 @@ const   adminuse = require('./routes/adminuse');
 const   search = require('./routes/search');
 
 // 쇼핑몰전용 PORT주소 설정
-const   PORT = 65015;       // 은혜 주소
-const   PORT = 65016;       // 오빠 주소
+// const   PORT = 65015;       // 은혜 주소
+// const   PORT = 65016;       // 오빠 주소
 const   PORT = 65017;       // 지언 주소
 
 
