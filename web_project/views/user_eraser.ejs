@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+    <script language="javascript">
+      function validate() {
+         let id = document.getElementById("uid").value;
+         if (id == '') {
+           alert("아이디가 입력되지 않았습니다, 꼭 입력하세요");
+           return false;
+         }
+         return true;
+      }
+
+      $(document).ready(function() {
+        bsCustomFileInput.init();
+      })
+    </script>
+
+    <p>
+    <div class="container">  <!-- container class 가 페이지의 컨텐츠영역을 지정 -->
+    <div class="jumbotron" style="width:800px; margin:auto">
+
+    <div class="bm-login-form" style='width:700px; margin-left:auto; margin-right:auto; border:1px'>
+
+      <div class="starter-template">
+        <h4> 회원삭제</h4> <hr>
+      </div>
+
+   <form name=join onsubmit="return validate()" method=post action="/adminuse/user/eraser">
+       <div class="form-group">
+         <label for="exampleInputEmail1">아이디</label>
+         <input type="email" class="form-control" name="uid" value="<%= udata.uid %>" readonly id="uid" aria-describedby="emailHelp">
+       </div>
+       <div class="form-group">
+         <label for="exampleInputPassword1">비밀번호</label>
+         <input type="text" class="form-control" name="pass" value="<%= udata.pass %>" readonly id="pass">
+       </div>
+       <div class="form-row">
+         <div class="form-group col-md-6">
+          <div class="form-group">
+            <label for="exampleInputEmail1">이름</label>
+            <input type="text" class="form-control" name="name" value="<%= udata.name %>" readonly id="name">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">전화번호</label>
+            <input type="text" class="form-control" name="phone" value="<%= udata.phone %>" readonly id="phone">
+          </div>
+          </div>
+        <div class="form-group col-md-6">
+         <div class="form-group">
+           <label for="exampleInputEmail1">포인트</label>
+           <input type="text" class="form-control" name="point" value="<%= udata.point %>" readonly id="point">
+         </div>
+         <div class="form-group">
+           <label for="exampleInputEmail1">등급</label>
+           <input type="text" class="form-control" name="grade" value="<%= udata.grade %>" readonly id="grade">
+         </div>
+       </div>
+     </div>
+     <div class="form-group">
+       <label for="exampleInputEmail1">주소</label>
+       <input type="text" class="form-control" name="address" value="<%= udata.address %>" readonly id="address">
+     </div>
+
+         <hr>
+         <button type="submit" class="btn btn-primary" onclick="return confirm('삭제하시겠습니까?')">삭제확인</button>
+      </form>
+     </div>
+     </div>
+    </div><!-- /.container -->
+
+ <!-- Footer 영역 -->
