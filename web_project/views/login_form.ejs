@@ -1,8 +1,20 @@
 <!DOCTYPE html>
+<script>
+    $(document).ready(function(){
+    $('.toggle').on('click', function() {
+        $('.container').stop().addClass('active');
+    });
 
-  <p>
-  <div class="container">  <!-- container class 가 페이지의 컨텐츠영역을 지정 -->
-   <div class="jumbotron" style="width:400px; margin:auto">
+    $('.close').on('click', function() {
+        $('.container').stop().removeClass('active');
+    });
+
+    });
+</script>
+
+  <!-- <p> -->
+  <!-- <div class="container">  container class 가 페이지의 컨텐츠영역을 지정 -->
+   <!-- <div class="jumbotron" style="width:400px; margin:auto">
 
           <div class="boxbox" style='width:300px; margin:auto'>
            <form accept-charset="UTF-8" role="form" method="post" action="/users/auth">
@@ -25,7 +37,65 @@
                 <a href="/users/reg" class="btn btn-default btn-block m-t-md"> 회원가입</a>
             </div>
            </form>
-          </div>
+          </div> -->
 
-     </div>  <!-- jumbotron -->
-    </div> <!-- /.container -->
+    <!-- </div> -->  <!-- jumbotron -->
+    <!-- </div> --> <!-- /.container -->
+
+    <div class="container" style="width: 30%;">
+            <div class="row">
+                
+        <!-- Mixins-->
+        <!-- Pen Title-->
+        <div class="pen-title">
+          <h1>Welcome!</h1>
+        </div>
+        <div class="container">
+          <div class="card"></div>
+          <div class="card">
+            <h1 class="title">Login</h1>
+            <form>
+              <div class="input-container">
+                <input type="text" id="Username" required="required"/>
+                <label for="Username">Username</label>
+                <div class="bar"></div>
+              </div>
+              <div class="input-container">
+                <input type="password" id="Password" required="required"/>
+                <label for="Password">Password</label>
+                <div class="bar"></div>
+              </div>
+              <div class="button-container">
+                <button><span>Go</span></button>
+              </div>
+              <div class="footer"><a href="#">Forgot your password?</a></div>
+            </form>
+          </div>
+          <div class="card alt">
+            <div class="toggle"></div>
+            <h1 class="title">Register<div class="close"></div>
+            </h1>
+            <form>
+              <div class="input-container">
+                <input type="text" id="Username" required="required"/>
+                <label for="Username">Username</label>
+                <div class="bar"></div>
+              </div>
+              <div class="input-container">
+                <input type="password" id="Password" required="required"/>
+                <label for="Password">Password</label>
+                <div class="bar"></div>
+              </div>
+              <div class="input-container">
+                <input type="password" id="Repeat Password" required="required"/>
+                <label for="Repeat Password">Repeat Password</label>
+                <div class="bar"></div>
+              </div>
+              <div class="button-container">
+                <button><span>Next</span></button>
+              </div>
+            </form>
+          </div>
+        </div>
+            </div>
+        </div>
