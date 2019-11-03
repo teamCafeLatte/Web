@@ -12,8 +12,8 @@ input:-internal-autofill-selected {
 }
 
 .carousel-item {
-  height: 100vh;
-  min-height: 350px;
+  /* height: 100vh; */
+  /* min-height: 350px; */
   background: no-repeat center center scroll;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -449,4 +449,16 @@ body {
     bottom: 30px;
     opacity: 0;
   }
+}
+
+/* navbar */
+.navbar {
+  background: linear-gradient(to top, #f8f9fa, #FFFFFF);
+  /* padding-top: 0ch !important;
+  padding-bottom: 0ch !important; */
+}
+.navbar-brand{
+  padding-top: 0ch !important;
+  padding-bottom: 0ch !important;
+  height: 40px;
 }
