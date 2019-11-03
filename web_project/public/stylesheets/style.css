@@ -75,7 +75,7 @@ body {
 }
 
 /* Scroll To Bottom */
-#codepen {
+#codepen, #portfolio {
   position: fixed;
   bottom: 30px;
   right: 30px;
@@ -89,11 +89,25 @@ body {
   color: #ffffff;
   text-align: center;
 }
-#codepen i {
+#codepen i , #toggle i{
   line-height: 56px;
 }
-#codepen:hover {
+#codepen:hover, #toggle:hover {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+/* CodePen */
+#toggle {
+  /* bottom: 96px;
+  right: 36px; */
+  /* background: #ec2652; */
+  /* width: 44px;
+  height: 44px; */
+  -webkit-animation: buttonFadeInUp 1s ease;
+  animation: buttonFadeInUp 1s ease;
+}
+#toggle i {
+  line-height: 44px;
 }
 
 /* Container */
@@ -102,7 +116,7 @@ body {
   max-width: 450px;
   width: 100%;
   min-width: 400px;
-  /* margin: 0 auto 100px; */
+  margin: 0 auto 80px;
 }
 .container.active .card:first-child {
   background: #f2f2f2;
@@ -124,8 +138,8 @@ body {
 }
 .container.active .card.alt .toggle {
   position: absolute;
-  top: 40px;
-  right: -70px;
+  /* top: 40px; */
+  /* right: -70px; */
   box-shadow: none;
   -webkit-transform: scale(14);
   transform: scale(15);
@@ -345,6 +359,7 @@ body {
   width: 100px;
   height: 100px;
   background: none;
+  border-color: transparent;
   border-radius: 100%;
   box-shadow: none;
   padding: 0;
@@ -369,7 +384,7 @@ body {
   cursor: pointer;
 }
 .card.alt .toggle:before {
-  content: '/002B';
+  content: '+';
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
   font-size: inherit;
@@ -461,4 +476,16 @@ body {
   padding-top: 0ch !important;
   padding-bottom: 0ch !important;
   height: 40px;
+}
+
+@media screen and (min-width:576px) { 
+  .carousel-item { height: -100vh;}
+}
+
+.navbar-light .navbar-brand {
+  margin-right: 200px !important;
+}
+
+.ml-auto, .mx-auto {
+  margin-right: 50px !important;
 }
