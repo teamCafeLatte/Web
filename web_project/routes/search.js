@@ -16,7 +16,7 @@ const   db = mysql.createConnection({
     port: 3306,               // DB서버 Port주소
     user: 'root',            // DB접속 아이디
     password: '1020',  // DB암호
-    database: 'project'         //사용할 DB명
+    database: 'ournote'         //사용할 DB명
 });
 
 //  -----------------------------------  상품리스트 기능 -----------------------------------------
@@ -35,7 +35,8 @@ const PrintSearchProd = (req, res) => {
            htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8');  // 사용자메뉴
            htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/search.ejs','utf8'); // 제품검색
            htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
-           sql_str = "SELECT maker, pname, modelnum, price, pic from u15_products where pname like ? order by rdate desc;"; // 상품조회SQL
+        //    sql_str = "SELECT maker, pname, modelnum, price, pic from u15_products where pname like ? order by rdate desc;"; // 상품조회SQL
+        sql_str = "SELECT docID, title, userID, date from document where title like ? order by date desc;"; // 게시글조회SQL
 
            res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
@@ -49,7 +50,7 @@ const PrintSearchProd = (req, res) => {
                                       'return_url':'/' }));
                    }
               else {  // 조회된 상품이 있다면, 상품리스트를 출력
-                     res.end(ejs.render(htmlstream,  { 'title' : '쇼핑몰site',
+                     res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
                                                        'logurl': '/users/logout',
                                                        'loglabel': '로그아웃',
                                                        'regurl': '/users/profile',

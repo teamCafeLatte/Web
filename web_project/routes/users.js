@@ -13,7 +13,7 @@ const   db = mysql.createConnection({
    port: 3306,               // DB서버 Port주소
    user: 'root',            // DB접속 아이디
    password: '1020',  // DB암호
-   database: 'project'         //사용할 DB명
+   database: 'ournote'         //사용할 DB명
 });
 
 //  -----------------------------------  회원가입기능 -----------------------------------------
@@ -28,14 +28,14 @@ const PrintRegistrationForm = (req, res) => {
        res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
        if (req.session.auth) {  // true :로그인된 상태,  false : 로그인안된 상태
-           res.end(ejs.render(htmlstream,  { 'title' : '쇼핑몰site',
+           res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
                                              'logurl': '/users/logout',
                                              'loglabel': '로그아웃',
                                              'regurl': '/users/profile',
                                              'reglabel':req.session.who }));
        }
        else {
-          res.end(ejs.render(htmlstream, { 'title' : '쇼핑몰site',
+          res.end(ejs.render(htmlstream, { 'title' : 'Our Note',
                                           'logurl': '/users/auth',
                                           'loglabel': '로그인',
                                           'regurl': '/users/reg',
@@ -61,7 +61,7 @@ let htmlstream='';
     }
     else {
 
-       db.query('INSERT INTO u15_users (uid, pass, name, phone, address) VALUES (?, ?, ?, ?, ?)', [body.uid, body.pw1, body.name, body.phone, body.address], (error, results, fields) => {
+       db.query('INSERT INTO user (userID, userPass, userName, userPhone, userPic) VALUES (?, ?, ?, ?, ?)', [body.uid, body.pw1, body.name, body.phone, body.address], (error, results, fields) => {
           if (error) {
             htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
             res.status(562).end(ejs.render(htmlstream, { 'title': '알리미',
@@ -95,14 +95,14 @@ const PrintLoginForm = (req, res) => {
        res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
        if (req.session.auth) {  // true :로그인된 상태,  false : 로그인안된 상태
-           res.end(ejs.render(htmlstream,  { 'title' : '쇼핑몰site',
+           res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
                                              'logurl': '/users/logout',
                                              'loglabel': '로그아웃',
                                              'regurl': '/users/profile',
                                              'reglabel': req.session.who }));
        }
        else {
-          res.end(ejs.render(htmlstream, { 'title' : '쇼핑몰site',
+          res.end(ejs.render(htmlstream, { 'title' : 'Our Note',
                                           'logurl': '/users/auth',
                                           'loglabel': '로그인',
                                           'regurl': '/users/reg',
@@ -125,7 +125,7 @@ const HandleLogin = (req, res) => {
          res.status(562).end('<meta charset="utf-8">아이디나 암호가 입력되지 않아서 로그인할 수 없습니다.');
       }
       else {
-       sql_str = "SELECT uid, pass, name from u15_users where uid ='"+ body.uid +"' and pass='" + body.pass + "';";
+       sql_str = "SELECT userID, userPass, userName from user where userID ='"+ body.uid +"' and userPass='" + body.pass + "';";
        console.log("SQL: " + sql_str);
        db.query(sql_str, (error, results, fields) => {
          if (error) { res.status(562).end("Login Fail as No id in DB!"); }

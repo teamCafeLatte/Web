@@ -12,7 +12,7 @@ const   db = mysql.createConnection({
     port: 3306,               // DB서버 Port주소
     user: 'root',            // DB접속 아이디
     password: '1020',  // DB암호
-    database: 'project'         //사용할 DB명
+    database: 'ournote'         //사용할 DB명
 });
 
 //  -----------------------------------  회원리스트 기능 -----------------------------------------
