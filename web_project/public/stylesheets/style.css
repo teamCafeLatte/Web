@@ -116,7 +116,7 @@ body {
   max-width: 450px;
   width: 100%;
   min-width: 400px;
-  margin: 0 auto 80px;
+  /* margin: 0 auto 80px; */
 }
 .container.active .card:first-child {
   background: #f2f2f2;
