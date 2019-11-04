@@ -24,14 +24,14 @@ let    htmlstream = '';
      if (req.session.auth) {  // true :로그인된 상태,  false : 로그인안된 상태
          res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
                                            'logurl': '/users/logout',
-                                           'loglabel': '로그아웃',
+                                           'loglabel': 'Logout',
                                            'regurl': '/users/profile',
                                            'reglabel':req.session.who }));  // 세션에 저장된 사용자명표시
      }
      else {
         res.end(ejs.render(htmlstream, { 'title' : 'Our Note',
                                         'logurl': '/users/auth',
-                                        'loglabel': '로그인',
+                                        'loglabel': 'Login',
                                         'regurl': '/users/reg',
                                         'reglabel':'가입' }));
      }

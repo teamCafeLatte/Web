@@ -6,6 +6,9 @@
 a {
   color: #00B7FF;
 } */
+.page-footer{
+  margin-top: 50px;
+}
 
 input:-internal-autofill-selected {
   background-color: transparent !important;
@@ -28,6 +31,10 @@ body {
   font-size: 14px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.dropdown-menu{
+  min-width: 0 !important; 
 }
 
 /* Pen Title */
@@ -482,10 +489,10 @@ body {
   .carousel-item { height: -100vh;}
 }
 
-.navbar-light .navbar-brand {
+/* .navbar-light .navbar-brand {
   margin-right: 200px !important;
-}
+} */
 
-.ml-auto, .mx-auto {
+/* .ml-auto, .mx-auto {
   margin-right: 50px !important;
-}
+} */

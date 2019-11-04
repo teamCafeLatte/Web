@@ -41,9 +41,9 @@ const AdminPrintUser = (req, res) => {
                                       'return_url':'/' }));
                    }
               else {  // 조회된 회원이 있다면, 회원리스트를 출력
-                     res.end(ejs.render(htmlstream,  { 'title' : '쇼핑몰site',
+                     res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
                                                        'logurl': '/users/logout',
-                                                       'loglabel': '로그아웃',
+                                                       'loglabel': 'Logout',
                                                        'regurl': '/users/profile',
                                                        'reglabel': req.session.who,
                                                         udata : results }));  // 조회된 회원정보
@@ -74,9 +74,9 @@ const PrintUserSearchEd = (req, res) => {
 
          res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
-         res.end(ejs.render(htmlstream, { 'title' : '쇼핑몰site',
+         res.end(ejs.render(htmlstream, { 'title' : 'Our Note',
                                            'logurl': '/users/logout',
-                                           'loglabel': '로그아웃',
+                                           'loglabel': 'Login',
                                            'regurl': '/users/profile',
                                            'reglabel': req.session.who}));
        }
@@ -102,9 +102,9 @@ const PrintUserSearchEr = (req, res) => {
 
          res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
-         res.end(ejs.render(htmlstream, { 'title' : '쇼핑몰site',
+         res.end(ejs.render(htmlstream, { 'title' : 'Our Note',
                                            'logurl': '/users/logout',
-                                           'loglabel': '로그아웃',
+                                           'loglabel': 'Logout',
                                            'regurl': '/users/profile',
                                            'reglabel': req.session.who}));
        }
@@ -145,9 +145,9 @@ const PrintUserEdit = (req, res) => {
                                 'return_url':'/' }));
            }
            else{
-             res.end(ejs.render(htmlstream,  { 'title' : '쇼핑몰site',
+             res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
                                                'logurl': '/users/logout',
-                                               'loglabel': '로그아웃',
+                                               'loglabel': 'Logout',
                                                'regurl': '/users/profile',
                                                'reglabel': req.session.who,
                                                 udata : results[0] }));  // 조회된 회원정보
@@ -226,9 +226,9 @@ const PrintUserEraser = (req, res) => {
                                 'return_url':'/' }));
            }
            else{
-             res.end(ejs.render(htmlstream,  { 'title' : '쇼핑몰site',
+             res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
                                                'logurl': '/users/logout',
-                                               'loglabel': '로그아웃',
+                                               'loglabel': 'Logout',
                                                'regurl': '/users/profile',
                                                'reglabel': req.session.who,
                                                 udata : results[0] }));  // 조회된 회원정보

@@ -45,7 +45,7 @@ const PrintCategoryProd = (req, res) => {
            htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/product.ejs','utf8'); // 카테고리별 제품리스트
            htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
         //    sql_str = "SELECT maker, pname, modelnum, rdate, price, pic from u15_products where category='" + search_cat + "' order by rdate desc;"; // 상품조회SQL
-        sql_str = "SELECT docID, title, userID, date from document order by date desc;"; // 게시글조회SQL
+           sql_str = "SELECT docID, title, userID, date from document order by date desc;"; // 게시글조회SQL
 
            res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
@@ -54,14 +54,14 @@ const PrintCategoryProd = (req, res) => {
                else if (results.length <= 0) {  // 조회된 상품이 없다면, 오류메시지 출력
                    htmlstream2 = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
                    res.status(562).end(ejs.render(htmlstream2, { 'title': '알리미',
-                                      'warn_title':'상품조회 오류',
-                                      'warn_message':'조회된 상품이 없습니다.',
+                                      'warn_title':'조회 오류',
+                                      'warn_message':'조회된 글이 없습니다.',
                                       'return_url':'/' }));
                    }
               else {  // 조회된 상품이 있다면, 상품리스트를 출력
                      res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
                                                        'logurl': '/users/logout',
-                                                       'loglabel': '로그아웃',
+                                                       'loglabel': 'Logout',
                                                        'regurl': '/users/profile',
                                                        'reglabel': req.session.who,
                                                     //    'category': search_cat,
@@ -73,7 +73,7 @@ const PrintCategoryProd = (req, res) => {
          htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
          res.status(562).end(ejs.render(htmlstream, { 'title': '알리미',
                             'warn_title':'로그인 필요',
-                            'warn_message':'상품검색을 하려면, 로그인이 필요합니다.',
+                            'warn_message':'검색을 하려면, 로그인이 필요합니다.',
                             'return_url':'/' }));
        }
 };

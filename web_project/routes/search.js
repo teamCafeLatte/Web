@@ -52,10 +52,10 @@ const PrintSearchProd = (req, res) => {
               else {  // 조회된 상품이 있다면, 상품리스트를 출력
                      res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
                                                        'logurl': '/users/logout',
-                                                       'loglabel': '로그아웃',
+                                                       'loglabel': 'Logout',
                                                        'regurl': '/users/profile',
                                                        'reglabel': req.session.who,
-                                                       'pname': body.search,
+                                                       'title': body.search,
                                                         prodata : results }));  // 조회된 상품정보
                  } // else
            }); // db.query()
@@ -64,7 +64,7 @@ const PrintSearchProd = (req, res) => {
          htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
          res.status(562).end(ejs.render(htmlstream, { 'title': '알리미',
                             'warn_title':'로그인 필요',
-                            'warn_message':'상품검색을 하려면, 로그인이 필요합니다.',
+                            'warn_message':'검색을 하려면, 로그인이 필요합니다.',
                             'return_url':'/' }));
        }
 };

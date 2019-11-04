@@ -42,9 +42,9 @@ const AdminPrintProd = (req, res) => {
                                       'return_url':'/' }));
                    }
               else {  // 조회된 상품이 있다면, 상품리스트를 출력
-                     res.end(ejs.render(htmlstream,  { 'title' : '쇼핑몰site',
+                     res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
                                                        'logurl': '/users/logout',
-                                                       'loglabel': '로그아웃',
+                                                       'loglabel': 'Logout',
                                                        'regurl': '/users/profile',
                                                        'reglabel': req.session.who,
                                                         prodata : results }));  // 조회된 상품정보
@@ -73,7 +73,7 @@ const PrintAddProductForm = (req, res) => {
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
 
          res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
-         res.end(ejs.render(htmlstream,  { 'title' : '쇼핑몰site',
+         res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
                                            'logurl': '/users/logout',
                                            'loglabel': '로그아웃',
                                            'regurl': '/users/profile',
@@ -153,9 +153,9 @@ const PrintProductSearchEd = (req, res) => {
 
          res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
-         res.end(ejs.render(htmlstream, { 'title' : '쇼핑몰site',
+         res.end(ejs.render(htmlstream, { 'title' : 'Our Note',
                                            'logurl': '/users/logout',
-                                           'loglabel': '로그아웃',
+                                           'loglabel': 'Logout',
                                            'regurl': '/users/profile',
                                            'reglabel': req.session.who}));
        }
@@ -181,9 +181,9 @@ const PrintProductSearchEr = (req, res) => {
 
          res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
-         res.end(ejs.render(htmlstream, { 'title' : '쇼핑몰site',
+         res.end(ejs.render(htmlstream, { 'title' : 'Our Note',
                                            'logurl': '/users/logout',
-                                           'loglabel': '로그아웃',
+                                           'loglabel': 'Logout',
                                            'regurl': '/users/profile',
                                            'reglabel': req.session.who}));
        }
@@ -225,9 +225,9 @@ const PrintProductEdit = (req, res) => {
                                 'return_url':'/' }));
            }
            else{
-             res.end(ejs.render(htmlstream,  { 'title' : '쇼핑몰site',
+             res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
                                                'logurl': '/users/logout',
-                                               'loglabel': '로그아웃',
+                                               'loglabel': 'Logout',
                                                'regurl': '/users/profile',
                                                'reglabel': req.session.who,
                                                 prodata : results[0] }));  // 조회된 상품정보
@@ -371,9 +371,9 @@ const PrintProductEraser = (req, res) => {
            }
            else{
              console.log(results);
-             res.end(ejs.render(htmlstream,  { 'title' : '쇼핑몰site',
+             res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
                                                'logurl': '/users/logout',
-                                               'loglabel': '로그아웃',
+                                               'loglabel': 'Logout',
                                                'regurl': '/users/profile',
                                                'reglabel': req.session.who,
                                                 prodata : results[0],

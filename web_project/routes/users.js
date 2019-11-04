@@ -1,9 +1,11 @@
 const   fs = require('fs');
 const   express = require('express');
 const   ejs = require('ejs');
+const   url = require('url');
 const   mysql = require('mysql');
 const   bodyParser = require('body-parser');
 const   session = require('express-session');
+const   multer = require('multer');
 const   router = express.Router();
 
 router.use(bodyParser.urlencoded({ extended: false }));
@@ -30,14 +32,14 @@ const PrintRegistrationForm = (req, res) => {
        if (req.session.auth) {  // true :로그인된 상태,  false : 로그인안된 상태
            res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
                                              'logurl': '/users/logout',
-                                             'loglabel': '로그아웃',
+                                             'loglabel': 'Logout',
                                              'regurl': '/users/profile',
                                              'reglabel':req.session.who }));
        }
        else {
           res.end(ejs.render(htmlstream, { 'title' : 'Our Note',
                                           'logurl': '/users/auth',
-                                          'loglabel': '로그인',
+                                          'loglabel': 'Login',
                                           'regurl': '/users/reg',
                                           'reglabel':'가입' }));
        }
@@ -53,7 +55,7 @@ let htmlstream='';
     console.log(body.pw1);
     console.log(body.name);
     console.log(body.phone);
-    console.log(body.address);
+    console.log(body.pic);
 
     if (body.uid == '' || body.pw1 == '' || body.name == '') {
          console.log("데이터입력이 되지 않아 DB에 저장할 수 없습니다.");
@@ -61,15 +63,15 @@ let htmlstream='';
     }
     else {
 
-       db.query('INSERT INTO user (userID, userPass, userName, userPhone, userPic) VALUES (?, ?, ?, ?, ?)', [body.uid, body.pw1, body.name, body.phone, body.address], (error, results, fields) => {
+       db.query('INSERT INTO user (userID, userPass, userName, userPhone, userPic) VALUES (?, ?, ?, ?, ?)', [body.uid, body.pw1, body.name, body.phone, body.pic], (error, results, fields) => {
           if (error) {
             htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
             res.status(562).end(ejs.render(htmlstream, { 'title': '알리미',
                                'warn_title':'회원가입 오류',
-                               'warn_message':'이미 회원으로 등록되어 있습니다. 바로 로그인을 하시기 바랍니다.',
+                               'warn_message':'이미 회원으로 등록되어 있습니다. 바로 로그인 하시기 바랍니다.',
                                'return_url':'/' }));
           } else {
-           console.log("회원가입에 성공하였으며, DB에 신규회원으로 등록하였습니다.!");
+           console.log("회원가입에 성공하였으며, 신규회원으로 등록되었습니다!");
            res.redirect('/');
           }
        });
@@ -97,14 +99,14 @@ const PrintLoginForm = (req, res) => {
        if (req.session.auth) {  // true :로그인된 상태,  false : 로그인안된 상태
            res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
                                              'logurl': '/users/logout',
-                                             'loglabel': '로그아웃',
+                                             'loglabel': 'Logout',
                                              'regurl': '/users/profile',
                                              'reglabel': req.session.who }));
        }
        else {
           res.end(ejs.render(htmlstream, { 'title' : 'Our Note',
                                           'logurl': '/users/auth',
-                                          'loglabel': '로그인',
+                                          'loglabel': 'Login',
                                           'regurl': '/users/reg',
                                           'reglabel':'가입' }));
        }

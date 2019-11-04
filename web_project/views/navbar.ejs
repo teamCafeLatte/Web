@@ -20,23 +20,26 @@
   <div class="container op1">
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
     <ul class="navbar-nav ml-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/product/list/?category=fan">Home<span class="sr-only">(current)</span></a>
-      </li>
       <li class="nav-item">
-        <a class="nav-link" href="/product/list/?category=minisun">Login</a>
+        <a class="nav-link" href='<%=logurl%>'><%=loglabel%></a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Edit</a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="/product/list/?category=aircool">collaboration</a>
+          <a class="dropdown-item" href="/product/list/?category=fridge">drawing board</a>
+        </div>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/product/list/?category=aircon">Storage</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Edit
-        </a>
+          MyPage</a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="/product/list/?category=aircool">
-            collaboration</a>
-          <a class="dropdown-item" href="/product/list/?category=fridge">drawing board</a>
+          <a class="dropdown-item" href="/product/list/?category=aircool">MyPost</a>
+          <a class="dropdown-item" href="/product/list/?category=fridge">MyData</a>
         </div>
       </li>
     </ul>
