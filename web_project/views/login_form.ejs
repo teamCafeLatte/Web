@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <script>
     $(document).ready(function(){
-    $('.toggle').on('click', function() {
-        $('.container').stop().addClass('active');
-    });
+      $('.toggle').on('click', function() {
+          $('.container').stop().addClass('active');
+      });
 
-    $('.close').on('click', function() {
-        $('.container').stop().removeClass('active');
-    });
+      $('.close').on('click', function() {
+          $('.container').stop().removeClass('active');
+      });
 
+    });
+    $(document).ready(function () {
+        $("#modalOnLoad").modal('show');
     });
 </script>
 
@@ -52,47 +55,74 @@
     </div>
     <div class="container">
       <div class="card"></div>
+      <!-- 로그인 창 -->
       <div class="card">
         <h1 class="title">Login</h1>
-        <form>
+        <form method="post" action="/users/auth">
           <div class="input-container">
-            <input type="text" id="Username" required="required"/>
-            <label for="Username">Username</label>
+            <input type="email" name="uid" id="Username" required="required"/>
+            <label for="Username">Email</label>
             <div class="bar"></div>
           </div>
           <div class="input-container">
-            <input type="password" id="Password" required="required"/>
+            <input type="password" name="pass" id="Password" required="required"/>
             <label for="Password">Password</label>
             <div class="bar"></div>
           </div>
           <div class="button-container">
-            <button><span>Go</span></button>
+            <button type="submit"><span>Go</span></button>
           </div>
           <div class="footer"><a href="#">Forgot your password?</a></div>
         </form>
       </div>
+      <div id="modalOnLoad" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    
+                    <p>
+                        Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.
+                        </p>
+                    
+                    <button type="button" class="btn blue btn-outline" data-dismiss="modal" aria-hidden="true">Close</button>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+      <!-- 회원가입 창 -->
       <div class="card alt">
         <div class="toggle" id="toggle"></div>
         <h1 class="title">Register<div class="close"></div>
         </h1>
-        <form>
-          <div class="input-container">
-            <input type="text" id="Username" required="required"/>
-            <label for="Username">Username</label>
+        <form name=join onsubmit="return validate()" method=post action="/users/reg">
+          <div class="input-container-reg">
+            <input type="email" name="uid" id="UserID" required="required"/>
+            <label for="Username">Email</label>
             <div class="bar"></div>
           </div>
-          <div class="input-container">
-            <input type="password" id="Password" required="required"/>
+          <div class="input-container-reg">
+            <input type="password" name="pw1" id="Password" required="required"/>
             <label for="Password">Password</label>
             <div class="bar"></div>
           </div>
-          <div class="input-container">
-            <input type="password" id="Repeat Password" required="required"/>
+          <div class="input-container-reg">
+            <input type="password" name="pw2" id="Repeat Password" required="required"/>
             <label for="Repeat Password">Repeat Password</label>
             <div class="bar"></div>
           </div>
+          <div class="input-container-reg">
+            <input type="text" name="name" id="Username" required="required"/>
+            <label for="Username">Username</label>
+            <div class="bar"></div>
+          </div>
+          <div class="input-container-reg">
+            <input type="number" name="phone" id="Userphone" required="required"/>
+            <label for="Username">Phone</label>
+            <div class="bar"></div>
+          </div>
           <div class="button-container">
-            <button><span>Next</span></button>
+            <button type="submit"><span>Next</span></button>
           </div>
         </form>
       </div>

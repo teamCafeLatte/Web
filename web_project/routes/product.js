@@ -53,7 +53,7 @@ const PrintCategoryProd = (req, res) => {
                if (error) { res.status(562).end("AdminPrintProd: DB query is failed"); }
                else if (results.length <= 0) {  // 조회된 상품이 없다면, 오류메시지 출력
                    htmlstream2 = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
-                   res.status(562).end(ejs.render(htmlstream2, { 'title': '알리미',
+                   res.status(562).end(ejs.render(htmlstream2, { 'title': 'Error',
                                       'warn_title':'조회 오류',
                                       'warn_message':'조회된 글이 없습니다.',
                                       'return_url':'/' }));
@@ -71,9 +71,9 @@ const PrintCategoryProd = (req, res) => {
        }
        else  {  // (로그인하지 않고) 본 페이지를 참조하면 오류를 출력
          htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
-         res.status(562).end(ejs.render(htmlstream, { 'title': '알리미',
+         res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
                             'warn_title':'로그인 필요',
-                            'warn_message':'검색을 하려면, 로그인이 필요합니다.',
+                            'warn_message':'보관함을 이용하려면, 로그인이 필요합니다.',
                             'return_url':'/' }));
        }
 };
