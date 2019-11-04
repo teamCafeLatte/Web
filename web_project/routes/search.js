@@ -43,7 +43,7 @@ const PrintSearchProd = (req, res) => {
            db.query(sql_str, ["%"+body.search+"%"], (error, results, fields) => {  // 상품조회 SQL실행
                if (error) { res.status(562).end("PrintSearchProd: DB query is failed"); }
                else if (results.length <= 0) {  // 조회된 상품이 없다면, 오류메시지 출력
-                   htmlstream2 = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+                   htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
                    res.status(562).end(ejs.render(htmlstream2, { 'title': 'Error',
                                       'warn_title':'검색 오류',
                                       'warn_message':'검색 결과가 없습니다.',
@@ -61,7 +61,7 @@ const PrintSearchProd = (req, res) => {
            }); // db.query()
        }
        else  {  // (로그인하지 않고) 본 페이지를 참조하면 오류를 출력
-         htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+         htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
          res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
                             'warn_title':'로그인 필요',
                             'warn_message':'검색을 하려면, 로그인이 필요합니다.',

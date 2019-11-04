@@ -23,22 +23,23 @@ const AdminPrintProd = (req, res) => {
   let    htmlstream2 = '';
   let    sql_str;
 
-       if (req.session.auth && req.session.admin)   {   // 관리자로 로그인된 경우에만 처리한다
+       if (req.session.auth)   {   // 관리자로 로그인된 경우에만 처리한다
            htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
            htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/adminbar.ejs','utf8');  // 관리자메뉴
            htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/adminproduct.ejs','utf8'); // 괸리자메인화면
            htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
-           sql_str = "SELECT itemid, category, maker, pname, modelnum, rdate, price, amount from u15_products order by rdate desc;"; // 상품조회SQL
+          //  sql_str = "SELECT itemid, category, maker, pname, modelnum, rdate, price, amount from u15_products order by rdate desc;"; // 상품조회SQL
+           sql_str = "SELECT docID, userID, title, date from document order by date desc;"; // 문서조회SQL
 
            res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
            db.query(sql_str, (error, results, fields) => {  // 상품조회 SQL실행
                if (error) { res.status(562).end("AdminPrintProd: DB query is failed"); }
                else if (results.length <= 0) {  // 조회된 상품이 없다면, 오류메시지 출력
-                   htmlstream2 = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
-                   res.status(562).end(ejs.render(htmlstream2, { 'title': '알리미',
-                                      'warn_title':'상품조회 오류',
-                                      'warn_message':'조회된 상품이 없습니다.',
+                   htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+                   res.status(562).end(ejs.render(htmlstream2, { 'title': 'Error',
+                                      'warn_title':'조회 오류',
+                                      'warn_message':'조회된 글이 없습니다.',
                                       'return_url':'/' }));
                    }
               else {  // 조회된 상품이 있다면, 상품리스트를 출력
@@ -51,11 +52,11 @@ const AdminPrintProd = (req, res) => {
                  } // else
            }); // db.query()
        }
-       else  {  // (관리자로 로그인하지 않고) 본 페이지를 참조하면 오류를 출력
-         htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
-         res.status(562).end(ejs.render(htmlstream, { 'title': '알리미',
-                            'warn_title':'상품등록기능 오류',
-                            'warn_message':'관리자로 로그인되어 있지 않아서, 상품등록 기능을 사용할 수 없습니다.',
+       else  {  // 로그인하지 않고 본 페이지를 참조하면 오류를 출력
+         htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+         res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+                            'warn_title':'로그인 필요',
+                            'warn_message':'보관함을 이용하려면, 로그인이 필요합니다.',
                             'return_url':'/' }));
        }
 
@@ -66,7 +67,7 @@ const AdminPrintProd = (req, res) => {
 const PrintAddProductForm = (req, res) => {
   let    htmlstream = '';
 
-       if (req.session.auth && req.session.admin) { // 관리자로 로그인된 경우에만 처리한다
+       if (req.session.auth) { // 관리자로 로그인된 경우에만 처리한다
          htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/adminbar.ejs','utf8');  // 관리자메뉴
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/product_form.ejs','utf8'); // 괸리자메인화면
@@ -75,15 +76,15 @@ const PrintAddProductForm = (req, res) => {
          res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
          res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
                                            'logurl': '/users/logout',
-                                           'loglabel': '로그아웃',
+                                           'loglabel': 'Logout',
                                            'regurl': '/users/profile',
                                            'reglabel': req.session.who }));
        }
        else {
-         htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
-         res.status(562).end(ejs.render(htmlstream, { 'title': '알리미',
-                            'warn_title':'상품등록기능 오류',
-                            'warn_message':'관리자로 로그인되어 있지 않아서, 상품등록 기능을 사용할 수 없습니다.',
+         htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+         res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+                            'warn_title':'등록 오류',
+                            'warn_message':'로그인되어 있지 않아서, 게시글을 등록 할 수 없습니다.',
                             'return_url':'/' }));
        }
 
@@ -97,9 +98,9 @@ const HanldleAddProduct = (req, res) => {  // 상품등록
   let    prodimage = '/images/uploads/products/'; // 상품이미지 저장디렉터리
   let    picfile = req.file;
 
-       console.log(body);     // 이병문 - 개발과정 확인용(추후삭제).
+       console.log(body);
 
-       if (req.session.auth && req.session.admin) {
+       if (req.session.auth) {
            if (body.itemid == '' || datestr == '') {
              console.log("상품번호가 입력되지 않아 DB에 저장할 수 없습니다.");
              res.status(561).end('<meta charset="utf-8">상품번호가 입력되지 않아 등록할 수 없습니다');
@@ -114,11 +115,10 @@ const HanldleAddProduct = (req, res) => {  // 상품등록
                 console.log("사진없음");
               }
               regdate = new Date();
-              db.query('INSERT INTO u15_products (itemid, category, maker, pname, modelnum,rdate,price,dcrate,amount,event,pic) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)',
-                    [body.itemid, body.category, body.maker, body.pname, body.modelnum, regdate,
-                     body.price, body.dcrate, body.amount, body.event, prodimage], (error, results, fields) => {
+              db.query('INSERT INTO u15_products (docID, docPass, userID, title, filePath ,date) VALUES (?, ?, ?, ?, ?, ?)',
+                    [body.docid, body.docpw, body.uid, body.title, prodimage, regdate], (error, results, fields) => {
                if (error) {
-                   htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+                   htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
                    res.status(562).end(ejs.render(htmlstream, { 'title': '알리미',
                                  'warn_title':'상품등록 오류',
                                  'warn_message':'상품으로 등록할때 DB저장 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
@@ -131,7 +131,7 @@ const HanldleAddProduct = (req, res) => {  // 상품등록
        }
       }
      else {
-         htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+         htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
          res.status(562).end(ejs.render(htmlstream, { 'title': '알리미',
                             'warn_title':'상품등록기능 오류',
                             'warn_message':'관리자로 로그인되어 있지 않아서, 상품등록 기능을 사용할 수 없습니다.',
@@ -145,7 +145,7 @@ const PrintProductSearchEd = (req, res) => {
   let    htmlstream = '';
   let    htmlstream2 = '';
 
-       if (req.session.auth && req.session.admin) { // 관리자로 로그인된 경우에만 처리한다
+       if (req.session.auth) { // 관리자로 로그인된 경우에만 처리한다
          htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/adminbar.ejs','utf8');  // 관리자메뉴
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/product_search_edit.ejs','utf8'); // 상품번호 입력
@@ -160,7 +160,7 @@ const PrintProductSearchEd = (req, res) => {
                                            'reglabel': req.session.who}));
        }
        else {
-         htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+         htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
          res.status(562).end(ejs.render(htmlstream, { 'title': '알리미',
                             'warn_title':'상품변경 기능 오류',
                             'warn_message':'관리자로 로그인되어 있지 않아서, 상품변경 기능을 사용할 수 없습니다.',
@@ -173,7 +173,7 @@ const PrintProductSearchEr = (req, res) => {
   let    htmlstream = '';
   let    htmlstream2 = '';
 
-       if (req.session.auth && req.session.admin) { // 관리자로 로그인된 경우에만 처리한다
+       if (req.session.auth) { // 관리자로 로그인된 경우에만 처리한다
          htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/adminbar.ejs','utf8');  // 관리자메뉴
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/product_search_eraser.ejs','utf8'); // 상품번호 입력
@@ -188,7 +188,7 @@ const PrintProductSearchEr = (req, res) => {
                                            'reglabel': req.session.who}));
        }
        else {
-         htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+         htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
          res.status(562).end(ejs.render(htmlstream, { 'title': '알리미',
                             'warn_title':'상품삭제 기능 오류',
                             'warn_message':'관리자로 로그인되어 있지 않아서, 상품삭제 기능을 사용할 수 없습니다.',
@@ -205,7 +205,7 @@ const PrintProductEdit = (req, res) => {
   let    htmlstream2 = '';
   let    sql_str;
 
-       if (req.session.auth && req.session.admin) { // 관리자로 로그인된 경우에만 처리한다
+       if (req.session.auth) { // 관리자로 로그인된 경우에만 처리한다
          htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/adminbar.ejs','utf8');  // 관리자메뉴
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/product_edit.ejs','utf8'); // 관리자메인화면
@@ -218,7 +218,7 @@ const PrintProductEdit = (req, res) => {
          db.query(sql_str, [body.itemid], (error, results, fields) => {  // 상품 검색 SQL실행
            if(error) {res.status(562).end("PrintProductEdit: DB query is failed");}
            else if (results.length <= 0) { // 조회된 상품이 없다면, 오류메시지 출력
-             htmlstream2 = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+             htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
              res.status(562).end(ejs.render(htmlstream2, { 'title': '알리미',
                                 'warn_title':'조회 오류',
                                 'warn_message':'조회된 데이터가 없습니다.',
@@ -235,7 +235,7 @@ const PrintProductEdit = (req, res) => {
          });
        }
        else {
-         htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+         htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
          res.status(562).end(ejs.render(htmlstream, { 'title': '알리미',
                             'warn_title':'제품변경 기능 오류',
                             'warn_message':'관리자로 로그인되어 있지 않아서, 제품변경 기능을 사용할 수 없습니다.',
@@ -255,7 +255,7 @@ const HanldleProductEdit = (req, res) => {  // 상품변경
         console.log(body);
         console.log(picfile);
 
-       if (req.session.auth && req.session.admin) {
+       if (req.session.auth) {
            if (body.itemid == '' || datestr == '') {
              console.log("상품번호가 입력되지 않아 DB에 저장할 수 없습니다.");
              res.status(561).end('<meta charset="utf-8">상품번호가 입력되지 않아 등록할 수 없습니다');
@@ -274,7 +274,7 @@ const HanldleProductEdit = (req, res) => {  // 상품변경
                       [body.category, body.maker, body.pname, body.modelnum,
                        body.price, body.dcrate, body.amount, body.event, prodimage, body.itemid], (error, results, fields) => {
                  if (error) {
-                     htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+                     htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
                      res.status(562).end(ejs.render(htmlstream, { 'title': '알리미',
                                    'warn_title':'상품변경 오류',
                                    'warn_message':'상품을 변경할때 DB저장 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
@@ -312,7 +312,7 @@ const HanldleProductEdit = (req, res) => {  // 상품변경
                       [body.category, body.maker, body.pname, body.modelnum,
                        body.price, body.dcrate, body.amount, body.event, prodimage, body.itemid], (error, results, fields) => {
                  if (error) {
-                     htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+                     htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
                      res.status(562).end(ejs.render(htmlstream, { 'title': '알리미',
                                    'warn_title':'상품변경 오류',
                                    'warn_message':'상품을 변경할때 DB저장 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
@@ -335,7 +335,7 @@ const HanldleProductEdit = (req, res) => {  // 상품변경
        }
       }
      else {
-         htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+         htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
          res.status(562).end(ejs.render(htmlstream, { 'title': '알리미',
                             'warn_title':'상품변경 기능 오류',
                             'warn_message':'관리자로 로그인되어 있지 않아서, 상품변경 기능을 사용할 수 없습니다.',
@@ -350,7 +350,7 @@ const PrintProductEraser = (req, res) => {
   let    sql_str;
   let   body = req.body;
 
-       if (req.session.auth && req.session.admin) { // 관리자로 로그인된 경우에만 처리한다
+       if (req.session.auth) { // 관리자로 로그인된 경우에만 처리한다
          htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/adminbar.ejs','utf8');  // 관리자메뉴
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/product_eraser.ejs','utf8'); // 관리자메인화면
@@ -363,7 +363,7 @@ const PrintProductEraser = (req, res) => {
          db.query(sql_str, [body.itemid], (error, results, fields) => {  // 상품 검색 SQL실행
            if(error) {res.status(562).end("PrintProductEraser: DB query is failed");}
            else if (results.length <= 0) { // 조회된 상품이 없다면, 오류메시지 출력
-             htmlstream2 = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+             htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
              res.status(562).end(ejs.render(htmlstream2, { 'title': '알리미',
                                 'warn_title':'조회 오류',
                                 'warn_message':'조회된 데이터가 없습니다.',
@@ -382,7 +382,7 @@ const PrintProductEraser = (req, res) => {
          });
        }
        else {
-         htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+         htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
          res.status(562).end(ejs.render(htmlstream, { 'title': '알리미',
                             'warn_title':'상품삭제 기능 오류',
                             'warn_message':'관리자로 로그인되어 있지 않아서, 상품삭제 기능을 사용할 수 없습니다.',
@@ -399,7 +399,7 @@ const HanldleProductEraser = (req, res) => {  // 상품삭제
 
        //delfile=body.pic;
 
-       if (req.session.auth && req.session.admin) {
+       if (req.session.auth) {
            if (body.itemid == '' || datestr == '') {
              console.log("상품이 입력되지 않아 데이터를 처리할 수 없습니다.");
              res.status(561).end('<meta charset="utf-8">상품이 선택되지 않아 삭제할 수 없습니다');
@@ -408,7 +408,7 @@ const HanldleProductEraser = (req, res) => {  // 상품삭제
               db.query('DELETE FROM u15_products where itemid = ?',
                     [body.itemid], (error, results, fields) => {
                if (error) {
-                   htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+                   htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
                    res.status(562).end(ejs.render(htmlstream, { 'title': '알리미',
                                  'warn_title':'상품삭제 오류',
                                  'warn_message':'상품을 삭제할때 DB 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
@@ -425,7 +425,7 @@ const HanldleProductEraser = (req, res) => {  // 상품삭제
        }
       }
      else {
-         htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+         htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
          res.status(562).end(ejs.render(htmlstream, { 'title': '알리미',
                             'warn_title':'상품삭제 기능 오류',
                             'warn_message':'관리자로 로그인되어 있지 않아서, 상품삭제 기능을 사용할 수 없습니다.',

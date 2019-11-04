@@ -34,7 +34,7 @@ const AdminPrintUser = (req, res) => {
            db.query(sql_str, (error, results, fields) => {  // 회원조회 SQL실행
                if (error) { res.status(562).end("AdminPrintProd: DB query is failed"); }
                else if (results.length <= 0) {  // 조회된 회원이 없다면, 오류메시지 출력
-                   htmlstream2 = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+                   htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
                    res.status(562).end(ejs.render(htmlstream2, { 'title': 'Error',
                                       'warn_title':'친구 조회 오류',
                                       'warn_message':'조회된 친구가 없습니다. 친구를 추가해주세요!',
@@ -51,7 +51,7 @@ const AdminPrintUser = (req, res) => {
            }); // db.query()
        }
        else  {  // (관리자로 로그인하지 않고) 본 페이지를 참조하면 오류를 출력
-         htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+         htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
          res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
                             'warn_title':'친구 조회 오류',
                             'warn_message':'로그인되어 있지 않아서, 친구 조회를 할 수 없습니다.',
@@ -81,7 +81,7 @@ const PrintUserSearchEd = (req, res) => {
                                            'reglabel': req.session.who}));
        }
        else {
-         htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+         htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
          res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
                             'warn_title':'친구 추가 오류',
                             'warn_message':'로그인되어 있지 않아서, 친구 추가를 할 수 없습니다.',
@@ -109,7 +109,7 @@ const PrintUserSearchEr = (req, res) => {
                                            'reglabel': req.session.who}));
        }
        else {
-         htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+         htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
          res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
                             'warn_title':'친구 삭제 오류',
                             'warn_message':'로그인되어 있지 않아서, 친구 삭제를 할 수 없습니다.',
@@ -138,7 +138,7 @@ const PrintUserEdit = (req, res) => {
          db.query(sql_str, [body.uid], (error, results, fields) => {  // 회원 검색 SQL실행
            if(error) {res.status(562).end("PrintUserEdit: DB query is failed");}
            else if (results.length <= 0) { // 조회된 회원이 없다면, 오류메시지 출력
-             htmlstream2 = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+             htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
              res.status(562).end(ejs.render(htmlstream2, { 'title': 'Error',
                                 'warn_title':'친구 조회 오류',
                                 'warn_message':'조회된 친구가 없습니다. 추가할 친구를 다시 검색해주세요.',
@@ -155,7 +155,7 @@ const PrintUserEdit = (req, res) => {
          });
        }
        else {
-         htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+         htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
          res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
                             'warn_title':'친구 추가 오류',
                             'warn_message':'로그인되어 있지 않아서, 친구 추가를 할 수 없습니다.',
@@ -179,7 +179,7 @@ const HanldleUserEdit = (req, res) => {  // 정보수정
               db.query('UPDATE u15_users SET pass=?, name=?, phone=?, address=?,point=?,grade=? where uid=?',
                     [body.pass, body.name, body.phone, body.address, body.point, body.grade, body.uid], (error, results, fields) => {
                if (error) {
-                   htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+                   htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
                    res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
                                  'warn_title':'친구 추가 오류',
                                  'warn_message':'추가할때 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
@@ -192,7 +192,7 @@ const HanldleUserEdit = (req, res) => {  // 정보수정
        }
       }
      else {
-         htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+         htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
          res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
                             'warn_title':'친구 추가 오류',
                             'warn_message':'로그인되어 있지 않아서, 친구 추가를 할 수 없습니다.',
@@ -219,7 +219,7 @@ const PrintUserEraser = (req, res) => {
          db.query(sql_str, [req.param('uid')], (error, results, fields) => {  // 회원 검색 SQL실행
            if(error) {res.status(562).end("PrintUserEraser: DB query is failed");}
            else if (results.length <= 0) { // 조회된 회원이 없다면, 오류메시지 출력
-             htmlstream2 = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+             htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
              res.status(562).end(ejs.render(htmlstream2, { 'title': 'Error',
                                 'warn_title':'친구 조회 오류',
                                 'warn_message':'조회된 친구가 없습니다. 삭제할 친구를 다시 검색해주세요.',
@@ -236,7 +236,7 @@ const PrintUserEraser = (req, res) => {
          });
        }
        else {
-         htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+         htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
          res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
                             'warn_title':'친구 삭제 오류',
                             'warn_message':'로그인되어 있지 않아서, 친구 삭제 기능을 사용할 수 없습니다.',
@@ -260,7 +260,7 @@ const HanldleEraserUser = (req, res) => {  // 회원삭제
               db.query('DELETE FROM u15_users where uid = ?',
                     [body.uid], (error, results, fields) => {
                if (error) {
-                   htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+                   htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
                    res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
                                  'warn_title':'친구 삭제 오류',
                                  'warn_message':'친구를 삭제할때 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
@@ -273,7 +273,7 @@ const HanldleEraserUser = (req, res) => {  // 회원삭제
        }
       }
      else {
-         htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+         htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
          res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
                             'warn_title':'친구 삭제 오류',
                             'warn_message':'로그인되어 있지 않아서, 친구 삭제를 할 수 없습니다.',

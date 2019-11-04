@@ -20,31 +20,31 @@ const   db = mysql.createConnection({
 
 //  -----------------------------------  회원가입기능 -----------------------------------------
 // 회원가입 입력양식을 브라우져로 출력합니다.
-const PrintRegistrationForm = (req, res) => {
-  let    htmlstream = '';
+// const PrintRegistrationForm = (req, res) => {
+//   let    htmlstream = '';
 
-       htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');
-       htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8');
-       htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/reg_form.ejs','utf8');
-       htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');
-       res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
+//        htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');
+//        htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8');
+//        htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/reg_form.ejs','utf8');
+//        htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');
+//        res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
-       if (req.session.auth) {  // true :로그인된 상태,  false : 로그인안된 상태
-           res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
-                                             'logurl': '/users/logout',
-                                             'loglabel': 'Logout',
-                                             'regurl': '/users/profile',
-                                             'reglabel':req.session.who }));
-       }
-       else {
-          res.end(ejs.render(htmlstream, { 'title' : 'Our Note',
-                                          'logurl': '/users/auth',
-                                          'loglabel': 'Login',
-                                          'regurl': '/users/reg',
-                                          'reglabel':'가입' }));
-       }
+//        if (req.session.auth) {  // true :로그인된 상태,  false : 로그인안된 상태
+//            res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
+//                                              'logurl': '/users/logout',
+//                                              'loglabel': 'Logout',
+//                                              'regurl': '/users/profile',
+//                                              'reglabel':req.session.who }));
+//        }
+//        else {
+//           res.end(ejs.render(htmlstream, { 'title' : 'Our Note',
+//                                           'logurl': '/users/auth',
+//                                           'loglabel': 'Login',
+//                                           'regurl': '/users/reg',
+//                                           'reglabel':'가입' }));
+//        }
 
-};
+// };
 
 // 회원가입 양식에서 입력된 회원정보를 신규등록(DB에 저장)합니다.
 const HandleRegistration = (req, res) => {  // 회원가입
@@ -64,13 +64,14 @@ let htmlstream='';
 
        db.query('INSERT INTO user (userID, userPass, userName, userPhone) VALUES (?, ?, ?, ?)', [body.uid, body.pw1, body.name, body.phone], (error, results, fields) => {
           if (error) {
-            htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+            htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
             res.status(562).end(ejs.render(htmlstream, { 'title': 'Register Error',
                                'warn_title':'회원가입 오류',
                                'warn_message':'이미 회원으로 등록되어 있습니다. 바로 로그인 하시기 바랍니다.',
                                'return_url':'/users/auth' }));
           } else {
            console.log("회원가입에 성공하였으며, 신규회원으로 등록되었습니다!");
+         //   res.wrtie('<meta charset="utf-8">회원가입에 성공하였습니다.');
            res.redirect('/users/auth');
           }
        });
@@ -79,7 +80,7 @@ let htmlstream='';
 };
 
 // REST API의 URI와 핸들러를 매핑합니다.
-router.get('/reg', PrintRegistrationForm);   // 회원가입화면을 출력처리
+// router.get('/reg', PrintRegistrationForm);   // 회원가입화면을 출력처리
 router.post('/reg', HandleRegistration);   // 회원가입내용을 DB에 등록처리
 router.get('/', function(req, res) { res.send('respond with a resource 111'); });
 
@@ -132,7 +133,7 @@ const HandleLogin = (req, res) => {
          if (error) { res.status(562).end("Login Fail as No id in DB!"); }
          else {
             if (results.length <= 0) {  // select 조회결과가 없는 경우 (즉, 등록계정이 없는 경우)
-                  htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+                  htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
                   res.status(562).end(ejs.render(htmlstream, { 'title': 'Login Error',
                                      'warn_title':'로그인 오류',
                                      'warn_message':'등록된 계정이나 암호가 틀립니다.',
@@ -176,7 +177,7 @@ router.get('/logout', HandleLogout);       // 로그아웃 기능
 const PrintProfile = (req, res) => {
   let    htmlstream = '';
 
-       htmlstream = fs.readFileSync(__dirname + '/../views/alert.ejs','utf8');
+       htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
        res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
                            'warn_title':'계정정보 준비중',
                            'warn_message':'계정정보(예, 암호변경, 주소변경, 전화번호변경 등)변경기능을 추후에 개발할 예정입니다',

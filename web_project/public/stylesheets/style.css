@@ -517,3 +517,11 @@ body {
 /* .ml-auto, .mx-auto {
   margin-right: 50px !important;
 } */
+
+/* modal */
+.vertical-alignment-modal {
+  display:table;
+  height: 100%;
+  width: 100%;
+  pointer-events:none; /*This makes sure that we can still click outside of the modal to close it*/
+}
