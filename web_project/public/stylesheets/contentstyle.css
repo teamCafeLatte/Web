@@ -50,5 +50,5 @@ header {
 
 footer {
   display: block;
-  background-color: #f7fcf6;
+  background: linear-gradient(to top, rgb(224, 224, 224), white); 
 }
