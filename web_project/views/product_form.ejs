@@ -26,27 +26,22 @@
       </div>
 
    <form name=join onsubmit="return validate()" method=post action="/adminprod/product" enctype="multipart/form-data">
-       <div class="form-group">
-         <label for="exampleInputEmail1">상품번호</label>
-         <input type="text" required class="form-control" name="docid" id="docid" aria-describedby="emailHelp" placeholder="예) P0009">
-         필수항목, 최대6자리, 중복금지, 예) P0009
-       </div>
     <div class="form-row">
       <div class="form-group col-md-6">
        <div class="form-group">
-         <label for="exampleInputPassword1">상품명</label>
+         <label for="exampleInputPassword1">비밀번호</label>
          <input type="text" class="form-control" name="docpw" id="docpw" placeholder="최대20자까지 입력">
        </div>
        <div class="form-group">
-         <label for="exampleInputPassword2">모델명</label>
+         <label for="exampleInputPassword2">글쓴이</label>
          <input type="text" class="form-control" name="uid" id="uid" placeholder="최대20자까지 입력">
        </div>
        <div class="form-group">
-         <label for="exampleInputEmail1">판매형태</label>
+         <label for="exampleInputEmail1">제목</label>
          <input type="text" class="form-control" name="title" id="title" placeholder="일반세일, 이벤트세일, 특별세일">
        </div>
      </div>
-      <label for="exampleInputEmail1">상품이미지 (적정사이즈:250x180)</label>
+      <label for="exampleInputEmail1">첨부파일</label>
       <div class="form-group">
          <input type="file" class="custom-file-input2" id="entry" width=10px aria-describedby="entry2" accept="image/*" name="photo">
       </div>
@@ -54,7 +49,7 @@
    </div>
 
          <hr>
-         <button type="submit" class="btn btn-primary">상품등록</button>
+         <button type="submit" class="btn btn-primary">등록</button>
       </form>
      </div>
      </div>
