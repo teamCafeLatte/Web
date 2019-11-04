@@ -10,15 +10,10 @@ let    htmlstream = '';
 
      logging(loglevel, 'router.get() invoked!');
 
-     htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
-     if (req.session.auth && req.session.admin) {  // 만약, 관리자가 로그인했다면
-       htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/adminbar.ejs','utf8');  // 관리자메뉴
-       htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/admincontent.ejs','utf8');
-     } else {
-       htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8');  // 일반사용자메뉴
-       htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/content.ejs','utf8'); // Content
-     }
-     htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
+   htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
+   htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8');  // 사용자메뉴
+   htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/content.ejs','utf8'); // Content
+   htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
 
      res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
      if (req.session.auth) {  // true :로그인된 상태,  false : 로그인안된 상태
