@@ -1,0 +1,28 @@
+
+.h1, h1 {
+    text-align: center !important;
+  }
+  
+  .h4, h4 {
+    font-size: 1.3rem !important;
+  }
+  
+  .card-text:last-child {
+    color: dimgray !important;
+  }
+  
+  a {
+    color: darkgray !important;
+  }
+  
+  .card-title {
+    text-align: center;
+  }
+  
+  .card:first-child {
+    border-radius: 20px 20px 20px 20px !important;
+    border-left-color: white !important;
+    border-right-color: white !important;
+    border-bottom-color: white !important;
+    font-family: "Open Sans", sans-serif;
+  }
