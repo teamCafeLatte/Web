@@ -1,19 +1,19 @@
 
-.h1, h1 {
+/* .h1, h1 {
     text-align: center !important;
   }
   
   .h4, h4 {
     font-size: 1.3rem !important;
-  }
+  } */
   
   .card-text:last-child {
     color: dimgray !important;
   }
   
-  a {
+  /* a {
     color: darkgray !important;
-  }
+  } */
   
   .card-title {
     text-align: center;
@@ -26,3 +26,29 @@
     border-bottom-color: white !important;
     font-family: "Open Sans", sans-serif;
   }
+
+  .img-fluid {
+    max-width: 100% !important;
+    height: 0.1% !important;
+}
+
+.display-4 {
+  font-size: 3.5rem;
+  font-weight: 300;
+  line-height: 1.2;
+  margin-bottom: 30px;
+  color: rgb(75, 74, 74) !important;
+}
+
+.ppp {
+  color: rgb(122, 122, 122);
+}
+
+header {
+  font-family: 'Nanum Gothic', sans-serif;
+}
+
+footer {
+  display: block;
+  background-color: #f7fcf6;
+}
