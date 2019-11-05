@@ -1,5 +1,6 @@
+<!-- 로그인 회원가입 양식 -->
 <!DOCTYPE html>
-<script>
+<script language="javascript">
     $(document).ready(function(){
       $('.toggle').on('click', function() {
           $('.container').stop().addClass('active');
@@ -9,6 +10,17 @@
           $('.container').stop().removeClass('active');
       });
     });
+
+    function validate() {
+        let pw1 = document.getElementById("pw1").value;
+        let pw2 = document.getElementById("pw2").value;
+
+        if (pw1 != pw2) {
+          alert("암호가 서로 다릅니다. 다시입력하세요");
+          return false;
+        }
+        return true;
+      }
 </script>
 
   <!-- <p> -->

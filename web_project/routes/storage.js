@@ -125,7 +125,7 @@ const HanldleAddProduct = (req, res) => {  // 상품등록
                                  'return_url':'/' }));
                 } else {
                    console.log("등록에 성공하였으며, DB에 신규로 등록하였습니다.!");
-                   res.redirect('/adminprod/list');
+                   res.redirect('/storage/list');
                 }
            });
        }
@@ -288,7 +288,7 @@ const HanldleProductEdit = (req, res) => {  // 상품변경
                          else console.log('파일이 삭제되었습니다.');  //기존이미지 삭제
                        });
                      }*/
-                     res.redirect('/adminprod/list');
+                     res.redirect('/storage/list');
                   }
              });
 
@@ -325,7 +325,7 @@ const HanldleProductEdit = (req, res) => {  // 상품변경
                          else console.log('파일이 삭제되었습니다.');  //기존이미지 삭제
                        });
                      }*/
-                     res.redirect('/adminprod/list');
+                     res.redirect('/storage/list');
                   }
              });
               }
@@ -354,17 +354,17 @@ const PrintProductEraser = (req, res) => {
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/product_eraser.ejs','utf8'); // 관리자메인화면
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
 
-         sql_str = "SELECT itemid, category, maker, pname, modelnum, rdate, price, dcrate, amount, event, pic from u15_products where itemid = ?"; // 상품 검색 SQL
+         sql_str = "SELECT docPass, title, filePath, date from document where docID = ?"; // 상품 검색 SQL
 
          res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
-         db.query(sql_str, [body.itemid], (error, results, fields) => {  // 상품 검색 SQL실행
+         db.query(sql_str, [body.docID], (error, results, fields) => {  // 상품 검색 SQL실행
            if(error) {res.status(562).end("PrintProductEraser: DB query is failed");}
            else if (results.length <= 0) { // 조회된 상품이 없다면, 오류메시지 출력
              htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
-             res.status(562).end(ejs.render(htmlstream2, { 'title': '알리미',
+             res.status(562).end(ejs.render(htmlstream2, { 'title': 'Error',
                                 'warn_title':'조회 오류',
-                                'warn_message':'조회된 데이터가 없습니다.',
+                                'warn_message':'조회된 글이 없습니다.',
                                 'return_url':'/' }));
            }
            else{
@@ -381,9 +381,9 @@ const PrintProductEraser = (req, res) => {
        }
        else {
          htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
-         res.status(562).end(ejs.render(htmlstream, { 'title': '알리미',
-                            'warn_title':'상품삭제 기능 오류',
-                            'warn_message':'관리자로 로그인되어 있지 않아서, 상품삭제 기능을 사용할 수 없습니다.',
+         res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+                            'warn_title':'삭제 오류',
+                            'warn_message':'로그인되어 있지 않아서, 삭제 할 수 없습니다.',
                             'return_url':'/' }));
        }
 
@@ -398,35 +398,35 @@ const HanldleProductEraser = (req, res) => {  // 상품삭제
        //delfile=body.pic;
 
        if (req.session.auth) {
-           if (body.itemid == '' || datestr == '') {
-             console.log("상품이 입력되지 않아 데이터를 처리할 수 없습니다.");
-             res.status(561).end('<meta charset="utf-8">상품이 선택되지 않아 삭제할 수 없습니다');
+           if (body.docID == '' || datestr == '') {
+             console.log("글이 선택되지 않아 데이터를 처리할 수 없습니다.");
+             res.status(561).end('<meta charset="utf-8">글이 선택되지 않아 삭제할 수 없습니다');
           }
           else {
-              db.query('DELETE FROM u15_products where itemid = ?',
-                    [body.itemid], (error, results, fields) => {
+              db.query('DELETE FROM document where docID = ?',
+                    [body.docID], (error, results, fields) => {
                if (error) {
                    htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
-                   res.status(562).end(ejs.render(htmlstream, { 'title': '알리미',
-                                 'warn_title':'상품삭제 오류',
-                                 'warn_message':'상품을 삭제할때 DB 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
+                   res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+                                 'warn_title':'삭제 오류',
+                                 'warn_message':'삭제할때 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
                                  'return_url':'/' }));
                 } else {
-                   console.log("상품삭제에 성공하였습니다.!");
+                   console.log("삭제에 성공하였습니다.!");
                    /*fs.unlink('delfile', (error) => {
                      if(error) console.error(error);
                      console.log('파일이 삭제되었습니다.');
                    });*/
-                   res.redirect('/adminprod/list');
+                   res.redirect('/storage/list');
                 }
            });
        }
       }
      else {
          htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
-         res.status(562).end(ejs.render(htmlstream, { 'title': '알리미',
-                            'warn_title':'상품삭제 기능 오류',
-                            'warn_message':'관리자로 로그인되어 있지 않아서, 상품삭제 기능을 사용할 수 없습니다.',
+         res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+                            'warn_title':'삭제 오류',
+                            'warn_message':'로그인되어 있지 않아서, 삭제 할 수 없습니다.',
                             'return_url':'/' }));
        }
 };

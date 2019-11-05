@@ -1,3 +1,4 @@
+<!-- navbar -->
 <!DOCTYPE html>
 <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
   <div class="container-fluid">
@@ -6,7 +7,7 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <!-- 검색창 -->
-  <div class="col-4 col-md-3">
+  <div class="col-sm-3 col-md-3">
       <form class="navbar-form" onsubmit="return validate()" method="post" action="/search/list" role="search">
       <div class="input-group">
           <input type="text" id="search" name="search" class="form-control" placeholder="Search">
@@ -32,7 +33,7 @@
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/product/list/?category=aircon">Storage</a>
+        <a class="nav-link" href="/storage/list">Storage</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

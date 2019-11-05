@@ -22,12 +22,12 @@ const AdminPrintUser = (req, res) => {
   let    htmlstream2 = '';
   let    sql_str;
 
-       if (req.session.auth && req.session.admin)   {   // 관리자로 로그인된 경우에만 처리한다
+       if (req.session.auth)   {   // 관리자로 로그인된 경우에만 처리한다
            htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
-           htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/adminbar.ejs','utf8');  // 관리자메뉴
+           htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8');  // 관리자메뉴
            htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/adminuser.ejs','utf8'); // 괸리자메인화면
            htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
-           sql_str = "SELECT uid, name, phone, address, point, grade from u15_users;"; // 회원조회SQL
+           sql_str = "SELECT userID, userName, userPic from user;"; // 친구조회SQL
 
            res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
@@ -66,9 +66,9 @@ const PrintUserSearchEd = (req, res) => {
   let    htmlstream = '';
   let    htmlstream2 = '';
 
-       if (req.session.auth && req.session.admin) { // 관리자로 로그인된 경우에만 처리한다
+       if (req.session.auth) { // 관리자로 로그인된 경우에만 처리한다
          htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
-         htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/adminbar.ejs','utf8');  // 관리자메뉴
+         htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8');  // 관리자메뉴
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/user_search_edit.ejs','utf8'); // 회원 아이디 입력
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
 
@@ -94,9 +94,9 @@ const PrintUserSearchEr = (req, res) => {
   let    htmlstream = '';
   let    htmlstream2 = '';
 
-       if (req.session.auth && req.session.admin) { // 관리자로 로그인된 경우에만 처리한다
+       if (req.session.auth) { // 관리자로 로그인된 경우에만 처리한다
          htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
-         htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/adminbar.ejs','utf8');  // 관리자메뉴
+         htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8');  // 관리자메뉴
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/user_search_eraser.ejs','utf8'); // 회원 아이디 입력
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
 
@@ -118,20 +118,20 @@ const PrintUserSearchEr = (req, res) => {
 };
 
 // ---------------------------------------회원정보변경기능---------------------------------------------
-// 회원수정 양식을 브라우저로 출력합니다.
+// 회원수정 양식을 브라우저로 출력합니다. // 자기 정보 수정으로 바꾸기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 const PrintUserEdit = (req, res) => {
   let    body = req.body;
   let    htmlstream = '';
   let    htmlstream2 = '';
   let    sql_str;
 
-       if (req.session.auth && req.session.admin) { // 관리자로 로그인된 경우에만 처리한다
+       if (req.session.auth) { // 관리자로 로그인된 경우에만 처리한다
          htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
-         htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/adminbar.ejs','utf8');  // 관리자메뉴
+         htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8');  // 관리자메뉴
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/user_edit.ejs','utf8'); // 관리자화면
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
 
-         sql_str = "SELECT uid, pass, name, phone, address, point, grade from u15_users where uid = ?"; // 회원 검색 SQL
+         sql_str = "SELECT userID, userPass, userName, userPhone, userPic from user where userID = ?"; // 회원 검색 SQL
 
          res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
@@ -140,8 +140,8 @@ const PrintUserEdit = (req, res) => {
            else if (results.length <= 0) { // 조회된 회원이 없다면, 오류메시지 출력
              htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
              res.status(562).end(ejs.render(htmlstream2, { 'title': 'Error',
-                                'warn_title':'친구 조회 오류',
-                                'warn_message':'조회된 친구가 없습니다. 추가할 친구를 다시 검색해주세요.',
+                                'warn_title':'조회 오류',
+                                'warn_message':'조회된 정보가 없습니다.',
                                 'return_url':'/' }));
            }
            else{
@@ -157,8 +157,8 @@ const PrintUserEdit = (req, res) => {
        else {
          htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
          res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
-                            'warn_title':'친구 추가 오류',
-                            'warn_message':'로그인되어 있지 않아서, 친구 추가를 할 수 없습니다.',
+                            'warn_title':'정보 수정 오류',
+                            'warn_message':'로그인되어 있지 않아서, 정보를 수정 할 수 없습니다.',
                             'return_url':'/' }));
        }
 
@@ -170,22 +170,22 @@ const HanldleUserEdit = (req, res) => {  // 정보수정
   let    htmlstream = '';
   let    datestr;
 
-       if (req.session.auth && req.session.admin) {
+       if (req.session.auth) {
            if (body.uid == '' || datestr == '') {
              console.log("정보를 입력해주세요.");
              res.status(561).end('<meta charset="utf-8">아이디가 입력되지 않아 추가할 수 없습니다');
           }
           else {
-              db.query('UPDATE u15_users SET pass=?, name=?, phone=?, address=?,point=?,grade=? where uid=?',
-                    [body.pass, body.name, body.phone, body.address, body.point, body.grade, body.uid], (error, results, fields) => {
+              db.query('UPDATE user SET userPass=?, userName=?, userPhone=?, userPic=? where userID=?',
+                    [body.userPass, body.userName, body.userPhone, body.userPic, body.userID], (error, results, fields) => {
                if (error) {
                    htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
                    res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
-                                 'warn_title':'친구 추가 오류',
-                                 'warn_message':'추가할때 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
+                                 'warn_title':'정보 수정 오류',
+                                 'warn_message':'수정할때 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
                                  'return_url':'/' }));
                 } else {
-                   console.log("정보수정에 성공하였습니다.!");
+                   console.log("정보 수정에 성공하였습니다.!");
                    res.redirect('/adminuse/list');
                 }
            });
@@ -194,8 +194,8 @@ const HanldleUserEdit = (req, res) => {  // 정보수정
      else {
          htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
          res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
-                            'warn_title':'친구 추가 오류',
-                            'warn_message':'로그인되어 있지 않아서, 친구 추가를 할 수 없습니다.',
+                            'warn_title':'정보 수정 오류',
+                            'warn_message':'로그인되어 있지 않아서, 정보를 수정 할 수 없습니다.',
                             'return_url':'/' }));
        }
 };
@@ -206,13 +206,13 @@ const PrintUserEraser = (req, res) => {
   let    htmlstream2 = '';
   let    sql_str;
 
-       if (req.session.auth && req.session.admin) { // 관리자로 로그인된 경우에만 처리한다
+       if (req.session.auth) { // 관리자로 로그인된 경우에만 처리한다
          htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
-         htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/adminbar.ejs','utf8');  // 관리자메뉴
+         htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8');  // 관리자메뉴
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/user_eraser.ejs','utf8'); // 관리자화면
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
 
-         sql_str = "SELECT uid, pass, name, phone, address, point, grade from u15_users where uid = ?"; // 회원 검색 SQL
+         sql_str = "SELECT userID, userPass, userName, userPhone, userPic from user where userID = ?"; // 회원 검색 SQL
 
          res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
@@ -239,7 +239,7 @@ const PrintUserEraser = (req, res) => {
          htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
          res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
                             'warn_title':'친구 삭제 오류',
-                            'warn_message':'로그인되어 있지 않아서, 친구 삭제 기능을 사용할 수 없습니다.',
+                            'warn_message':'로그인되어 있지 않아서, 친구를 삭제 할 수 없습니다.',
                             'return_url':'/' }));
        }
 
@@ -251,14 +251,14 @@ const HanldleEraserUser = (req, res) => {  // 회원삭제
   let    htmlstream = '';
   let    datestr;
 
-       if (req.session.auth && req.session.admin) {
+       if (req.session.auth) {
            if (body.uid == '' || datestr == '') {
              console.log("아이디가 입력되지 않아 데이터를 처리할 수 없습니다.");
              res.status(561).end('<meta charset="utf-8">친구가 선택되지 않아 삭제할 수 없습니다');
           }
           else {
-              db.query('DELETE FROM u15_users where uid = ?',
-                    [body.uid], (error, results, fields) => {
+              db.query('DELETE FROM user where userID = ?',
+                    [body.userID], (error, results, fields) => {
                if (error) {
                    htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
                    res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
@@ -276,7 +276,7 @@ const HanldleEraserUser = (req, res) => {  // 회원삭제
          htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
          res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
                             'warn_title':'친구 삭제 오류',
-                            'warn_message':'로그인되어 있지 않아서, 친구 삭제를 할 수 없습니다.',
+                            'warn_message':'로그인되어 있지 않아서, 친구를 삭제 할 수 없습니다.',
                             'return_url':'/' }));
        }
 };
