@@ -115,7 +115,7 @@ const HanldleAddProduct = (req, res) => {  // 상품등록
                 console.log("사진없음");
               }
               regdate = new Date();
-              db.query('INSERT INTO u15_products (docPass, userID, title, filePath ,date) VALUES (?, ?, ?, ?, ?)',
+              db.query('INSERT INTO document(docPass, userID, title, filePath, date) VALUES (?, ?, ?, ?, ?)',
                     [body.docpw, body.uid, body.title, prodimage, regdate], (error, results, fields) => {
                if (error) {
                    htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
@@ -433,7 +433,7 @@ const HanldleProductEraser = (req, res) => {  // 상품삭제
 
 // REST API의 URI와 핸들러를 매핑합니다.
 router.get('/form', PrintAddProductForm);   // 상품등록화면을 출력처리
-router.post('/document', upload.single('photo'), HanldleAddProduct); // 상품등록내용을 DB에 저장처리
+router.post('/document', upload.single('file'), HanldleAddProduct); // 상품등록내용을 DB에 저장처리
 
 router.get('/document/search/edit', PrintProductSearchEd);  // 상품정보검색화면을 출력처리-수정용
 router.get('/document/search/eraser', PrintProductSearchEr);  // 상품정보검색화면을 출력처리-삭제용
