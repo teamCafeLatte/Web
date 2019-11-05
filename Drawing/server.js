@@ -1,7 +1,7 @@
 const http = require('http')
 const app = require('./app')
 
-const normalizePort = val => {
+const normalizePort = val => { //설정한 포트를 10진수 인트값으로 변환
 	const port = parseInt(val, 10)
 
 	if (isNaN(port)) {
@@ -12,7 +12,7 @@ const normalizePort = val => {
 	}
 	return false
 }
-const port = normalizePort(process.env.PORT || '3000')
+const port = normalizePort(process.env.PORT || '3000') //포트번호 3000
 app.set('port', port)
 
 const errorHandler = error => {
@@ -35,7 +35,7 @@ const errorHandler = error => {
 	}
 }
 
-const server = http.createServer(app)
+const server = http.createServer(app) //리턴한 서버객체 서버에 저장
 
 server.on('error', errorHandler)
 server.on('listening', () => {
