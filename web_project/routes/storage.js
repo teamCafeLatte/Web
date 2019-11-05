@@ -97,8 +97,10 @@ const HanldleAddProduct = (req, res) => {  // 상품등록
   let    datestr, y, m, d, regdate;
   let    prodimage = '/images/uploads/products/'; // 상품이미지 저장디렉터리
   let    picfile = req.file;
+  let    userEmail=req.session.who;
 
        console.log(body);
+       console.log(userEmail);
 
        if (req.session.auth) {
            if (datestr == '') {
@@ -116,7 +118,7 @@ const HanldleAddProduct = (req, res) => {  // 상품등록
               }
               regdate = new Date();
               db.query('INSERT INTO document(docPass, userID, title, filePath, date) VALUES (?, ?, ?, ?, ?)',
-                    [body.docpw, body.uid, body.title, prodimage, regdate], (error, results, fields) => {
+                    [body.docpw, userEmail, body.title, prodimage, regdate], (error, results, fields) => {
                if (error) {
                    htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
                    res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
@@ -215,7 +217,7 @@ const PrintProductEdit = (req, res) => {
 
          res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
-         db.query(sql_str, [body.itemid], (error, results, fields) => {  // 상품 검색 SQL실행
+         db.query(sql_str, [body.docID], (error, results, fields) => {  // 상품 검색 SQL실행
            if(error) {res.status(562).end("PrintProductEdit: DB query is failed");}
            else if (results.length <= 0) { // 조회된 상품이 없다면, 오류메시지 출력
              htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
@@ -261,10 +263,10 @@ const HanldleProductEdit = (req, res) => {  // 상품변경
              res.status(561).end('<meta charset="utf-8">번호가 입력되지 않아 등록할 수 없습니다');
           }
           else {
-            db.query('SELECT filePath from document where docID=?',[body.dicID], (error, data) => {
+            db.query('SELECT filePath from document where docID=?',[body.docID], (error, data) => {
               if (error) {
                 console.log("에러닷");
-              }else if(data[0]==prodimage){ //원래 이미지가 없는 경우-그냥 넣어주면됌
+              }else if(data[0]==prodimage){ //원래 이미지가 없는 경우-그냥 넣어주면됨
                 let    result = { originalName  : picfile.originalname,
                                  size : picfile.size     }
                 prodimage = prodimage + picfile.filename;
@@ -308,7 +310,7 @@ const HanldleProductEdit = (req, res) => {  // 상품변경
                 }
 
                 db.query('UPDATE document SET docPass=?, title=?, filePath=? where docID=?',
-                      [body.docPass, body.title, body.pname, prodimage, body.docID], (error, results, fields) => {
+                      [body.docPass, body.title, prodimage, body.docID], (error, results, fields) => {
                  if (error) {
                      htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
                      res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',

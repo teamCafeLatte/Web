@@ -144,7 +144,8 @@ const HandleLogin = (req, res) => {
                   console.log("DB에서 로그인성공한 ID/암호:%s/%s", userid, userpass);
                   if (body.uid == userid && body.pass == userpass) {
                      req.session.auth = 99;      // 임의로 수(99)로 로그인성공했다는 것을 설정함
-                     req.session.who = username; // 인증된 사용자명 확보 (로그인후 이름출력용)
+                     req.session.who = userid; // 인증된 사용자명 확보 (로그인후 이름출력용)
+                     // req.session.id = userid;
                      if (body.uid == 'admin')    // 만약, 인증된 사용자가 관리자(admin)라면 이를 표시
                           req.session.admin = true;
                      res.redirect('/');
