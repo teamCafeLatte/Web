@@ -52,3 +52,14 @@ footer {
   display: block;
   background: linear-gradient(to top, rgb(224, 224, 224), white); 
 }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 2px;
+}
+
+.table-striped > tr {
+  display: table-row;
+  vertical-align: inherit;
+  border-color: inherit;
+}

@@ -31,6 +31,7 @@
               </tr>
             </thead>
             <tbody>
+              <form action="/storage/document" method="post">
                <% prodata.forEach(function (item, index) { %>
               <tr>
                 <td> <%= item.docID %> </td>
@@ -39,6 +40,7 @@
                 <td> <%= item.date.toLocaleDateString(); %> </td>
               </tr>
               <% }); %>
+              </form>
             </table>
           </div>
 
