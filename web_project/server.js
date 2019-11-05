@@ -10,8 +10,9 @@ const   path = require('path');
 // 쇼핑몰 개발소스 모듈
 const   mainui = require('./routes/mainui');
 const   users = require('./routes/users');
-const   adminprod = require('./routes/adminprod');
-const   product = require('./routes/product');
+// const   adminprod = require('./routes/adminprod');
+const   storage = require('./routes/storage');
+// const   product = require('./routes/product');
 const   adminuse = require('./routes/adminuse');
 const   search = require('./routes/search');
 
@@ -35,8 +36,9 @@ app.use(session({ key: 'sid',
 // URI와 핸들러를 매핑
 app.use('/', mainui);       // URI (/) 접속하면 mainui로 라우팅
 app.use('/users', users);   // URI('/users') 접속하면 users로 라우팅
-app.use('/adminprod', adminprod); // URI('/adminprod') 접속하면 adminprod로 라우팅
-app.use('/product', product); // URI('/product') 접속하면 product로 라우팅
+// app.use('/adminprod', adminprod); // URI('/adminprod') 접속하면 adminprod로 라우팅
+app.use('/storage', storage); // URI('/adminprod') 접속하면 adminprod로 라우팅
+// app.use('/product', product); // URI('/product') 접속하면 product로 라우팅
 app.use('/adminuse', adminuse); // URI('/adminuse') 접속하면 adminuse로 라우팅
 app.use('/search', search); // URI('/search') 접속하면 search로 라우팅
 // app.use('/log', login);
