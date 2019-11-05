@@ -433,16 +433,16 @@ const HanldleProductEraser = (req, res) => {  // 상품삭제
 
 // REST API의 URI와 핸들러를 매핑합니다.
 router.get('/form', PrintAddProductForm);   // 상품등록화면을 출력처리
-router.post('/product', upload.single('photo'), HanldleAddProduct); // 상품등록내용을 DB에 저장처리
+router.post('/document', upload.single('photo'), HanldleAddProduct); // 상품등록내용을 DB에 저장처리
 
-router.get('/product/search/edit', PrintProductSearchEd);  // 상품정보검색화면을 출력처리-수정용
-router.get('/product/search/eraser', PrintProductSearchEr);  // 상품정보검색화면을 출력처리-삭제용
+router.get('/document/search/edit', PrintProductSearchEd);  // 상품정보검색화면을 출력처리-수정용
+router.get('/document/search/eraser', PrintProductSearchEr);  // 상품정보검색화면을 출력처리-삭제용
 
 router.post('/edit', PrintProductEdit);  // 상품변경화면을 출력처리
-router.post('/product/edit', upload.single('photoedit'), HanldleProductEdit); //상품변경내용을 DB에 저장처리
+router.post('/document/edit', upload.single('photoedit'), HanldleProductEdit); //상품변경내용을 DB에 저장처리
 
 router.post('/eraser', PrintProductEraser);   // 상품삭제화면을 출력처리
-router.post('/product/eraser', HanldleProductEraser); // 상품삭제내용을 DB에 처리
+router.post('/document/eraser', HanldleProductEraser); // 상품삭제내용을 DB에 처리
 
 router.get('/list', AdminPrintProd);      // 상품리스트를 화면에 출력
 // router.get('/', function(req, res) { res.send('respond with a resource 111'); });
