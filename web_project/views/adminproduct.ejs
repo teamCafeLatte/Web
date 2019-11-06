@@ -14,9 +14,11 @@
             <li class="breadcrumb-item active" aria-current="page">게시글</li>
           </ol>
         </nav>
-   	  </div>
+       </div>
+     </div>
+   </div>
 
-      <hr>
+      <!--<hr>
       <div class="container">
         <a class="btn btn-default" href="/storage/form">+신규등록</a>
         <a class="btn btn-default" href="/storage/document/search/edit">±수정</a>
@@ -62,4 +64,55 @@
 </nav>
   </p>
      </div>
-   </div>
+   </div> -->
+
+
+<!-- <script>
+  window.console = window.console || function(t) {};
+</script>
+<script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+</script> -->
+<div class="body-table">
+    <a class="a-table" href="/storage/form"><h4 class="h4-table">글 등록하기</h4></a>
+  <hr class="hr-table">
+  <% prodata.forEach(function (item, index) { %>
+  <a class="a-table" href="/storage/doc/?index=<%= item.docID %>">
+    <div class="border-card">
+      <div class="card-type-icon with-border"><%= item.docID %></div>
+      <div class="content-wrapper">
+        <div class="label-group fixed">
+          <p class="title"><%= item.title %></p>
+        </div>
+        <div class="label-group">
+            <p class="caption"><%= item.userID %></p>
+          </div>
+        <div class="label-group">
+          <p class="caption"><%= item.date.toLocaleDateString("en-US"); %></p>
+          <p class="caption"><%= item.date.toLocaleTimeString("en-US"); %></p>
+        </div>
+      </div>
+      <i class="material-icons end-icon">more_vert</i>
+    </div></a>
+  <% }); %>
+
+  <p>
+      <nav aria-label="...">
+      <ul class="pagination justify-content-center">
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+        </li>
+          <li class="page-item active" aria-current="page">
+          <a class="page-link" href="#">1 <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
+      </p>
+</div>

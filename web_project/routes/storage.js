@@ -1,6 +1,7 @@
 const   fs = require('fs');
 const   express = require('express');
 const   ejs = require('ejs');
+const   url = require('url');
 const   mysql = require('mysql');
 const   bodyParser = require('body-parser');
 const   session = require('express-session');
@@ -67,29 +68,59 @@ const AdminPrintProd = (req, res) => {
 const PrintDocPWForm = (req, res) => {
   let htmlstream = '';
   let sql_str;
+  const query = url.parse(req.url, true).query;
+  
+  console.log(query.index);  
 
     if (req.session.auth) { // 로그인된 경우에만 처리한다
-      htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
-      htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8');  // 메뉴
-      htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/document_pw.ejs','utf8'); // 비밀번호 입력
-      htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
-
-      sql_str = "SELECT docPass from document where docID ='"+ body.docID + "';";
+      sql_str = "SELECT docPass from document where docID ='"+ query.index + "';";
 
       res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
-      db.query(sql_str, (error, results, fields) => {  // 상품 검색 SQL실행
+      db.query(sql_str, (error, results, fields) => {  // 검색 SQL실행
         if(error) {res.status(562).end("PrintDocPWForm: DB query is failed");}
-        else if (results.length <= 0) { // 비밀번호가 없는 경우
+        else if (results[0].docPass == null) { // 비밀번호가 없는 경우
+          console.log("?"+results[0].docPass);
           console.log("비밀번호가 없는 게시글입니다.");
-          res.redirect("/storage/pass/detail");
+          htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');  // 헤더부분
+          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8'); //메뉴
+          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/document.ejs','utf8'); // 메인화면
+          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
+
+          sql_str = "SELECT docID, title, date, userID, filePath from document where docID = ?"; // 상품 검색 SQL
+
+          db.query(sql_str, query.index, (error, results, fields) => {  // 상품 검색 SQL실행
+            if(error) {res.status(562).end("PrintDocDetail: DB query is failed");}
+            else if (results.length <= 0) { // 조회된 상품이 없다면, 오류메시지 출력
+              htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+              res.status(562).end(ejs.render(htmlstream2, { 'title': 'Error',
+                                'warn_title':'조회 오류',
+                                'warn_message':'조회된 글이 없습니다.',
+                                'return_url':'/storage/list' }));
+            }
+            else{
+              res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
+                                                'logurl': '/users/logout',
+                                                'loglabel': 'Logout',
+                                                'regurl': '/users/profile',
+                                                'reglabel': req.session.who,
+                                                prodata : results[0] }));  // 조회된 상품정보
+            }
+          });
         }
         else{
+          console.log(results);
+          htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
+          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8');  // 메뉴
+          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/document_pw.ejs','utf8'); // 비밀번호 입력
+          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
+
           res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
                                             'logurl': '/users/logout',
                                             'loglabel': 'Logout',
                                             'regurl': '/users/profile',
                                             'reglabel': req.session.who,
+                                            'docID': query.index,
                                             prodata : results[0] }));  // 조회된 상품정보
         }
       });
@@ -108,6 +139,8 @@ const PrintDocPWForm = (req, res) => {
 const PrintDocDetail = (req, res) => {
   let body = req.body;
   let htmlstream = '';
+  let htmlstream2 = '';
+  const query = url.parse(req.url, true).query;
 
   if(req.session.auth){ // 로그인한 경우에만 처리한다
     htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');  // 헤더부분
@@ -115,11 +148,11 @@ const PrintDocDetail = (req, res) => {
     htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/document.ejs','utf8'); // 메인화면
     htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
 
-    sql_str = "SELECT title, filePath from document where docID = ?"; // 상품 검색 SQL
+    sql_str = "SELECT docID, title, date, userID, filePath from document where docID = ?"; // 상품 검색 SQL
 
     res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
-    db.query(sql_str, [body.docID], (error, results, fields) => {  // 상품 검색 SQL실행
+    db.query(sql_str, query.index, (error, results, fields) => {  // 상품 검색 SQL실행
       if(error) {res.status(562).end("PrintDocDetail: DB query is failed");}
       else if (results.length <= 0) { // 조회된 상품이 없다면, 오류메시지 출력
         htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
@@ -519,11 +552,11 @@ const HanldleProductEraser = (req, res) => {  // 상품삭제
 };
 
 // REST API의 URI와 핸들러를 매핑합니다.
-router.get('/pass', PrintDocPWForm);  // 비밀번호 입력 화면을 출력처리
-router.post('/pass/detail', PrintDocDetail);  // 글 상세내용을 출력처리
+router.get('/doc', PrintDocPWForm);  // 비밀번호 입력 화면을 출력처리
+router.post('/document', PrintDocDetail);  // 글 상세내용을 출력처리
 
 router.get('/form', PrintAddProductForm);   // 상품등록화면을 출력처리
-router.post('/document', upload.single('file'), HanldleAddProduct); // 상품등록내용을 DB에 저장처리
+router.post('/document/add', upload.single('file'), HanldleAddProduct); // 상품등록내용을 DB에 저장처리
 
 router.get('/document/search/edit', PrintProductSearchEd);  // 상품정보검색화면을 출력처리-수정용
 router.get('/document/search/eraser', PrintProductSearchEr);  // 상품정보검색화면을 출력처리-삭제용
