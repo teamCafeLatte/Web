@@ -79,7 +79,7 @@ const PrintDocPWForm = (req, res) => {
 
       db.query(sql_str, (error, results, fields) => {  // 검색 SQL실행
         if(error) {res.status(562).end("PrintDocPWForm: DB query is failed");}
-        else if (results[0].docPass == null) { // 비밀번호가 없는 경우
+        else if (results[0].docPass == null) { // 비밀번호가 없는 경우, 바로 세부사항 출력
           console.log("?"+results[0].docPass);
           console.log("비밀번호가 없는 게시글입니다.");
           htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');  // 헤더부분
@@ -324,6 +324,7 @@ const PrintProductEdit = (req, res) => {
   let    htmlstream = '';
   let    htmlstream2 = '';
   let    sql_str;
+  const query = url.parse(req.url, true).query;
 
        if (req.session.auth) { // 관리자로 로그인된 경우에만 처리한다
          htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
@@ -331,11 +332,11 @@ const PrintProductEdit = (req, res) => {
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/product_edit.ejs','utf8'); // 관리자메인화면
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
 
-         sql_str = "SELECT title, filePath from document where docID = ?"; // 상품 검색 SQL
+         sql_str = "SELECT docID, docPass, title, filePath, date from document where docID = ?"; // 상품 검색 SQL
 
          res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
-         db.query(sql_str, [body.docID], (error, results, fields) => {  // 상품 검색 SQL실행
+         db.query(sql_str, query.index, (error, results, fields) => {  // 상품 검색 SQL실행
            if(error) {res.status(562).end("PrintProductEdit: DB query is failed");}
            else if (results.length <= 0) { // 조회된 상품이 없다면, 오류메시지 출력
              htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
@@ -467,6 +468,7 @@ const PrintProductEraser = (req, res) => {
   let    htmlstream2 = '';
   let    sql_str;
   let   body = req.body;
+  const query = url.parse(req.url, true).query;
 
        if (req.session.auth) { // 관리자로 로그인된 경우에만 처리한다
          htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
@@ -474,11 +476,11 @@ const PrintProductEraser = (req, res) => {
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/product_eraser.ejs','utf8'); // 관리자메인화면
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
 
-         sql_str = "SELECT docPass, title, filePath, date from document where docID = ?"; // 상품 검색 SQL
+         sql_str = "SELECT docID, docPass, title, filePath, date from document where docID = ?"; // 상품 검색 SQL
 
          res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
-         db.query(sql_str, [body.docID], (error, results, fields) => {  // 상품 검색 SQL실행
+         db.query(sql_str, query.index, (error, results, fields) => {  // 상품 검색 SQL실행
            if(error) {res.status(562).end("PrintProductEraser: DB query is failed");}
            else if (results.length <= 0) { // 조회된 상품이 없다면, 오류메시지 출력
              htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
@@ -494,8 +496,7 @@ const PrintProductEraser = (req, res) => {
                                                'loglabel': 'Logout',
                                                'regurl': '/users/profile',
                                                'reglabel': req.session.who,
-                                                prodata : results[0],
-                                               'category': results.category}));  // 조회된 상품정보
+                                                prodata : results[0] }));  // 조회된 상품정보
            }
          });
        }
@@ -558,13 +559,13 @@ router.post('/document', PrintDocDetail);  // 글 상세내용을 출력처리
 router.get('/form', PrintAddProductForm);   // 상품등록화면을 출력처리
 router.post('/document/add', upload.single('file'), HanldleAddProduct); // 상품등록내용을 DB에 저장처리
 
-router.get('/document/search/edit', PrintProductSearchEd);  // 상품정보검색화면을 출력처리-수정용
-router.get('/document/search/eraser', PrintProductSearchEr);  // 상품정보검색화면을 출력처리-삭제용
+// router.get('/document/search/edit', PrintProductSearchEd);  // 상품정보검색화면을 출력처리-수정용
+// router.get('/document/search/eraser', PrintProductSearchEr);  // 상품정보검색화면을 출력처리-삭제용
 
-router.post('/edit', PrintProductEdit);  // 상품변경화면을 출력처리
+router.get('/edit', PrintProductEdit);  // 상품변경화면을 출력처리
 router.post('/document/edit', upload.single('photoedit'), HanldleProductEdit); //상품변경내용을 DB에 저장처리
 
-router.post('/eraser', PrintProductEraser);   // 상품삭제화면을 출력처리
+router.get('/eraser', PrintProductEraser);   // 상품삭제화면을 출력처리
 router.post('/document/eraser', HanldleProductEraser); // 상품삭제내용을 DB에 처리
 
 router.get('/list', AdminPrintProd);      // 상품리스트를 화면에 출력

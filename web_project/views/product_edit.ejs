@@ -3,7 +3,7 @@
 
     <script language="javascript">
       function validate() {
-         let item = document.getElementById("itemid").value;
+         let item = document.getElementById("docID").value;
          if (item == '') {
            alert("번호가 입력되지 않았습니다, 꼭 입력하세요");
            return false;
@@ -23,30 +23,39 @@
     <div class="bm-login-form" style='width:700px; margin-left:auto; margin-right:auto; border:1px'>
 
       <div class="starter-template">
-        <h4> 수정</h4> <hr>
+        <h4>수정하기</h4> <hr>
       </div>
 
    <form name=join onsubmit="return validate()" method=post action="/storage/document/edit" enctype="multipart/form-data">
     <div class="form-row">
       <div class="form-group col-md-6">
+        <div class="form-group">
+            <label for="exampleInputPassword1">번호</label>
+            <input type="text" class="form-control" name="docID" value="<%= prodata.docID %>" readonly id="docID">
+          </div>
        <div class="form-group">
          <label for="exampleInputPassword1">비밀번호</label>
-         <input type="text" class="form-control" name="pname" value="<%= prodata.pname %>" id="pname" placeholder="최대20자까지 입력">
+         <input type="text" class="form-control" name="docpw" value="<%= prodata.docPass %>" id="docpw">
        </div>
        <div class="form-group">
          <label for="exampleInputPassword2">제목</label>
-         <input type="text" class="form-control" name="modelnum" value="<%= prodata.modelnum %>" id="modelnum" placeholder="최대20자까지 입력">
+         <input type="text" class="form-control" name="title" value="<%= prodata.title %>" id="title">
        </div>
+       <div class="form-group">
+          <label for="exampleInputPassword2">날짜</label>
+          <input type="text" class="form-control" name="date" value="<%= prodata.date.toLocaleString(); %>" readonly id="date">
+        </div>
       <label for="exampleInputEmail1">첨부파일</label>
       <div class="form-group">
          <input type="file" class="custom-file-input2" id="pic" width=10px aria-describedby="entry2" accept="image/*" name="photoedit">
-         <input type="text" class="form-control" value="업로드된 이미지 <%= prodata.pic %>" readonly id=picpath width=10px placeholder="업로드된 파일이 없습니다.">
+         <input type="text" class="form-control" value="업로드된 이미지 <%= prodata.filePath %>" readonly id=picpath width=10px placeholder="업로드된 파일이 없습니다.">
       </div>
      </div>
    </div>
 
          <hr>
-         <button type="submit" class="btn btn-primary">수정확인</button>
+         <div class="btn-container">
+         <button type="submit" class="standard-btn">확인</button></div>
       </form>
      </div>
      </div>
