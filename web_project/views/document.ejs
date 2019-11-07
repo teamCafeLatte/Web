@@ -1,14 +1,5 @@
 <!--보관함에서 게시물 눌렀을 때 게시글 보여주는 page-->
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><%= title %></title>
-
-</head>
-
-<body>
 <div class="container">
     <div class="row">
         <div class="col-xs-2 col-md-2"></div>
@@ -19,30 +10,27 @@
         <tr>
             <th class="success">글번호</th>
             <td><%= prodata.docID %></td>
-            <th class="success">제목</th>
-            <td><%= prodata.title %></td>
+            <th class="success">작성일</th>
+            <td><%= prodata.date.toLocaleString("en-US"); %></td>
         </tr>
            
          
         <tr>
-            <th class="success">작성일</th>
-            <td><%= prodata.date.toLocaleString("en-US"); %></td>
+            <th class="success">제목</th>
+            <td><%= prodata.title %></td>
             <th class="success">작성자</th>
             <td><%= prodata.userID %></td>
         </tr>
         
         <tr>
             <th class="success">내용</th>
-            <td colspan="3"><%= prodata.filePath %></td>
+            <td colspan="3"><img src="<%= prodata.filePath %>"></td>
         </tr>
         <div class="btn-container"><a class="btn standard-btn" href="/storage/list">돌아가기</a>
         <a class="btn standard-btn" href="/storage/edit/?index=<%= prodata.docID %>">수정하기</a>
         <a class="btn standard-btn" href="/storage/eraser/?index=<%= prodata.docID %>">삭제하기</a></div>
         </table>
-        <!-- <a class="button" href="/storage/list"><span>돌아가기</span></a> -->
     </div>     
     </div>
 </div>
 </div>
-</body>
-</html>

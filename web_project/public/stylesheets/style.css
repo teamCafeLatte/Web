@@ -1,21 +1,23 @@
-/* body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+a.panel-nav {
+  color: #212529 !important;
 }
-
-a {
-  color: #00B7FF;
-} */
-.page-footer{
-  margin-top: 50px;
+a.panel-nav:hover{
+  color: #212529 !important;
+  text-decoration: none !important;
 }
 footer{ 
   /* position: fixed; */
   left: 0px; 
   bottom: 0px; 
-  height: 60px; 
+  height: 80px; 
   width: 100%; 
-  background: grey; 
+ }
+ a.text-nowrap{
+   color: darkslateblue;
+ }
+ a.text-nowrap:hover{
+  color: darkslateblue;
+  text-decoration: none;
  }
 
 input:-internal-autofill-selected {
@@ -32,7 +34,7 @@ input:-internal-autofill-selected {
   background-size: cover;
 }
 .main{
-  min-height: calc(100vh - 110px);
+  min-height: calc(100vh - 80px);
 }
 
 body {
@@ -136,15 +138,15 @@ body {
   min-width: 400px;
   /* margin: 0 auto 80px; */
 }
-.container.active .card:first-child {
+.container.active div.card:first-child {
   background: #f2f2f2;
   margin: 0 15px;
 }
-.container.active .card:nth-child(2) {
+.container.active div.card:nth-child(2) {
   background: #fafafa;
   margin: 0 10px;
 }
-.container.active .card.alt {
+.container.active div.card.alt {
   top: 20px;
   right: 0;
   width: 100%;
@@ -154,7 +156,7 @@ body {
   padding: 60px 0 40px;
   overflow: hidden;
 }
-.container.active .card.alt .toggle {
+.container.active div.card.alt .toggle {
   position: absolute;
   /* top: 40px; */
   /* right: -70px; */
@@ -166,45 +168,45 @@ body {
   transition: transform .5s ease;
   transition: transform .5s ease, -webkit-transform .5s ease;
 }
-.container.active .card.alt .toggle:before {
+.container.active div.card.alt .toggle:before {
   content: '';
 }
-.container.active .card.alt .title,
-.container.active .card.alt .input-container,
-.container.active .card.alt .input-container-reg,
-.container.active .card.alt .button-container {
+.container.active div.card.alt .title,
+.container.active div.card.alt .input-container,
+.container.active div.card.alt .input-container-reg,
+.container.active div.card.alt .button-container {
   left: 0;
   opacity: 1;
   visibility: visible;
   -webkit-transition: .3s ease;
   transition: .3s ease;
 }
-.container.active .card.alt .title {
+.container.active div.card.alt .title {
   -webkit-transition-delay: .3s;
           transition-delay: .3s;
 }
-.container.active .card.alt .input-container,
-.container.active .card.alt .input-container-reg {
+.container.active div.card.alt .input-container,
+.container.active div.card.alt .input-container-reg {
   -webkit-transition-delay: .4s;
           transition-delay: .4s;
 }
-.container.active .card.alt .input-container:nth-child(2),
-.container.active .card.alt .input-container-reg:nth-child(2) {
+.container.active div.card.alt .input-container:nth-child(2),
+.container.active div.card.alt .input-container-reg:nth-child(2) {
   -webkit-transition-delay: .5s;
           transition-delay: .5s;
 }
-.container.active .card.alt .input-container:nth-child(3),
-.container.active .card.alt .input-container-reg:nth-child(3) {
+.container.active div.card.alt .input-container:nth-child(3),
+.container.active div.card.alt .input-container-reg:nth-child(3) {
   -webkit-transition-delay: .6s;
           transition-delay: .6s;
 }
-.container.active .card.alt .button-container {
+.container.active div.card.alt .button-container {
   -webkit-transition-delay: .7s;
           transition-delay: .7s;
 }
 
 /* Card */
-.card {
+div.card {
   position: relative;
   background: #ffffff;
   border-radius: 5px;
@@ -216,17 +218,16 @@ body {
   /* Title */
   /* Inputs */
   /* Button */
-  /* Footer */
   /* Alt Card */
 }
-.card:first-child {
+div.card:first-child {
   background: #fafafa;
   height: 10px;
   border-radius: 5px 5px 0 0;
   margin: 0 10px;
   padding: 0;
 }
-.card .title {
+div.card .title {
   position: relative;
   z-index: 1;
   border-left: 5px solid #DAE171;
@@ -237,16 +238,16 @@ body {
   font-weight: 600;
   text-transform: uppercase;
 }
-.card .input-container-reg {
+div.card .input-container-reg {
   position: relative;
   margin: 0 60px 20px;
 }
-.card .input-container {
+div.card .input-container {
   position: relative;
   margin: 0 60px 50px;
 }
-.card .input-container input,
-.card .input-container-reg input {
+div.card .input-container input,
+div.card .input-container-reg input {
   outline: none;
   z-index: 1;
   position: relative;
@@ -258,24 +259,24 @@ body {
   font-size: 20px;
   font-weight: 400;
 }
-.card .input-container input:focus ~ label,
-.card .input-container-reg input:focus ~ label {
+div.card .input-container input:focus ~ label,
+div.card .input-container-reg input:focus ~ label {
   color: #9d9d9d;
   -webkit-transform: translate(-12%, -50%) scale(0.75);
           transform: translate(-12%, -50%) scale(0.75);
 }
-.card .input-container input:focus ~ .bar:before, .card .input-container input:focus ~ .bar:after,
-.card .input-container-reg input:focus ~ .bar:before, .card .input-container-reg input:focus ~ .bar:after {
+div.card .input-container input:focus ~ .bar:before, div.card .input-container input:focus ~ .bar:after,
+div.card .input-container-reg input:focus ~ .bar:before, div.card .input-container-reg input:focus ~ .bar:after {
   width: 50%;
 }
-.card .input-container input:valid ~ label,
-.card .input-container-reg input:valid ~ label {
+div.card .input-container input:valid ~ label,
+div.card .input-container-reg input:valid ~ label {
   color: #9d9d9d;
   -webkit-transform: translate(-12%, -50%) scale(0.75);
           transform: translate(-12%, -50%) scale(0.75);
 }
-.card .input-container label,
-.card .input-container-reg label {
+div.card .input-container label,
+div.card .input-container-reg label {
   position: absolute;
   top: 0;
   left: 0;
@@ -286,8 +287,8 @@ body {
   -webkit-transition: 0.2s ease;
   transition: 0.2s ease;
 }
-.card .input-container .bar,
-.card .input-container-reg .bar {
+div.card .input-container .bar,
+div.card .input-container-reg .bar {
   position: absolute;
   left: 0;
   /* bottom: 0; */
@@ -295,8 +296,8 @@ body {
   width: 100%;
   height: 1px;
 }
-.card .input-container .bar:before, .card .input-container .bar:after,
-.card .input-container-reg .bar:before, .card .input-container-reg .bar:after {
+div.card .input-container .bar:before, div.card .input-container .bar:after,
+div.card .input-container-reg .bar:before, div.card .input-container-reg .bar:after {
   content: '';
   position: absolute;
   background: #E2E88B;
@@ -305,19 +306,19 @@ body {
   -webkit-transition: .2s ease;
   transition: .2s ease;
 }
-.card .input-container .bar:before,
-.card .input-container-reg .bar:before {
+div.card .input-container .bar:before,
+div.card .input-container-reg .bar:before {
   left: 50%;
 }
-.card .input-container .bar:after,
-.card .input-container-reg .bar:after {
+div.card .input-container .bar:after,
+div.card .input-container-reg .bar:after {
   right: 50%;
 }
-.card .button-container {
+div.card .button-container {
   margin: 0 60px;
   text-align: center;
 }
-.card .button-container button {
+div.card .button-container button {
   outline: 0;
   cursor: pointer;
   position: relative;
@@ -334,14 +335,14 @@ body {
   -webkit-transition: .3s ease;
   transition: .3s ease;
 }
-.card .button-container button span {
+div.card .button-container button span {
   position: relative;
   z-index: 1;
   color: #ddd;
   -webkit-transition: .3s ease;
   transition: .3s ease;
 }
-.card .button-container button:before {
+div.card .button-container button:before {
   content: '';
   position: absolute;
   top: 50%;
@@ -356,37 +357,37 @@ body {
   -webkit-transition: .3s ease;
   transition: .3s ease;
 }
-.card .button-container button:hover, .card .button-container button:active, .card .button-container button:focus {
+div.card .button-container button:hover, div.card .button-container button:active, div.card .button-container button:focus {
   border-color: #DAE171;
 }
-.card .button-container button:hover span, .card .button-container button:active span, .card .button-container button:focus span {
+div.card .button-container button:hover span, div.card .button-container button:active span, div.card .button-container button:focus span {
   color: #E2E88B;
 }
-.card .button-container button:active span, .card .button-container button:focus span {
+div.card .button-container button:active span, div.card .button-container button:focus span {
   color: #ffffff;
 }
-.card .button-container button:active:before, .card .button-container button:focus:before {
+div.card .button-container button:active:before, div.card .button-container button:focus:before {
   opacity: 1;
   -webkit-transform: scale(10);
   transform: scale(10);
 }
-.card .footer {
+div.card {
   margin: 40px 0 0;
   color: #d3d3d3;
   font-size: 24px;
   font-weight: 300;
   text-align: center;
 }
-.card .footer a {
+div.card a {
   color: inherit;
   text-decoration: none;
   -webkit-transition: .3s ease;
   transition: .3s ease;
 }
-.card .footer a:hover {
+div.card a:hover {
   color: #bababa;
 }
-.card.alt {
+div.card.alt {
   position: absolute;
   top: 40px;
   right: -70px;
@@ -405,7 +406,7 @@ body {
   /* Input */
   /* Button */
 }
-.card.alt .toggle {
+div.card.alt .toggle {
   position: relative;
   background: #E2E88B;
   width: 100px;
@@ -418,7 +419,7 @@ body {
   text-align: center;
   cursor: pointer;
 }
-.card.alt .toggle:before {
+div.card.alt .toggle:before {
   content: '+';
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
@@ -429,20 +430,20 @@ body {
   -webkit-transform: translate(0, 0);
           transform: translate(0, 0);
 }
-.card.alt .title,
-.card.alt .input-container,
-.card.alt .input-container-reg,
-.card.alt .button-container {
+div.card.alt .title,
+div.card.alt .input-container,
+div.card.alt .input-container-reg,
+div.card.alt .button-container {
   left: 100px;
   opacity: 0;
   visibility: hidden;
 }
-.card.alt .title {
+div.card.alt .title {
   position: relative;
   border-color: #ffffff;
   color: #ffffff;
 }
-.card.alt .title .close {
+div.card.alt .title .close {
   cursor: pointer;
   position: absolute;
   top: 0;
@@ -452,42 +453,42 @@ body {
   font-size: 58px;
   font-weight: 400;
 }
-.card.alt .title .close:before {
+div.card.alt .title .close:before {
   content: '\00d7';
 }
-.card.alt .input-container input,
-.card.alt .input-container-reg input {
+div.card.alt .input-container input,
+div.card.alt .input-container-reg input {
   color: #ffffff;
 }
-.card.alt .input-container input:focus ~ label,
-.card.alt .input-container-reg input:focus ~ label {
+div.card.alt .input-container input:focus ~ label,
+div.card.alt .input-container-reg input:focus ~ label {
   color: #ffffff;
 }
-.card.alt .input-container input:focus ~ .bar:before, .card.alt .input-container input:focus ~ .bar:after,
-.card.alt .input-container-reg input:focus ~ .bar:before, .card.alt .input-container-reg input:focus ~ .bar:after {
+div.card.alt .input-container input:focus ~ .bar:before, div.card.alt .input-container input:focus ~ .bar:after,
+div.card.alt .input-container-reg input:focus ~ .bar:before, div.card.alt .input-container-reg input:focus ~ .bar:after {
   background: #ffffff;
 }
-/* .card.alt .input-container input:valid ~ label {
+div.card.alt .input-container input:valid ~ label {
   color: #ffffff;
-} */
-/* .card.alt .input-container label {
+}
+div.card.alt .input-container label {
   color: rgba(255, 255, 255, 0.8);
-} */
-/* .card.alt .input-container .bar {
+}
+div.card.alt .input-container .bar {
   background: rgba(255, 255, 255, 0.8);
-} */
-.card.alt .button-container button {
+}
+div.card.alt .button-container button {
   width: 100%;
   background: #ffffff;
   border-color: #ffffff;
 }
-.card.alt .button-container button span {
+div.card.alt .button-container button span {
   color: #E2E88B;
 }
-.card.alt .button-container button:hover {
+div.card.alt .button-container button:hover {
   background: rgba(255, 255, 255, 0.9);
 }
-.card.alt .button-container button:active:before, .card.alt .button-container button:focus:before {
+div.card.alt .button-container button:active:before, div.card.alt .button-container button:focus:before {
   display: none;
 }
 
@@ -520,14 +521,6 @@ body {
 @media screen and (min-width:576px) { 
   .carousel-item { height: -100vh;}
 }
-
-/* .navbar-light .navbar-brand {
-  margin-right: 200px !important;
-} */
-
-/* .ml-auto, .mx-auto {
-  margin-right: 50px !important;
-} */
 
 /* modal */
 .vertical-alignment-modal {
@@ -591,7 +584,7 @@ a.a-table, a.a-table:hover{
   border: 2px solid #47DE97;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0), 0 5px 10px 0 rgba(0, 0, 0, 0);
 }
-.border-card.over .card-type-icon {
+.border-card.over div.card-type-icon {
   color: #47DE97 !important;
 }
 .border-card.over p {
@@ -608,7 +601,7 @@ a.a-table, a.a-table:hover{
   transition: all 0.25s ease;
 }
 
-.card-type-icon {
+div.card-type-icon {
   flex-grow: 0;
   flex-shrink: 0;
   margin-right: 16px;
@@ -622,11 +615,11 @@ a.a-table, a.a-table:hover{
   font-size: 14px;
   transition: all 0.25s ease;
 }
-.card-type-icon.with-border {
+div.card-type-icon.with-border {
   color: #aeaeae;
   border: 1px solid #eaeaea;
 }
-.card-type-icon i {
+div.card-type-icon i {
   line-height: 40px;
 }
 
@@ -663,7 +656,7 @@ a.a-table, a.a-table:hover{
 }
 
 /* button */
-.btn-container {
+div.btn-container {
   display: flex;
   justify-content: space-around;
   padding: 16px 0px;
@@ -675,19 +668,19 @@ a.a-table, a.a-table:hover{
   margin: 0px;
   transition: 0.3s;
 }
-.standard-btn {
-   color: #34495e;
+a.standard-btn {
+  color: #34495e;
   border: solid 1px #34495e;
   font-size: 1rem;
   position: relative;
   z-index: 1;
-  padding: 15px 30px;
+  /* padding: 15px 30px; */
   cursor: pointer;
-  font-size: 1.2rem;
+  /* font-size: 1.2rem; */
   text-transform: uppercase;
   background: transparent;
 }
-.standard-btn:before {
+a.standard-btn:before {
   display: block;
   position: absolute;
   top: 0px;
@@ -699,10 +692,10 @@ a.a-table, a.a-table:hover{
   background: #34495e;
 }
 
-.standard-btn:hover {
+a.standard-btn:hover {
     color: #fff;
     border: solid 1px #34495e;
 }
-.standard-btn:hover:before {
+a.standard-btn:hover:before {
     width: 100%;
 }
