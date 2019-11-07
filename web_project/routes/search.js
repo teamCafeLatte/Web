@@ -69,7 +69,54 @@ const PrintSearchProd = (req, res) => {
        }
 };
 
+//---------------------------------------------- my post --------------------------------------------------
+const PrintProdMy = (req, res) => {
+    let    body = req.body;
+    let    htmlstream = '';
+    let    htmlstream2 = '';
+    let    sql_str;
+    let    userEmail = req.session.who;
+  
+         if (req.session.auth)   {   // 로그인된 경우에만 처리한다
+             htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
+             htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8');  // 사용자메뉴
+             htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/adminproduct.ejs','utf8'); // 괸리자메인화면
+             htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
+          //    sql_str = "SELECT maker, pname, modelnum, price, pic from u15_products where pname like ? order by rdate desc;"; // 상품조회SQL
+          sql_str = "SELECT docID, title, userID, date from document where userID = ?"; // 게시글조회SQL
+  
+             res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
+  
+             db.query(sql_str, ["%"+body.userID+"%"], (error, results, fields) => {  // 상품조회 SQL실행
+                 if (error) { res.status(562).end("PrintProdMy: DB query is failed"); }
+                 else if (results.length <= 0) {  // 조회된 상품이 없다면, 오류메시지 출력
+                     htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+                     res.status(562).end(ejs.render(htmlstream2, { 'title': 'Error',
+                                        'warn_title':'조회 오류',
+                                        'warn_message':'조회된 글이 없습니다.',
+                                        'return_url':'/' }));
+                     }
+                else {  // 조회된 상품이 있다면, 상품리스트를 출력
+                       res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
+                                                         'logurl': '/users/logout',
+                                                         'loglabel': 'Logout',
+                                                         'regurl': '/users/profile',
+                                                         'reglabel': req.session.who,
+                                                          prodata : results }));  // 조회된 상품정보
+                   } // else
+             }); // db.query()
+         }
+         else  {  // (로그인하지 않고) 본 페이지를 참조하면 오류를 출력
+           htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+           res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+                              'warn_title':'로그인 필요',
+                              'warn_message':'my post를 확인하려면, 로그인이 필요합니다.',
+                              'return_url':'/' }));
+         }
+  };
+
 // REST API의 URI와 핸들러를 매핑합니다.
-router.post('/list', PrintSearchProd);      // 상품리스트를 화면에 출력
+router.post('/list', PrintSearchProd);      // 상품리스트를 화면에 출력  
+router.get('"/list/mypost/?index=<%= prodata.userEmail %>"', PrintProdMy);  //mypost를 화면에 출력
 
 module.exports = router;
