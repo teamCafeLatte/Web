@@ -41,7 +41,9 @@
 }
 
 .ppp {
+  text-align: justify;
   color: rgb(122, 122, 122);
+  font-size: 15px !important;
 }
 
 header {
@@ -62,4 +64,9 @@ table {
   display: table-row;
   vertical-align: inherit;
   border-color: inherit;
+}
+
+.rounded-circle {
+  max-width: 80% !important; 
+  height: auto !important;
 }
