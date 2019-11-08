@@ -133,8 +133,9 @@
     }
     
     .profile-page .profile img {
-        max-width: 160px !important;
-        width: 100%;
+        /* max-width: 160px !important; */
+        width: 160px !important;
+        height: 160px !important;
         margin: 0 auto;
         -webkit-transform: translate3d(0,-50%,0);
         -moz-transform: translate3d(0,-50%,0);

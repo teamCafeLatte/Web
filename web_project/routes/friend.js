@@ -18,8 +18,8 @@ const   db = mysql.createConnection({
    database: 'ournote'         //사용할 DB명
 });
 
-// --------------- 유저 프로필 보기 기능 --------------------
-const PrintProfile = (req, res) => {
+// --------------- 친구 리스트 기능 --------------------
+const PrintFriendList = (req, res) => {
   let htmlstream = '';
   let sql_str;
   const query = url.parse(req.url, true).query;
@@ -29,15 +29,15 @@ const PrintProfile = (req, res) => {
   if(req.session.auth){ // 로그인한 경우에만 처리한다
     htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');  // 헤더부분
     htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8'); //메뉴
-    htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/userprofile.ejs','utf8'); // 프로필화면
+    htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/friend.ejs','utf8'); // 친구 리스트 화면
     htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
 
-    sql_str = "SELECT userID, userPass, userName, userPhone, userPic, userInfo from user where userID = ?"; // 상품 검색 SQL
+    sql_str = "SELECT userID, userName, userPic, userInfo from user where userID = ?"; // 친구 검색 SQL
 
     res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
     db.query(sql_str, query.user, (error, results, fields) => {  // 사용자 검색 SQL실행
-      if(error) {res.status(562).end("PrintProfile: DB query is failed");}
+      if(error) {res.status(562).end("PrintFriendList: DB query is failed");}
       else if (results.length <= 0) { // 조회된 정보가 없다면, 오류메시지 출력
         htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
         res.status(562).end(ejs.render(htmlstream2, { 'title': 'Error',
@@ -64,6 +64,6 @@ const PrintProfile = (req, res) => {
   }
 }
 
-router.get('/list', PrintProfile);     // 유저 프로필화면을 출력
+router.get('/list', PrintFriendList);     // 친구 리스트 출력
 
 module.exports = router;

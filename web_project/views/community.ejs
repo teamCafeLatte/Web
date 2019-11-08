@@ -1,0 +1,59 @@
+<!-- 친구리스트 출력 화면 -->
+<!DOCTYPE html>
+ <!--  Content (배너이미지) 부분 -->
+  <div> <img src="/images/banner4.jpg" class="img-fluid" alt="배너이미지" width="100%"> </div>
+
+  <!-- 컨텐츠(예, 쇼핑몰일경우 판매제품리스트)헤더부분 -->
+   <div class="container-fluid" style="border: solid 20px white; border-radius: 1px">
+     <div class="panel panel-default">
+   	  <div class="panel-heading">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a class="panel-nav" href="/">Our Note</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Community</li>
+          </ol>
+        </nav>
+       </div>
+     </div>
+   </div>
+<div class="body-table">
+    <a class="a-table" href="/friend/add"><h4 class="h4-table">친구 추가하기</h4></a>
+  <hr class="hr-table">
+  <% userdata.forEach(function (item, index) { %>
+  <a class="a-table" href="/friend/?index=<%= item.userID %>">
+    <div class="border-card">
+      <div class="card-type-icon with-border"><%= item.docID %></div>
+      <div class="content-wrapper">
+        <div class="label-group fixed">
+          <p class="title"><%= item.title %></p>
+        </div>
+        <div class="label-group">
+            <p class="caption"><%= item.userID %></p>
+          </div>
+        <div class="label-group">
+          <p class="caption"><%= item.date.toLocaleDateString("en-US"); %></p>
+          <p class="caption"><%= item.date.toLocaleTimeString("en-US"); %></p>
+        </div>
+      </div>
+      <i class="material-icons end-icon">more_vert</i>
+    </div></a>
+  <% }); %>
+
+  <p>
+      <nav aria-label="...">
+      <ul class="pagination justify-content-center">
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+        </li>
+          <li class="page-item active" aria-current="page">
+          <a class="page-link" href="#">1 <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
+      </p>
+</div>

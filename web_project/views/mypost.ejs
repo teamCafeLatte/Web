@@ -9,14 +9,13 @@
    	  <div class="panel-heading">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item">Our Note</a></li>
-            <li class="breadcrumb-item">My Storage</a></li>
+            <li class="breadcrumb-item"><a class="panel-nav" href="/">Our Note</a></li>
+            <li class="breadcrumb-item active" aria-current="page">My Post</li>
           </ol>
         </nav>
          </div>
         
         <div class="body-table">
-          <hr class="hr-table">
           <% prodata.forEach(function (item, index) { %>
           <a class="a-table" href="/storage/doc/?index=<%= item.docID %>">
             <div class="border-card">
