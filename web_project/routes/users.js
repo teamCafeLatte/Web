@@ -232,12 +232,12 @@ const PrintEditProfile = (req, res) => {
     htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/editprofile.ejs','utf8'); // 프로필화면
     htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
 
-    sql_str = "SELECT userID, userPass, userName, userPhone, userPic, userInfo, postCnt, friendCnt from user where userID = ?"; // 상품 검색 SQL
+    sql_str = "SELECT userID, userPass, userName, userPhone, userPic, userInfo from user where userID = ?"; // 상품 검색 SQL
 
     res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
     db.query(sql_str, query.user, (error, results, fields) => {  // 사용자 검색 SQL실행
-      if(error) {res.status(562).end("PrintProfile: DB query is failed");}
+      if(error) {res.status(562).end("PrintEditProfile: DB query is failed");}
       else if (results.length <= 0) { // 조회된 정보가 없다면, 오류메시지 출력
         htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
         res.status(562).end(ejs.render(htmlstream2, { 'title': 'Error',
