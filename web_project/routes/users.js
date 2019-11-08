@@ -6,7 +6,9 @@ const   mysql = require('mysql');
 const   bodyParser = require('body-parser');
 const   session = require('express-session');
 const   multer = require('multer');
+const   path = require('path');
 const   router = express.Router();
+const   upload = multer({dest: __dirname + '/../public/images/uploads/userprofile'});  // 업로드 디렉터리를 설정한다.
 
 router.use(bodyParser.urlencoded({ extended: false }));
 
@@ -206,7 +208,7 @@ const PrintProfile = (req, res) => {
                                           'loglabel': 'Logout',
                                           'regurl': '/users/profile',
                                           'reglabel': req.session.who,
-                                          prodata : results[0] }));  // 조회된 정보
+                                          userdata : results[0] }));  // 조회된 정보
       }
     });
   }
@@ -219,8 +221,94 @@ const PrintProfile = (req, res) => {
   }
 }
 
+const PrintEditProfile = (req, res) => {
+  let htmlstream = '';
+  let sql_str;
+  const query = url.parse(req.url, true).query;
+
+  console.log(query.user);
+
+  if(req.session.auth){ // 로그인한 경우에만 처리한다
+    htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');  // 헤더부분
+    htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8'); //메뉴
+    htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/editprofile.ejs','utf8'); // 프로필화면
+    htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
+
+    sql_str = "SELECT userID, userPass, userName, userPhone, userPic, userInfo, postCnt, friendCnt from user where userID = ?"; // 상품 검색 SQL
+
+    res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
+
+    db.query(sql_str, query.user, (error, results, fields) => {  // 사용자 검색 SQL실행
+      if(error) {res.status(562).end("PrintProfile: DB query is failed");}
+      else if (results.length <= 0) { // 조회된 정보가 없다면, 오류메시지 출력
+        htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+        res.status(562).end(ejs.render(htmlstream2, { 'title': 'Error',
+                          'warn_title':'조회 오류',
+                          'warn_message':'조회된 정보가 없습니다.',
+                          'return_url':'/' }));
+      }
+      else{
+        res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
+                                          'logurl': '/users/logout',
+                                          'loglabel': 'Logout',
+                                          'regurl': '/users/profile',
+                                          'reglabel': req.session.who,
+                                          userdata : results[0] }));  // 조회된 정보
+      }
+    });
+  }
+  else {
+    htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+        res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+                          'warn_title':'접근 오류',
+                          'warn_message':'로그인이 필요합니다. 회원가입을 해주세요!',
+                          'return_url':'/' }));
+  }
+}
+
+const EditProfile = (req, res) => {  // 정보수정
+  let    body = req.body;
+  let    htmlstream = '';
+  let    datestr;
+  let    userimage = '/images/uploads/userprofile/'; // 이미지 저장디렉터리
+  let    picfile = req.file;
+  let    userEmail=req.session.who; 
+
+       if (req.session.auth) {
+           if (body.uid == '' || datestr == '') {
+             console.log("정보를 입력해주세요.");
+             res.status(561).end('<meta charset="utf-8">아이디가 입력되지 않아 추가할 수 없습니다');
+          }
+          else {
+            console.log(picfile);
+            userimage = userimage + picfile.filename;
+              db.query('UPDATE user SET userPass=?, userName=?, userPhone=?, userPic=?, userInfo=? where userID=?',
+                    [body.userPass, body.userName, body.userPhone, userimage, body.userInfo, userEmail], (error, results, fields) => {
+               if (error) {
+                   htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+                   res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+                                 'warn_title':'정보 수정 오류',
+                                 'warn_message':'수정할때 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
+                                 'return_url':'/' }));
+                } else {
+                   console.log("정보 수정에 성공하였습니다.!");
+                   res.redirect('/users/profile/?user='+userEmail);
+                }
+           });
+       }
+      }
+     else {
+         htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+         res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+                            'warn_title':'정보 수정 오류',
+                            'warn_message':'로그인되어 있지 않아서, 정보를 수정 할 수 없습니다.',
+                            'return_url':'/' }));
+       }
+};
 
 
 router.get('/profile', PrintProfile);     // 유저 프로필화면을 출력
+router.get('/profile/edit', PrintEditProfile); // 유저 프로필 수정 화면 출력
+router.post('/profile/edit', upload.single('file'), EditProfile); // 유저 프로필 수정내용을 DB에 저장처리
 
 module.exports = router;

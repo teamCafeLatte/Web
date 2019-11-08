@@ -1,0 +1,109 @@
+<!-- 유저 프로필 -->
+<script>
+$(document).ready(function () {
+            $imgSrc = $('#imgProfile').attr('src');
+            function readURL(input) {
+
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#imgProfile').attr('src', e.target.result);
+                    };
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $('#btnChangePicture').on('click', function () {
+                // document.getElementById('profilePicture').click();
+                if (!$('#btnChangePicture').hasClass('changing')) {
+                    $('#profilePicture').click();
+                }
+                else {
+                    // change
+                }
+            });
+            $('#profilePicture').on('change', function () {
+                readURL(this);
+                $('#btnChangePicture').addClass('changing');
+                // $('#btnChangePicture').attr('value', 'Confirm');
+                $('#btnChangePicture').addClass('d-none');
+                
+                $('#btnDiscard').removeClass('d-none');
+                // $('#imgProfile').attr('src', '');
+            });
+            $('#btnDiscard').on('click', function () {
+                // if ($('#btnDiscard').hasClass('d-none')) {
+                $('#btnChangePicture').removeClass('changing');
+                $('#btnChangePicture').removeClass('d-none');
+                // $('#btnChangePicture').attr('value', 'Change');
+                $('#btnDiscard').addClass('d-none');
+                $('#imgProfile').attr('src', $imgSrc);
+                $('#profilePicture').val('');
+                // }
+            });
+        });
+</script>
+<div class="profile-page">
+  <div class="page-header header-filter" data-parallax="true" style="background-image:url('http://wallpapere.org/wp-content/uploads/2012/02/black-and-white-city-night.png');"></div>
+  <div class="main main-raised">
+      <form method="POST" action="/users/profile/edit" class="profile-content" enctype="multipart/form-data">
+          <div class="container">
+              <div class="row">
+                  <div class="col-md-6 ml-auto mr-auto">
+                     <div class="profile">
+                          <div class="avatar">
+                              <img alt="Circle Image" id="imgProfile" class="img-raised rounded-circle img-fluid" src=<%= userdata.userPic %>>
+                              <div class="middle">
+                                <input type="button" class="btn btn-secondary" id="btnChangePicture" value="Change" />
+                                <input type="button" class="btn btn-secondary d-none" id="btnDiscard" value="Discard" />
+                                <input type="file" style="display: none;" id="profilePicture" name="file" />
+                            </div>
+                          </div>
+                          <div class="name">
+                              <div class="group">      
+                                  <h3 class="title"><input class="edit" type="text" id="userName" name="userName" value="<%= userdata.userName %>" required></h3>
+                                  <span class="highlight"></span>
+                                  <span class="bar"></span>
+                                  <label class="edit">Name</label>
+                                </div>
+                              <div class="group">      
+                                  <h3 class="title"><input class="edit" type="text" id="userPass" name="userPass" value="<%= userdata.userPass %>" required></h3>
+                                  <span class="highlight"></span>
+                                  <span class="bar"></span>
+                                  <label class="edit">Password</label>
+                                </div>
+                              <div class="group">      
+                                  <h3 class="title"><input class="edit" type="number" id="userPhone" name="userPhone" value="<%= userdata.userPhone %>" required></h3>
+                                  <span class="highlight"></span>
+                                  <span class="bar"></span>
+                                  <label class="edit">Phone</label>
+                                </div>
+                              <h6><%= userdata.userID %></h6>
+                              <a href="#pablo" class="btn btn-just-icon btn-link btn-dribbble"><i class="fa fa-dribbble"></i></a>
+                              <a href="#pablo" class="btn btn-just-icon btn-link btn-twitter"><i class="fa fa-twitter"></i></a>
+                              <a href="#pablo" class="btn btn-just-icon btn-link btn-pinterest"><i class="fa fa-pinterest"></i></a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="description text-center">
+                  <p><input class="edit" type="text" id="userInfo" name="userInfo" value="<%= userdata.userInfo %>"></p>
+              </div>
+              <div class="row">
+                  <div class="col-md-6 ml-auto mr-auto">
+                      <div class="profile-tabs">
+                        <ul class="nav nav-pills nav-pills-icons justify-content-center" role="tablist">
+                          <li class="nav-item">
+                              <button class="nav-link active" type="submit">
+                                확인
+                              </a>
+                          </li>
+                        </ul>
+                      </div>
+              </div>
+          </div> 
+        </form>
+      </div>
+  </div>    
+</div>

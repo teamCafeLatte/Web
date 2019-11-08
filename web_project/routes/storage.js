@@ -213,7 +213,7 @@ const HanldleAddProduct = (req, res) => {  // 상품등록
   let    body = req.body;
   let    htmlstream = '';
   let    datestr, y, m, d, regdate;
-  let    prodimage = '/images/uploads/products/'; // 상품이미지 저장디렉터리
+  let    prodimage = '/images/uploads/products/'; // 이미지 저장디렉터리
   let    picfile = req.file;
   let    userEmail=req.session.who;
 
