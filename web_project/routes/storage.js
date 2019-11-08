@@ -386,8 +386,6 @@ const HanldleProductEdit = (req, res) => {  // 상품변경
               if (error) {
                 console.log("에러닷");
               }else if(data[0]==prodimage){ //원래 이미지가 없는 경우-그냥 넣어주면됨
-                let    result = { originalName  : picfile.originalname,
-                                 size : picfile.size     }
                 prodimage = prodimage + picfile.filename;
                 console.log(data);
 

@@ -187,7 +187,7 @@ const PrintProfile = (req, res) => {
     htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/userprofile.ejs','utf8'); // 프로필화면
     htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
 
-    sql_str = "SELECT userID, userPass, userName, userPhone, userPic, userInfo, postCnt, friendCnt from user where userID = ?"; // 상품 검색 SQL
+    sql_str = "SELECT userID, userPass, userName, userPhone, userPic, userInfo from user where userID = ?"; // 상품 검색 SQL
 
     res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
