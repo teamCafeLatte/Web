@@ -4,11 +4,9 @@ const   ejs = require('ejs');
 const   url = require('url');
 const   mysql = require('mysql');
 const   bodyParser = require('body-parser');
-const   session = require('express-session');
 const   multer = require('multer');
-const   path = require('path');
-const   router = express.Router();
 const   upload = multer({dest: __dirname + '/../public/images/uploads/userprofile'});  // 업로드 디렉터리를 설정한다.
+const   router = express.Router();
 
 router.use(bodyParser.urlencoded({ extended: false }));
 
@@ -280,8 +278,10 @@ const EditProfile = (req, res) => {  // 정보수정
              res.status(561).end('<meta charset="utf-8">아이디가 입력되지 않아 추가할 수 없습니다');
           }
           else {
-            console.log(picfile);
-            userimage = userimage + picfile.filename;
+            if(picfile){  // 사진 변경이 있을때
+              console.log(picfile);
+              userimage = userimage + picfile.filename;
+
               db.query('UPDATE user SET userPass=?, userName=?, userPhone=?, userPic=?, userInfo=? where userID=?',
                     [body.userPass, body.userName, body.userPhone, userimage, body.userInfo, userEmail], (error, results, fields) => {
                if (error) {
@@ -295,6 +295,22 @@ const EditProfile = (req, res) => {  // 정보수정
                    res.redirect('/users/profile/?user='+userEmail);
                 }
            });
+            }
+            else{ // 사진 수정이 없을때
+              db.query('UPDATE user SET userPass=?, userName=?, userPhone=?, userInfo=? where userID=?',
+                    [body.userPass, body.userName, body.userPhone, body.userInfo, userEmail], (error, results, fields) => {
+               if (error) {
+                   htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+                   res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+                                 'warn_title':'정보 수정 오류',
+                                 'warn_message':'수정할때 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
+                                 'return_url':'/' }));
+                } else {
+                   console.log("정보 수정에 성공하였습니다.!");
+                   res.redirect('/users/profile/?user='+userEmail);
+                }
+              });
+            }              
        }
       }
      else {
