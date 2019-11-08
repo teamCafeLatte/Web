@@ -79,7 +79,7 @@ const PrintDocPWForm = (req, res) => {
 
       db.query(sql_str, (error, results, fields) => {  // 검색 SQL실행
         if(error) {res.status(562).end("PrintDocPWForm: DB query is failed");}
-        else if (results[0].docPass == null) { // 비밀번호가 없는 경우, 바로 세부사항 출력
+        else if (results[0].docPass == null || results[0].docPass == '') { // 비밀번호가 없는 경우, 바로 세부사항 출력
           console.log("?"+results[0].docPass);
           console.log("비밀번호가 없는 게시글입니다.");
           htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');  // 헤더부분
