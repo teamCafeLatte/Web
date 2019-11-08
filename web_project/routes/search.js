@@ -80,7 +80,7 @@ const PrintProdMy = (req, res) => {
          if (req.session.auth)   {   // 로그인된 경우에만 처리한다
              htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
              htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8');  // 사용자메뉴
-             htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/adminproduct.ejs','utf8'); // 괸리자메인화면
+             htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/mypost.ejs','utf8'); // 괸리자메인화면
              htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
           //    sql_str = "SELECT maker, pname, modelnum, price, pic from u15_products where pname like ? order by rdate desc;"; // 상품조회SQL
           sql_str = "SELECT docID, title, userID, date from document where userID = ?"; // 게시글조회SQL
@@ -109,14 +109,14 @@ const PrintProdMy = (req, res) => {
          else  {  // (로그인하지 않고) 본 페이지를 참조하면 오류를 출력
            htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
            res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
-                              'warn_title':'로그인 필요',
-                              'warn_message':'my post를 확인하려면, 로그인이 필요합니다.',
+                              'warn_title':'접근 오류',
+                              'warn_message':'사용자의 게시물을 확인하려면, 로그인이 필요합니다.',
                               'return_url':'/' }));
          }
   };
 
 // REST API의 URI와 핸들러를 매핑합니다.
 router.post('/list', PrintSearchProd);      // 상품리스트를 화면에 출력  
-router.get('"/list/mypost/?index=<%= prodata.userEmail %>"', PrintProdMy);  //mypost를 화면에 출력
+router.get('/post', PrintProdMy);  //mypost를 화면에 출력
 
 module.exports = router;
