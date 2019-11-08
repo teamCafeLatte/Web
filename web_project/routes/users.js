@@ -173,7 +173,7 @@ const HandleLogout = (req, res) => {
 router.get('/logout', HandleLogout);       // 로그아웃 기능
 
 
-// --------------- 정보변경 기능을 개발합니다 --------------------
+// --------------- 유저 프로필 보기 기능 --------------------
 const PrintProfile = (req, res) => {
   let htmlstream = '';
   let sql_str;
@@ -187,7 +187,7 @@ const PrintProfile = (req, res) => {
     htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/userprofile.ejs','utf8'); // 프로필화면
     htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
 
-    sql_str = "SELECT userID, userPass, userName, userPhone, userPic, userTitle, userInfo, postCnt, friendCnt from user where userID = ?"; // 상품 검색 SQL
+    sql_str = "SELECT userID, userPass, userName, userPhone, userPic, userInfo, postCnt, friendCnt from user where userID = ?"; // 상품 검색 SQL
 
     res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
@@ -219,6 +219,8 @@ const PrintProfile = (req, res) => {
   }
 }
 
-router.get('/profile', PrintProfile);     // 정보변경화면을 출력
+
+
+router.get('/profile', PrintProfile);     // 유저 프로필화면을 출력
 
 module.exports = router;
