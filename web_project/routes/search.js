@@ -75,7 +75,9 @@ const PrintProdMy = (req, res) => {
     let    htmlstream = '';
     let    htmlstream2 = '';
     let    sql_str;
-    let    userEmail = req.session.who;
+    const query = url.parse(req.url, true).query;
+
+    console.log(query.user);
   
          if (req.session.auth)   {   // 로그인된 경우에만 처리한다
              htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
@@ -87,7 +89,7 @@ const PrintProdMy = (req, res) => {
   
              res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
   
-             db.query(sql_str, ["%"+body.userID+"%"], (error, results, fields) => {  // 상품조회 SQL실행
+             db.query(sql_str, query.user, (error, results, fields) => {  // 상품조회 SQL실행
                  if (error) { res.status(562).end("PrintProdMy: DB query is failed"); }
                  else if (results.length <= 0) {  // 조회된 상품이 없다면, 오류메시지 출력
                      htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
