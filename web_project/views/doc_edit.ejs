@@ -45,6 +45,8 @@
                 });
             });
     </script>
+<form name=join onsubmit="return validate()" method=post action="/storage/document/edit/?index=<%= prodata.docID %>" enctype="multipart/form-data">
+
 <div class="container">
     <div class="row">
         <div class="col-xs-2 col-md-2"></div>
@@ -63,8 +65,8 @@
         <tr>
             <th class="success">제목</th>
             <td> <input type="text" class="form-control" name="title" value="<%= prodata.title %>" id="title"></td>
-            <th class="success">작성자</th>
-            <td><%= prodata.userID %></td>
+            <th class="success">비밀번호</th>
+            <td><%= prodata.userPass %></td>
         </tr>
         
         <tr>
@@ -77,7 +79,7 @@
         </tr>
 
         <div class="btn-container">
-            <a class="btn standard-btn" href="/storage/edit/?index=<%= prodata.docID %>">수정확인</a>
+            <button class="btn standard-btn" type="sumbit">수정확인</a>
         </table>
 
         <tr><img class="doc-image" id="imgProfile" src= "<%= prodata.filePath %>"></tr>
@@ -86,3 +88,4 @@
     </div>
 </div>
 </div>
+</form>

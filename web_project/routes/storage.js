@@ -372,6 +372,7 @@ const HanldleProductEdit = (req, res) => {  // 상품변경
   let    datestr, delfile, pic;
   let    prodimage = '/images/uploads/products/'; // 상품이미지 저장디렉터리
   let    picfile = req.file;
+  const query = url.parse(req.url, true).query;
 
         console.log(body);
         console.log(picfile);
@@ -382,7 +383,7 @@ const HanldleProductEdit = (req, res) => {  // 상품변경
              res.status(561).end('<meta charset="utf-8">번호가 입력되지 않아 등록할 수 없습니다');
           }
           else {
-            db.query('SELECT filePath from document where docID=?',[body.docID], (error, data) => {
+            db.query('SELECT filePath from document where docID=?',query.index, (error, data) => {
               if (error) {
                 console.log("에러닷");
               }else if(data[0]==prodimage){ //원래 이미지가 없는 경우-그냥 넣어주면됨
@@ -390,7 +391,7 @@ const HanldleProductEdit = (req, res) => {  // 상품변경
                 console.log(data);
 
                 db.query('UPDATE document SET docPass=?, title=?, filePath=? where docID=?',
-                      [body.docPass, body.title, prodimage, body.docID], (error, results, fields) => {
+                      [body.docPass, body.title, prodimage, query.index], (error, results, fields) => {
                  if (error) {
                      htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
                      res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
@@ -427,7 +428,7 @@ const HanldleProductEdit = (req, res) => {  // 상품변경
                 }
 
                 db.query('UPDATE document SET docPass=?, title=?, filePath=? where docID=?',
-                      [body.docPass, body.title, prodimage, body.docID], (error, results, fields) => {
+                      [body.docPass, body.title, prodimage, query.index], (error, results, fields) => {
                  if (error) {
                      htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
                      res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
@@ -561,7 +562,7 @@ router.post('/document/add', upload.single('file'), HanldleAddProduct); // 상�
 // router.get('/document/search/eraser', PrintProductSearchEr);  // 상품정보검색화면을 출력처리-삭제용
 
 router.get('/edit', PrintProductEdit);  // 상품변경화면을 출력처리
-router.post('/document/edit', upload.single('photoedit'), HanldleProductEdit); //상품변경내용을 DB에 저장처리
+router.post('/document/edit', upload.single('imgProfile'), HanldleProductEdit); //상품변경내용을 DB에 저장처리
 
 router.get('/eraser', PrintProductEraser);   // 상품삭제화면을 출력처리
 router.post('/document/eraser', HanldleProductEraser); // 상품삭제내용을 DB에 처리

@@ -203,6 +203,7 @@ div.btn-container {
   margin: 0px;
   transition: 0.3s;
 }
+button.standard-btn,
 a.standard-btn {
   color: #34495e;
   border: solid 1px #34495e;
@@ -215,6 +216,7 @@ a.standard-btn {
   text-transform: uppercase;
   background: transparent;
 }
+button.standard-btn:before,
 a.standard-btn:before {
   display: block;
   position: absolute;
@@ -227,10 +229,12 @@ a.standard-btn:before {
   background: #34495e;
 }
 
+button.standard-btn:hover,
 a.standard-btn:hover {
     color: #fff;
     border: solid 1px #34495e;
 }
+button.standard-btn:hover:before,
 a.standard-btn:hover:before {
     width: 100%;
 }
