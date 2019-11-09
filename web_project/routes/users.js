@@ -80,12 +80,10 @@ let htmlstream='';
 };
 
 // REST API의 URI와 핸들러를 매핑합니다.
-// router.get('/reg', PrintRegistrationForm);   // 회원가입화면을 출력처리
 router.post('/reg', HandleRegistration);   // 회원가입내용을 DB에 등록처리
 router.get('/', function(req, res) { res.send('respond with a resource 111'); });
 
 // ------------------------------------  로그인기능 --------------------------------------
-
 // 로그인 화면을 웹브라우져로 출력합니다.
 const PrintLoginForm = (req, res) => {
   let    htmlstream = '';
@@ -110,7 +108,6 @@ const PrintLoginForm = (req, res) => {
                                           'regurl': '/users/reg',
                                           'reglabel':'가입' }));
        }
-
 };
 
 // 로그인을 수행합니다. (사용자인증처리)
@@ -356,10 +353,37 @@ const DelUser = (req, res) => {
        }
 };
 
+// ------------------------------------------------채팅---------------------------------------------------------------
+const PrintChat = (req, res) => {
+  let    htmlstream = '';
+
+       htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');
+       htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8');
+       htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/chat.ejs','utf8');
+       htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');
+       res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
+
+       if (req.session.auth) {  // true :로그인된 상태,  false : 로그인안된 상태
+           res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
+                                             'logurl': '/users/logout',
+                                             'loglabel': 'Logout',
+                                             'regurl': '/users/profile',
+                                             'reglabel': req.session.who }));
+       }
+       else {
+          res.end(ejs.render(htmlstream, { 'title' : 'Our Note',
+                                          'logurl': '/users/auth',
+                                          'loglabel': 'Login',
+                                          'regurl': '/users/reg',
+                                          'reglabel':'가입' }));
+       }
+};
+
 
 router.get('/profile', PrintProfile);     // 유저 프로필화면을 출력
 router.get('/profile/edit', PrintEditProfile); // 유저 프로필 수정 화면 출력
 router.post('/profile/edit', upload.single('file'), EditProfile); // 유저 프로필 수정내용을 DB에 저장처리
 router.get('/del', DelUser);  // 유저 삭제 내용을 DB에 처리
+router.get('/chat', PrintChat);  // 유저 채팅 화면 출력
 
 module.exports = router;

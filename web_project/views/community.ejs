@@ -20,7 +20,7 @@
     <a class="a-table" href="/friend/add"><h4 class="h4-table">친구 추가하기</h4></a>
   <hr class="hr-table">
   <% userdata.forEach(function (item, index) { %>
-  <a class="a-table" href="/friend/?index=<%= item.userID %>">
+  <a class="a-table" href="/users/chat/?user=<%= item.userID %>">
     <div class="border-card">
       <div class="card-type-icon"><img class="img-fri" src=<%= item.userPic %>></div>
       <div class="content-wrapper">

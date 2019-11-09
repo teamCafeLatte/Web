@@ -27,7 +27,7 @@ const AdminPrintProd = (req, res) => {
        if (req.session.auth)   {   // 관리자로 로그인된 경우에만 처리한다
            htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
            htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8');  // 관리자메뉴
-           htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/adminproduct.ejs','utf8'); // 괸리자메인화면
+           htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/storage.ejs','utf8'); // 괸리자메인화면
            htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
           //  sql_str = "SELECT itemid, category, maker, pname, modelnum, rdate, price, amount from u15_products order by rdate desc;"; // 상품조회SQL
            sql_str = "SELECT docID, userID, title, date from document order by date desc;"; // 문서조회SQL
@@ -188,7 +188,7 @@ const PrintAddProductForm = (req, res) => {
        if (req.session.auth) { // 관리자로 로그인된 경우에만 처리한다
          htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8');  // 관리자메뉴
-         htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/product_form.ejs','utf8'); // 괸리자메인화면
+         htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/doc_form.ejs','utf8'); // 괸리자메인화면
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
 
          res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
