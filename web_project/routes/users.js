@@ -219,12 +219,11 @@ const PrintProfile = (req, res) => {
   }
 }
 
+// 정보 수정을 위한 화면을 출력
 const PrintEditProfile = (req, res) => {
   let htmlstream = '';
   let sql_str;
-  const query = url.parse(req.url, true).query;
-
-  console.log(query.user);
+  let userEmail=req.session.who; 
 
   if(req.session.auth){ // 로그인한 경우에만 처리한다
     htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');  // 헤더부분
@@ -236,11 +235,11 @@ const PrintEditProfile = (req, res) => {
 
     res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
-    db.query(sql_str, query.user, (error, results, fields) => {  // 사용자 검색 SQL실행
+    db.query(sql_str, userEmail, (error, results, fields) => {  // 사용자 검색 SQL실행
       if(error) {res.status(562).end("PrintEditProfile: DB query is failed");}
       else if (results.length <= 0) { // 조회된 정보가 없다면, 오류메시지 출력
-        htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
-        res.status(562).end(ejs.render(htmlstream2, { 'title': 'Error',
+        htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+        res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
                           'warn_title':'조회 오류',
                           'warn_message':'조회된 정보가 없습니다.',
                           'return_url':'/' }));
@@ -322,9 +321,45 @@ const EditProfile = (req, res) => {  // 정보수정
        }
 };
 
+// 유저 탈퇴 기능
+const DelUser = (req, res) => { 
+  let    body = req.body;
+  let    htmlstream = '';
+  let    userEmail=req.session.who; 
+
+       if (req.session.auth) {
+        db.query('DELETE FROM user where userID = ?',
+        userEmail, (error, results, fields) => {
+          if (error) {
+              htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+              res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+                            'warn_title':'탈퇴 오류',
+                            'warn_message':'탈퇴할때 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
+                            'return_url':'/' }));
+            } else {
+              console.log("탈퇴에 성공하였습니다.!");
+              /*fs.unlink('delfile', (error) => {
+                if(error) console.error(error);
+                console.log('파일이 삭제되었습니다.');
+              });*/
+              req.session.destroy();
+              res.redirect('/');
+            }
+        });
+      }
+     else {
+         htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+         res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+                            'warn_title':'탈퇴 오류',
+                            'warn_message':'로그인되어 있지 않아서, 탈퇴 할 수 없습니다.',
+                            'return_url':'/' }));
+       }
+};
+
 
 router.get('/profile', PrintProfile);     // 유저 프로필화면을 출력
 router.get('/profile/edit', PrintEditProfile); // 유저 프로필 수정 화면 출력
 router.post('/profile/edit', upload.single('file'), EditProfile); // 유저 프로필 수정내용을 DB에 저장처리
+router.get('/del', DelUser);  // 유저 삭제 내용을 DB에 처리
 
 module.exports = router;

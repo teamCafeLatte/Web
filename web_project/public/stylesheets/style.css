@@ -193,7 +193,8 @@ div.card-type-icon i {
 /* button */
 div.btn-container {
   display: flex;
-  justify-content: space-around;
+  /* justify-content: space-around; */
+  justify-content: space-evenly;
   padding: 16px 0px;
   margin: 0px 16px;
   overflow: hidden;

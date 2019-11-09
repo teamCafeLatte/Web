@@ -93,13 +93,10 @@ $(document).ready(function () {
               <div class="row">
                   <div class="col-md-6 ml-auto mr-auto">
                       <div class="profile-tabs">
-                        <ul class="nav nav-pills nav-pills-icons justify-content-center" role="tablist">
-                          <li class="nav-item">
-                              <button class="nav-link active" type="submit">
-                                확인
-                              </a>
-                          </li>
-                        </ul>
+                            <div class="btn-container">
+                                <button class="btn standard-btn" type="sumbit">수정확인</button>
+                                <a class="btn standard-btn" onclick="return confirm('탈퇴하시겠습니까?')" href="/users/del">탈퇴하기</a>
+                            </div>
                       </div>
               </div>
           </div> 
