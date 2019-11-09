@@ -329,7 +329,7 @@ const PrintProductEdit = (req, res) => {
        if (req.session.auth) { // 관리자로 로그인된 경우에만 처리한다
          htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8');  // 관리자메뉴
-         htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/product_edit.ejs','utf8'); // 관리자메인화면
+         htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/doc_edit.ejs','utf8'); // 관리자메인화면
          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
 
          sql_str = "SELECT docID, docPass, title, filePath, date from document where docID = ?"; // 상품 검색 SQL

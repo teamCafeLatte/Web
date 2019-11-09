@@ -234,3 +234,10 @@ a.standard-btn:hover {
 a.standard-btn:hover:before {
     width: 100%;
 }
+
+/* 친구 스타일 */
+img.img-fri{
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+}

@@ -1,0 +1,88 @@
+<!--게시물을 수정하는 page-->
+<!DOCTYPE html>
+<script>
+    $(document).ready(function () {
+                $imgSrc = $('#imgProfile').attr('src');
+                function readURL(input) {
+    
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+    
+                        reader.onload = function (e) {
+                            $('#imgProfile').attr('src', e.target.result);
+                        };
+    
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                }
+                $('#btnChangePicture').on('click', function () {
+                    // document.getElementById('profilePicture').click();
+                    if (!$('#btnChangePicture').hasClass('changing')) {
+                        $('#profilePicture').click();
+                    }
+                    else {
+                        // change
+                    }
+                });
+                $('#profilePicture').on('change', function () {
+                    readURL(this);
+                    $('#btnChangePicture').addClass('changing');
+                    // $('#btnChangePicture').attr('value', 'Confirm');
+                    $('#btnChangePicture').addClass('d-none');
+                    
+                    $('#btnDiscard').removeClass('d-none');
+                    // $('#imgProfile').attr('src', '');
+                });
+                $('#btnDiscard').on('click', function () {
+                    // if ($('#btnDiscard').hasClass('d-none')) {
+                    $('#btnChangePicture').removeClass('changing');
+                    $('#btnChangePicture').removeClass('d-none');
+                    // $('#btnChangePicture').attr('value', 'Change');
+                    $('#btnDiscard').addClass('d-none');
+                    $('#imgProfile').attr('src', $imgSrc);
+                    $('#profilePicture').val('');
+                    // }
+                });
+            });
+    </script>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-2 col-md-2"></div>
+        <div class="col-xs-8 col-md-8">
+        <div class="table table-responsive">
+        <table class="table">
+
+        <tr>
+            <th class="success">글번호</th>
+            <td><%= prodata.docID %></td>
+            <th class="success">작성일</th>
+            <td><%= prodata.date.toLocaleString("en-US"); %></td>
+        </tr>
+           
+         
+        <tr>
+            <th class="success">제목</th>
+            <td> <input type="text" class="form-control" name="title" value="<%= prodata.title %>" id="title"></td>
+            <th class="success">작성자</th>
+            <td><%= prodata.userID %></td>
+        </tr>
+        
+        <tr>
+            <th class="success">내용</th>
+            <td><div class="middle-table">
+                <input type="button" class="btn btn-secondary" id="btnChangePicture" value="Change" />
+                <input type="button" class="btn btn-secondary d-none" id="btnDiscard" value="Discard" />
+                <input type="file" style="display: none;" id="profilePicture" name="file" />
+            </div></td>
+        </tr>
+
+        <div class="btn-container">
+            <a class="btn standard-btn" href="/storage/edit/?index=<%= prodata.docID %>">수정확인</a>
+        </table>
+
+        <tr><img class="doc-image" id="imgProfile" src= "<%= prodata.filePath %>"></tr>
+        
+    </div>     
+    </div>
+</div>
+</div>

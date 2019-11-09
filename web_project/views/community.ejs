@@ -22,20 +22,22 @@
   <% userdata.forEach(function (item, index) { %>
   <a class="a-table" href="/friend/?index=<%= item.userID %>">
     <div class="border-card">
-      <div class="card-type-icon with-border"><%= item.docID %></div>
+      <div class="card-type-icon"><img class="img-fri" src=<%= item.userPic %>></div>
       <div class="content-wrapper">
         <div class="label-group fixed">
-          <p class="title"><%= item.title %></p>
+          <p class="title"><%= item.userName %></p>
         </div>
         <div class="label-group">
             <p class="caption"><%= item.userID %></p>
           </div>
         <div class="label-group">
-          <p class="caption"><%= item.date.toLocaleDateString("en-US"); %></p>
-          <p class="caption"><%= item.date.toLocaleTimeString("en-US"); %></p>
+          <p class="caption"><%= item.userInfo %></p>
         </div>
       </div>
-      <i class="material-icons end-icon">more_vert</i>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="/friend/del/?user=<%= item.userID %>"></a>
+          <i class="material-icons end-icon"> more_vert</i>
+        </div>
     </div></a>
   <% }); %>
 

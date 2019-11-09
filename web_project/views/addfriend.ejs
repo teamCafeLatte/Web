@@ -1,0 +1,22 @@
+<!-- 친구 추가 화면 -->
+<!DOCTYPE html>
+<div class="container">  <!-- container class 가 페이지의 컨텐츠영역을 지정 -->
+  <div class="jumbotron" style="width:800px; margin:auto">
+    <div class="bm-login-form" style='width:700px; margin-left:auto; margin-right:auto; border:1px'>
+      <div class="starter-template">
+        <h4>친구 추가하기</h4> <hr>
+      </div>
+
+      <form name=join onsubmit="return validate()" method=post action="/friend/add">
+        <div class="form-group">
+          <label for="exampleInputEmail1">User Email</label>
+          <input type="email" class="form-control" name="uid" id="uid" aria-describedby="emailHelp" required>
+        </div>
+        <hr>
+        <button type="submit" class="btn btn-primary">확인</button>
+      </form>
+    </div>
+  </div>
+</div><!-- /.container -->
+
+ <!-- Footer 영역 -->

@@ -1,4 +1,25 @@
+<script language="javascript">
+    $(document).ready(function(){
+      $('.toggle').on('click', function() {
+          $('.container').stop().addClass('active');
+      });
 
+      $('.close').on('click', function() {
+          $('.container').stop().removeClass('active');
+      });
+    });
+
+    function validate() {
+        let pw1 = document.getElementById("pw1").value;
+        let pw2 = document.getElementById("pw2").value;
+
+        if (pw1 != pw2) {
+          alert("암호가 서로 다릅니다. 다시입력하세요");
+          return false;
+        }
+        return true;
+      }
+</script>
 <div class="login-wrap">
         <div class="login-html">
             <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
@@ -21,32 +42,33 @@
                     </div>
                 </form>
                 
+                <form method="post" onsubmit="return validate()" action="/users/reg">
                 <div class="for-pwd-htm">
                     <div class="group">
                         <label for="user" class="label">User Email</label>
-                        <input id="user" name="uid" type="text" class="input">
+                        <input id="uid" name="uid" type="text" class="input" required>
                     </div>
                     <div class="group">
                         <label for="user" class="label">Password</label>
-                        <input id="user" name="pw" type="password" class="input">
+                        <input id="pw1" name="pw1" type="password" class="input" required>
                     </div>
                     <div class="group">
                         <label for="user" class="label">Password Repeat</label>
-                        <input id="user" name="pw2" type="password" class="input">
+                        <input id="pw2" name="pw2" type="password" class="input" required>
                     </div>
                     <div class="group">
                         <label for="user" class="label">Name</label>
-                        <input id="user" name="uid" type="text" class="input">
+                        <input id="name" name="name" type="text" class="input" required>
                     </div>
                     <div class="group">
                         <label for="user" class="label">Phone</label>
-                        <input id="user" name="uid" type="number" class="input">
+                        <input id="phone" name="phone" type="number" class="input">
                     </div>
                     <div class="group">
                         <input type="submit" class="button" value="Register">
                     </div>
                     <div class="hr"></div>
-                </div>
+                </div></form>
             </div>
         </div>
     </div>

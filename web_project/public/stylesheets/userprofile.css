@@ -180,6 +180,20 @@
         -ms-transform: translate(-50%, -50%);
         text-align: center;
     }
+    .middle-table {
+        transition: .5s ease;
+        /* opacity: 0; */
+        /* position: fixed; */
+        display: contents;
+        top: 36.8%;
+        left: 32%;
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        text-align: center;
+    }
+    .table td, .table th {
+        vertical-align: inherit !important;
+    }
 
     .avatar:hover .image {
         opacity: 0.3;
