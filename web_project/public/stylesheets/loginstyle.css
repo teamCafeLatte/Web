@@ -5,7 +5,7 @@
 	max-width:510px;
 	min-height:720px;
 	position:relative;
-	background:url(https://maxcdn.icons8.com/app/uploads/2016/03/material-1-1000x563.jpg) no-repeat center;
+	background:url(/images/login-bg.jpg) no-repeat center;
 	background-size: cover;
 	box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
 }
@@ -51,7 +51,7 @@
 .login-html .sign-in:checked + .tab,
 .login-html .for-pwd:checked + .tab{
 	color:#fff;
-	border-color:#1161ee;
+	border-color:#DAE59E;
 }
 .login-form{
 	min-height:345px;
@@ -68,7 +68,7 @@
 .login-form .group .input,
 .login-form .group .button{
 	width:100%;
-	color:#fff;
+	/* color:#fff; */
 	display:block;
 }
 .login-form .group .input,
@@ -87,7 +87,7 @@
 	font-size:12px;
 }
 .login-form .group .button{
-	background:#1161ee;
+	background: #DAE59E;
 }
 .login-form .group label .icon{
 	width:15px;

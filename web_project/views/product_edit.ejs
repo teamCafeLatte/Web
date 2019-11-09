@@ -16,8 +16,70 @@
       })
     </script>
 
-    <p>
-    <div class="container">  <!-- container class 가 페이지의 컨텐츠영역을 지정 -->
+
+<!-- 여기부터 수정 page -->
+<form name=join onsubmit="return validate()" method=post action="/storage/document/edit" enctype="multipart/form-data"></form>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-2 col-md-2"></div>
+        <div class="col-xs-8 col-md-8">
+        <div class="table table-responsive">
+        <table class="table">
+
+        <tr>
+            <th class="success">글번호</th>
+            <td><%= prodata.docID %></td>
+            <th class="success">작성일</th>
+            <td><%= prodata.date.toLocaleString("en-US"); %></td>
+        </tr>
+           
+         
+        <tr>
+            <th class="success">제목</th>
+            <td>
+                <input type="text" class="form-control" name="title" value="<%= prodata.title %>" id="title">
+            </td>
+            <th class="success">작성자</th>
+            <td><%= prodata.userEmail %></td>
+        </tr>
+        
+        <tr>
+            <th class="success">내용</th>
+            <td>
+                <input type="file" class="custom-file-input2" id="pic" value="업로드된 이미지 <%= prodata.filePath %>" width=10px aria-describedby="entry2" accept="image/*" name="photoedit">
+                <!-- <input type="text" class="form-control" value="업로드된 이미지 <%= prodata.filePath %>" readonly id=picpath width=10px> -->
+            </td>
+        </tr>
+
+        <!-- <div class="btn-container"><a class="btn standard-btn" href="/storage/list">돌아가기</a> -->
+          <div class="btn-container">
+          <a class="btn standard-btn" type="submit">확인</a></div>
+        </table>
+
+        <tr><img class="doc-image" src= "<%= prodata.filePath %>"></tr>
+          </div>
+    
+            <!-- <button class="btn standard-btn" type="submit">확인</a> -->
+            <!-- <a class="btn standard-btn" href="/storage/eraser/?index=<%= prodata.docID %>">삭제하기</a></div> -->
+  
+    </div>     
+    </div>
+</div>
+</div>
+</form>
+
+
+
+
+
+
+
+
+<!-- 수정 page 바꾸기 전 -->
+ <!-- container class 가 페이지의 컨텐츠영역을 지정 -->
+
+    <!-- <p>
+    <div class="container"> 
     <div class="jumbotron" style="width:800px; margin:auto">
 
     <div class="bm-login-form" style='width:700px; margin-left:auto; margin-right:auto; border:1px'>
@@ -59,6 +121,6 @@
       </form>
      </div>
      </div>
-    </div><!-- /.container -->
+    </div>  -->
 
  <!-- Footer 영역 -->
