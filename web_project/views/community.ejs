@@ -30,13 +30,17 @@
         <div class="label-group">
             <p class="caption"><%= item.userID %></p>
           </div>
+          <span class="infoooo">
         <div class="label-group">
           <p class="caption"><%= item.userInfo %></p>
         </div>
+        </span>
       </div>
+      <div>
       <a onclick="return confirm('삭제하시겠습니까?')" href="/friend/del/?user=<%= item.userID %>">
         <i class="icon_close"></i>
       </a>
+    </div>
     </div>
   </a>
   <% }); %>
