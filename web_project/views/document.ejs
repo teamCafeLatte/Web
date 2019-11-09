@@ -28,7 +28,7 @@
 
         <div class="btn-container"><a class="btn standard-btn" href="/storage/list">돌아가기</a>
             <a class="btn standard-btn" href="/storage/edit/?index=<%= prodata.docID %>">수정하기</a>
-            <a class="btn standard-btn" href="/storage/eraser/?index=<%= prodata.docID %>">삭제하기</a></div>
+            <a class="btn standard-btn" onclick="return confirm('삭제하시겠습니까?')" href="/storage/document/eraser/?index=<%= prodata.docID %>">삭제하기</a></div>
         </table>
 
         <tr><img class="doc-image" src= "<%= prodata.filePath %>"></tr>

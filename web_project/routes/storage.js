@@ -462,58 +462,59 @@ const HanldleProductEdit = (req, res) => {  // 상품변경
 };
 
 // 상품삭제 양식을 브라우저로 출력합니다.
-const PrintProductEraser = (req, res) => {
-  let    htmlstream = '';
-  let    htmlstream2 = '';
-  let    sql_str;
-  let   body = req.body;
-  const query = url.parse(req.url, true).query;
+// const PrintProductEraser = (req, res) => {
+//   let    htmlstream = '';
+//   let    htmlstream2 = '';
+//   let    sql_str;
+//   let   body = req.body;
+//   const query = url.parse(req.url, true).query;
 
-       if (req.session.auth) { // 관리자로 로그인된 경우에만 처리한다
-         htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
-         htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8');  // 관리자메뉴
-         htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/product_eraser.ejs','utf8'); // 관리자메인화면
-         htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
+//        if (req.session.auth) { // 관리자로 로그인된 경우에만 처리한다
+//          htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
+//          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8');  // 관리자메뉴
+//          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/product_eraser.ejs','utf8'); // 관리자메인화면
+//          htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
 
-         sql_str = "SELECT docID, docPass, title, filePath, date from document where docID = ?"; // 상품 검색 SQL
+//          sql_str = "SELECT docID, docPass, title, filePath, date from document where docID = ?"; // 상품 검색 SQL
 
-         res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
+//          res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
-         db.query(sql_str, query.index, (error, results, fields) => {  // 상품 검색 SQL실행
-           if(error) {res.status(562).end("PrintProductEraser: DB query is failed");}
-           else if (results.length <= 0) { // 조회된 상품이 없다면, 오류메시지 출력
-             htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
-             res.status(562).end(ejs.render(htmlstream2, { 'title': 'Error',
-                                'warn_title':'조회 오류',
-                                'warn_message':'조회된 글이 없습니다.',
-                                'return_url':'/' }));
-           }
-           else{
-             console.log(results);
-             res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
-                                               'logurl': '/users/logout',
-                                               'loglabel': 'Logout',
-                                               'regurl': '/users/profile',
-                                               'reglabel': req.session.who,
-                                                prodata : results[0] }));  // 조회된 상품정보
-           }
-         });
-       }
-       else {
-         htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
-         res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
-                            'warn_title':'삭제 오류',
-                            'warn_message':'로그인되어 있지 않아서, 삭제 할 수 없습니다.',
-                            'return_url':'/' }));
-       }
+//          db.query(sql_str, query.index, (error, results, fields) => {  // 상품 검색 SQL실행
+//            if(error) {res.status(562).end("PrintProductEraser: DB query is failed");}
+//            else if (results.length <= 0) { // 조회된 상품이 없다면, 오류메시지 출력
+//              htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+//              res.status(562).end(ejs.render(htmlstream2, { 'title': 'Error',
+//                                 'warn_title':'조회 오류',
+//                                 'warn_message':'조회된 글이 없습니다.',
+//                                 'return_url':'/' }));
+//            }
+//            else{
+//              console.log(results);
+//              res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
+//                                                'logurl': '/users/logout',
+//                                                'loglabel': 'Logout',
+//                                                'regurl': '/users/profile',
+//                                                'reglabel': req.session.who,
+//                                                 prodata : results[0] }));  // 조회된 상품정보
+//            }
+//          });
+//        }
+//        else {
+//          htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+//          res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+//                             'warn_title':'삭제 오류',
+//                             'warn_message':'로그인되어 있지 않아서, 삭제 할 수 없습니다.',
+//                             'return_url':'/' }));
+//        }
 
-};
+// };
 
 //  선택된 상품을 DB에서 삭제합니다.
 const HanldleProductEraser = (req, res) => {  // 상품삭제
   let    body = req.body;
   let    htmlstream = '';
   let    datestr, delfile;
+  const query = url.parse(req.url, true).query;
 
        //delfile=body.pic;
 
@@ -524,7 +525,7 @@ const HanldleProductEraser = (req, res) => {  // 상품삭제
           }
           else {
               db.query('DELETE FROM document where docID = ?',
-                    [body.docID], (error, results, fields) => {
+                    query.index, (error, results, fields) => {
                if (error) {
                    htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
                    res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
@@ -564,8 +565,8 @@ router.post('/document/add', upload.single('file'), HanldleAddProduct); // 상�
 router.get('/edit', PrintProductEdit);  // 상품변경화면을 출력처리
 router.post('/document/edit', upload.single('imgProfile'), HanldleProductEdit); //상품변경내용을 DB에 저장처리
 
-router.get('/eraser', PrintProductEraser);   // 상품삭제화면을 출력처리
-router.post('/document/eraser', HanldleProductEraser); // 상품삭제내용을 DB에 처리
+// router.get('/eraser', PrintProductEraser);   // 상품삭제화면을 출력처리
+router.get('/document/eraser', HanldleProductEraser); // 상품삭제내용을 DB에 처리
 
 router.get('/list', AdminPrintProd);      // 상품리스트를 화면에 출력
 // router.get('/', function(req, res) { res.send('respond with a resource 111'); });
