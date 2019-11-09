@@ -58,6 +58,7 @@ footer {
 table {
   border-collapse: collapse;
   border-spacing: 2px;
+  table-layout: auto;
 }
 
 .table-striped > tr {
@@ -76,4 +77,8 @@ table {
   margin: 0px auto;
   max-width: 700px;
   min-width: 200px;
+}
+
+td {
+  text-align: center !important;
 }
