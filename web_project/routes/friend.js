@@ -124,9 +124,42 @@ const AddFriend = (req, res) => {
 }
 
 // 친구 삭제 기능
+const DelFriend = (req, res) => {
+  let htmlstream = '';
+  let sql_str;
+  let userEmail=req.session.who;
+  const query = url.parse(req.url, true).query;
+
+  if(req.session.auth){ // 로그인한 경우에만 처리한다
+
+    sql_str = "delete from community where userID=? or userFID=?"; // 친구 관계 검색 SQL
+
+    db.query(sql_str, [query.user, query.user], (error, results, fields) => {  // 사용자 검색 SQL실행
+        if(error) { // 존재하지 않는 친구면, 오류메시지 출력
+          htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+          res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+                                                       'warn_title':'삭제 오류',
+                                                       'warn_message':'이미 삭제된 친구입니다.',
+                                                       'return_url':'/friend/list/?user='+userEmail }));
+          }
+        else{
+          console.log("친구 삭제에 성공하였으며, DB에서 삭제 하였습니다.!");
+          res.redirect('/friend/list/?user='+userEmail);
+        }
+    }); 
+  }
+  else {
+    htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+        res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+                          'warn_title':'친구 삭제 오류',
+                          'warn_message':'로그인되어 있지 않아서, 친구 삭제를 할 수 없습니다.',
+                          'return_url':'/' }));
+  }
+}
 
 router.get('/list', PrintFriendList);     // 친구 리스트 출력
 router.get('/add', PrintAddFriend);  // 친구 추가 화면 출력
 router.post('/add', AddFriend);  // db에 친구 추가
+router.get('/del', DelFriend);  // db에서 친구 삭제
 
 module.exports = router;

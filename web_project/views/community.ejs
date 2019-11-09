@@ -34,8 +34,11 @@
           <p class="caption"><%= item.userInfo %></p>
         </div>
       </div>
-        <i class="material-icons end-icon">more_vert</i>
-    </div></a>
+      <a onclick="return confirm('삭제하시겠습니까?')" href="/friend/del/?user=<%= item.userID %>">
+        <i class="icon_close"></i>
+      </a>
+    </div>
+  </a>
   <% }); %>
 
   <p>
