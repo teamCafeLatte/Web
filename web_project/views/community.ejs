@@ -20,6 +20,7 @@
     <a class="a-table" href="/friend/add"><h4 class="h4-table">친구 추가하기</h4></a>
   <hr class="hr-table">
   <% userdata.forEach(function (item, index) { %>
+  <div style="display:inline;min-width:1200px;">
   <a class="a-table" href="/users/chat/?user=<%= item.userID %>">
     <div class="border-card">
       <div class="card-type-icon"><img class="img-fri" src=<%= item.userPic %>></div>
@@ -36,9 +37,10 @@
         </div>
         </span>
       </div>
+    </div>
       <div>
       <a onclick="return confirm('삭제하시겠습니까?')" href="/friend/del/?user=<%= item.userID %>">
-        <i class="icon_close"></i>
+       <i class="icon_close"></i>
       </a>
     </div>
     </div>
