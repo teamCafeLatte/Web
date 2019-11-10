@@ -82,3 +82,78 @@ table {
 td {
   text-align: center !important;
 }
+
+ #contact .form #sendmessage {
+  color: #1dc7cd77;
+  display: none;
+  text-align: center;
+  padding: 15px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+#contact .form #errormessage {
+  color: rgba(255, 0, 0, 0.445);
+  display: none;
+  text-align: center;
+  padding: 15px;
+  font-weight: 600;
+  margin-bottom: 15px;
+} 
+
+#contact .form #sendmessage.show,
+#contact .form #errormessage.show,
+#contact .form .show {
+  display: block;
+}
+
+#contact .form input,
+#contact .form textarea {
+  border-radius: 0;
+  box-shadow: none;
+  font-size: 14px;
+}
+
+.form button[type="submit"]:hover {
+  background-color: #e8eeee73;
+  cursor: pointer;
+}
+
+.contacttitle {
+  color: rgb(49, 49, 49);
+  margin-bottom: 40px;
+}
+
+.map {
+  padding-left: 20px;
+  margin-left: 50px;
+}
+
+.form {
+  margin: auto;
+  padding-right: 50px;
+  margin-right: 50px;
+}
+/* 미디어쿼리 */
+
+/* map & contact */
+@media (min-width: 481px) and (max-width: 767px) {
+  .map {
+    margin: auto;
+  }
+  .form {
+    padding-left: 40px;
+  }
+  .contactdiv {
+    padding-top: 50px;
+  }
+  .contacttitle {
+    text-align: center;
+  }
+}
+
+/* storage */
+@media (min-width: 481px) and (max-width: 767px) {
+  
+}
+
