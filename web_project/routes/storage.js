@@ -46,6 +46,7 @@ const PrintDocList = (req, res) => {
                      res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
                                                        'logurl': '/users/logout',
                                                        'loglabel': 'Logout',
+                                                       'user': req.session.who,
                                                         docdata : results }));  // 조회된 상품정보
                  } // else
            }); // db.query()
@@ -99,6 +100,7 @@ const PrintDocPWForm = (req, res) => {
               res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
                                                 'logurl': '/users/logout',
                                                 'loglabel': 'Logout',
+                                                'user': req.session.who,
                                                 docdata : results[0] }));  // 조회된 상품정보
             }
           });
@@ -113,6 +115,7 @@ const PrintDocPWForm = (req, res) => {
           res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
                                             'logurl': '/users/logout',
                                             'loglabel': 'Logout',
+                                            'user': req.session.who,
                                             'docID': query.index,
                                             docdata : results[0] }));  // 조회된 상품정보
         }
@@ -158,6 +161,7 @@ const PrintDocDetail = (req, res) => {
         res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
                                           'logurl': '/users/logout',
                                           'loglabel': 'Logout',
+                                          'user': req.session.who,
                                           docdata : results[0] }));  // 조회된 글 정보
       }
     });
@@ -185,7 +189,8 @@ const PrintAddDocForm = (req, res) => {
          res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
          res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
                                            'logurl': '/users/logout',
-                                           'loglabel': 'Logout' }));
+                                           'loglabel': 'Logout',
+                                           'user': req.session.who }));
        }
        else {
          htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
@@ -251,31 +256,44 @@ const PrintDocumentEdit = (req, res) => {
   const query = url.parse(req.url, true).query;
 
        if (req.session.auth) { // 로그인된 경우에만 처리한다
-         htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
-         htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8');  // 메뉴
-         htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/doc_edit.ejs','utf8'); // 메인화면
-         htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
+        db.query('select userID from document where docID=?', query.index, (error,data)=>{
+          if(error){res.status(562).end("PrintDocumentEdit: DB query is failed");}
+          else if(data[0].userID==req.session.who){ // 작성자만 수정가능
+            htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');    // 헤더부분
+            htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8');  // 메뉴
+            htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/doc_edit.ejs','utf8'); // 메인화면
+            htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');  // Footer
 
-         sql_str = "SELECT docID, docPass, title, filePath, date from document where docID = ?"; // 글 검색 SQL
+            sql_str = "SELECT docID, docPass, title, filePath, date from document where docID = ?"; // 글 검색 SQL
 
-         res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
+            res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
 
-         db.query(sql_str, query.index, (error, results, fields) => {  // 글 검색 SQL실행
-           if(error) {res.status(562).end("PrintDocumentEdit: DB query is failed");}
-           else if (results.length <= 0) { // 조회된 글이 없다면, 오류메시지 출력
-             htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
-             res.status(562).end(ejs.render(htmlstream2, { 'title': 'Error',
-                                'warn_title':'조회 오류',
-                                'warn_message':'조회된 글이 없습니다.',
-                                'return_url':'/' }));
-           }
-           else{
-             res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
-                                               'logurl': '/users/logout',
-                                               'loglabel': 'Logout',
-                                                docdata : results[0] }));  // 조회된 글 정보
-           }
-         });
+            db.query(sql_str, query.index, (error, results, fields) => {  // 글 검색 SQL실행
+              if(error) {res.status(562).end("PrintDocumentEdit: DB query is failed");}
+              else if (results.length <= 0) { // 조회된 글이 없다면, 오류메시지 출력
+                htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+                res.status(562).end(ejs.render(htmlstream2, { 'title': 'Error',
+                                    'warn_title':'조회 오류',
+                                    'warn_message':'조회된 글이 없습니다.',
+                                    'return_url':'/' }));
+              }
+              else{
+                res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
+                                                  'logurl': '/users/logout',
+                                                  'loglabel': 'Logout',
+                                                  'user': req.session.who,
+                                                    docdata : results[0] }));  // 조회된 글 정보
+              }
+            });
+          }
+          else{
+           htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+           res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+                             'warn_title':'수정 오류',
+                             'warn_message':'작성자만 수정 가능합니다.',
+                             'return_url':'/storage/list' }));
+          }
+        });
        }
        else {
          htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
@@ -300,70 +318,73 @@ const HanldleDocumentEdit = (req, res) => {  // 글 수정
         console.log(picfile);
 
       if (req.session.auth) {
-        db.query('SELECT filePath from document where docID=?',query.index, (error, data) => {
-          if (error) {res.status(562).end("HandleDocumentEdit: DB query is failed");}
-          else if(data[0]==docimage){ //원래 이미지가 없는 경우-그냥 넣어주면됨
-            docimage = docimage + picfile.filename;
-            console.log(data);
+        db.query('select userID from document where docID=?', query.index, (error,data)=>{
+          if(error){res.status(562).end("HandleDocumentEdit: DB query is failed");}
+          else if(data[0].userID==req.session.who){ // 작성자만 수정가능
+            db.query('SELECT filePath from document where docID=?',query.index, (error, data) => {
+              if (error) {res.status(562).end("HandleDocumentEdit: DB query is failed");}
+              else if(data[0]==''){ //원래 이미지가 없는 경우-그냥 넣어주면됨
+                docimage = docimage + picfile.filename;
+                console.log(data);
+                db.query('UPDATE document SET docPass=?, title=?, filePath=? where docID=?',
+                      [body.docPass, body.title, docimage, query.index], (error, results, fields) => {
+                  if (error) {
+                      htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+                      res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+                                    'warn_title':'수정 오류',
+                                    'warn_message':'수정할 때 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
+                                    'return_url':'/' }));
+                  } else {
+                      console.log("수정에 성공하였습니다.!");
+                      res.redirect('/storage/list');
+                  }
+              });
 
-            db.query('UPDATE document SET docPass=?, title=?, filePath=? where docID=?',
-                  [body.docPass, body.title, docimage, query.index], (error, results, fields) => {
-              if (error) {
-                  htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
-                  res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
-                                'warn_title':'수정 오류',
-                                'warn_message':'수정할 때 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
-                                'return_url':'/' }));
-              } else {
-                  console.log("수정에 성공하였습니다.!");
-                  /*if (picfile&&pic) {  //기존이미지와 변경되는 이미지가 모두 존재할 경우
-                    fs.unlink(delfile, (error, result) => {
-                      if(error) {console.error("error3");
-                      console.log(delfile);
-                    }
-                      else console.log('파일이 삭제되었습니다.');  //기존이미지 삭제
-                    });
-                  }*/
-                  res.redirect('/storage/list');
+              }else{  //원래 이미지가 존재하는 경우
+                pic=data[0].filePath;
+                if(picfile){//이미지 변경 있음
+                  docimage = docimage + picfile.filename;
+                  delfile = pic;
+                  console.log("사진변경있음");
+                  console.log(delfile); // 삭제할 이미지
+                  console.log(docimage);
+                }else{  //이미지 변경 없음
+                  docimage = pic; // 원래 있던 경로 넣어주기
+                  console.log("사진변경없음");
+                }
+
+                db.query('UPDATE document SET docPass=?, title=?, filePath=? where docID=?',
+                      [body.docPass, body.title, docimage, query.index], (error, results, fields) => {
+                  if (error) {
+                      htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+                      res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+                                    'warn_title':'수정 오류',
+                                    'warn_message':'수정할 때 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
+                                    'return_url':'/' }));
+                  } else {
+                      console.log("수정에 성공하였습니다.!");
+                      if (picfile&&pic) {  //기존이미지와 변경되는 이미지가 모두 존재할 경우
+                        fs.unlink(delfile, (error, result) => {
+                          if(error) {console.error("error3");
+                          console.log(delfile);
+                        }
+                          else console.log('파일이 삭제되었습니다.');  //기존이미지 삭제
+                        });
+                      }
+                      res.redirect('/storage/list');
+                  }
+              });
               }
-          });
-
-          }else{  //원래 이미지가 존재하는 경우
-            pic=data;
-            if(picfile){//이미지 변경 있음
-              docimage = docimage + picfile.filename;
-              delfile = pic;
-              console.log("사진변경있음");
-              console.log(delfile);
-              console.log(docimage);
-            }else{  //이미지 변경 없음
-              docimage = pic;
-              console.log("사진변경없음");
-            }
-
-            db.query('UPDATE document SET docPass=?, title=?, filePath=? where docID=?',
-                  [body.docPass, body.title, docimage, query.index], (error, results, fields) => {
-              if (error) {
-                  htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
-                  res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
-                                'warn_title':'수정 오류',
-                                'warn_message':'수정할 때 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
-                                'return_url':'/' }));
-              } else {
-                  console.log("수정에 성공하였습니다.!");
-                  /*if (picfile&&pic) {  //기존이미지와 변경되는 이미지가 모두 존재할 경우
-                    fs.unlink(delfile, (error, result) => {
-                      if(error) {console.error("error3");
-                      console.log(delfile);
-                    }
-                      else console.log('파일이 삭제되었습니다.');  //기존이미지 삭제
-                    });
-                  }*/
-                  res.redirect('/storage/list');
-              }
-          });
+            });
           }
-        });
+      else{
+       htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+       res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+                         'warn_title':'수정 오류',
+                         'warn_message':'작성자만 수정 가능합니다.',
+                         'return_url':'/storage/list' }));
+      }
+    });
     }
     else {
       htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
@@ -384,7 +405,12 @@ const HanldleDocumentDel = (req, res) => {  // 글 삭제
        //delfile=body.pic;
 
        if (req.session.auth) {
-          db.query('DELETE FROM document where docID = ?',
+         db.query('select userID from document where docID=?', query.index,(error,data)=>{
+           console.log(data[0].userID);
+           console.log(req.session.who);
+           if(error){res.status(562).end("HandleDocumentDel: DB query is failed");}
+           else if(data[0].userID==req.session.who){ // 작성자만 삭제가능
+            db.query('DELETE FROM document where docID = ?',
                 query.index, (error, results, fields) => {
             if (error) {
                 htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
@@ -399,8 +425,18 @@ const HanldleDocumentDel = (req, res) => {  // 글 삭제
                   console.log('파일이 삭제되었습니다.');
                 });*/
                 res.redirect('/storage/list');
-            }
-        });
+              }
+            });
+           }
+           else{
+            htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+            res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+                              'warn_title':'삭제 오류',
+                              'warn_message':'작성자만 삭제 가능합니다.',
+                              'return_url':'/storage/list' }));
+           }
+         });
+          
     }
     else {
         htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
@@ -419,7 +455,7 @@ router.get('/form', PrintAddDocForm);   // 게시글 등록화면을 출력처�
 router.post('/document/add', upload.single('file'), HanldleAddDoc); // 게시글 등록내용을 DB에 저장처리
 
 router.get('/edit', PrintDocumentEdit);  // 게시글 변경화면을 출력처리
-router.post('/document/edit', upload.single('imgProfile'), HanldleDocumentEdit); // 게시글 변경내용을 DB에 저장처리
+router.post('/document/edit', upload.single('file'), HanldleDocumentEdit); // 게시글 변경내용을 DB에 저장처리
 
 router.get('/document/del', HanldleDocumentDel); // 상품삭제내용을 DB에 처리
 

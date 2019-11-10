@@ -49,7 +49,7 @@ const PrintFriendList = (req, res) => {
                                             'logurl': '/users/logout',
                                             'loglabel': 'Logout',
                                             'regurl': '/users/profile',
-                                            'reglabel': req.session.who,
+                                            'user': req.session.who,
                                             userdata : results }));  // 조회된 정보
         }
     }); 
@@ -79,7 +79,7 @@ const PrintAddFriend = (req, res) => {
                                     'logurl': '/users/logout',
                                     'loglabel': 'Logout',
                                     'regurl': '/users/profile',
-                                    'reglabel': req.session.who }));
+                                    'user': req.session.who }));
   }
   else {
     htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');

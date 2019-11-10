@@ -54,9 +54,9 @@ const PrintSearchProd = (req, res) => {
                                                        'logurl': '/users/logout',
                                                        'loglabel': 'Logout',
                                                        'regurl': '/users/profile',
-                                                       'reglabel': req.session.who,
+                                                       'user': req.session.who,
                                                        'title': body.search,
-                                                        prodata : results }));  // 조회된 상품정보
+                                                        docdata : results }));  // 조회된 상품정보
                  } // else
            }); // db.query()
        }
@@ -89,20 +89,20 @@ const PrintProdMy = (req, res) => {
   
              db.query(sql_str, query.user, (error, results, fields) => {  // 상품조회 SQL실행
                  if (error) { res.status(562).end("PrintProdMy: DB query is failed"); }
-                 else if (results.length <= 0) {  // 조회된 상품이 없다면, 오류메시지 출력
-                     htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
-                     res.status(562).end(ejs.render(htmlstream2, { 'title': 'Error',
-                                        'warn_title':'조회 오류',
-                                        'warn_message':'조회된 글이 없습니다.',
-                                        'return_url':'/' }));
-                     }
+                //  else if (results.length <= 0) {  // 조회된 글이 없다면, 오류메시지 출력
+                //      htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+                //      res.status(562).end(ejs.render(htmlstream2, { 'title': 'Error',
+                //                         'warn_title':'조회 오류',
+                //                         'warn_message':'조회된 글이 없습니다.',
+                //                         'return_url':'/' }));
+                //      }
                 else {  // 조회된 상품이 있다면, 상품리스트를 출력
                        res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
                                                          'logurl': '/users/logout',
                                                          'loglabel': 'Logout',
                                                          'regurl': '/users/profile',
-                                                         'reglabel': req.session.who,
-                                                          prodata : results }));  // 조회된 상품정보
+                                                         'user': req.session.who,
+                                                          docdata : results }));  // 조회된 상품정보
                    } // else
              }); // db.query()
          }

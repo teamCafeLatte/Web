@@ -21,14 +21,14 @@ let    htmlstream = '';
                                            'logurl': '/users/logout',
                                            'loglabel': 'Logout',
                                            'regurl': '/users/profile',
-                                           'reglabel':req.session.who }));  // 세션에 저장된 사용자명표시
+                                           'user':req.session.who }));  // 세션에 저장된 사용자명표시
      }
      else {
         res.end(ejs.render(htmlstream, { 'title' : 'Our Note',
                                         'logurl': '/users/auth',
                                         'loglabel': 'Login',
                                         'regurl': '/users/reg',
-                                        'reglabel':'가입' }));
+                                        'user':'가입' }));
      }
 
 };

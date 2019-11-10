@@ -19,33 +19,6 @@ const   db = mysql.createConnection({
 });
 
 //  -----------------------------------  회원가입기능 -----------------------------------------
-// 회원가입 입력양식을 브라우져로 출력합니다.
-// const PrintRegistrationForm = (req, res) => {
-//   let    htmlstream = '';
-
-//        htmlstream = fs.readFileSync(__dirname + '/../views/header.ejs','utf8');
-//        htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/navbar.ejs','utf8');
-//        htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/reg_form.ejs','utf8');
-//        htmlstream = htmlstream + fs.readFileSync(__dirname + '/../views/footer.ejs','utf8');
-//        res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
-
-//        if (req.session.auth) {  // true :로그인된 상태,  false : 로그인안된 상태
-//            res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
-//                                              'logurl': '/users/logout',
-//                                              'loglabel': 'Logout',
-//                                              'regurl': '/users/profile',
-//                                              'reglabel':req.session.who }));
-//        }
-//        else {
-//           res.end(ejs.render(htmlstream, { 'title' : 'Our Note',
-//                                           'logurl': '/users/auth',
-//                                           'loglabel': 'Login',
-//                                           'regurl': '/users/reg',
-//                                           'reglabel':'가입' }));
-//        }
-
-// };
-
 // 회원가입 양식에서 입력된 회원정보를 신규등록(DB에 저장)합니다.
 const HandleRegistration = (req, res) => {  // 회원가입
 let body = req.body;
@@ -62,6 +35,8 @@ let htmlstream='';
     }
     else {
 
+      // res.writeHead(200, {'Content-Type':'text/html; charset=utf8'});
+
        db.query('INSERT INTO user (userID, userPass, userName, userPhone) VALUES (?, ?, ?, ?)', [body.uid, body.pw1, body.name, body.phone], (error, results, fields) => {
           if (error) {
             htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
@@ -71,7 +46,7 @@ let htmlstream='';
                                'return_url':'/users/auth' }));
           } else {
            console.log("회원가입에 성공하였으며, 신규회원으로 등록되었습니다!");
-         //   res.wrtie('<meta charset="utf-8">회원가입에 성공하였습니다.');
+          //  res.write('<meta charset="utf-8">회원가입에 성공하였습니다.');
            res.redirect('/users/auth');
           }
        });
@@ -99,14 +74,14 @@ const PrintLoginForm = (req, res) => {
                                              'logurl': '/users/logout',
                                              'loglabel': 'Logout',
                                              'regurl': '/users/profile',
-                                             'reglabel': req.session.who }));
+                                             'user': req.session.who }));
        }
        else {
           res.end(ejs.render(htmlstream, { 'title' : 'Our Note',
                                           'logurl': '/users/auth',
                                           'loglabel': 'Login',
                                           'regurl': '/users/reg',
-                                          'reglabel':'가입' }));
+                                          'user':'가입' }));
        }
 };
 
@@ -202,7 +177,7 @@ const PrintProfile = (req, res) => {
                                           'logurl': '/users/logout',
                                           'loglabel': 'Logout',
                                           'regurl': '/users/profile',
-                                          'reglabel': req.session.who,
+                                          'user': req.session.who,
                                           userdata : results[0] }));  // 조회된 정보
       }
     });
@@ -246,7 +221,7 @@ const PrintEditProfile = (req, res) => {
                                           'logurl': '/users/logout',
                                           'loglabel': 'Logout',
                                           'regurl': '/users/profile',
-                                          'reglabel': req.session.who,
+                                          'user': req.session.who,
                                           userdata : results[0] }));  // 조회된 정보
       }
     });
@@ -368,14 +343,14 @@ const PrintChat = (req, res) => {
                                              'logurl': '/users/logout',
                                              'loglabel': 'Logout',
                                              'regurl': '/users/profile',
-                                             'reglabel': req.session.who }));
+                                             'user': req.session.who }));
        }
        else {
           res.end(ejs.render(htmlstream, { 'title' : 'Our Note',
                                           'logurl': '/users/auth',
                                           'loglabel': 'Login',
                                           'regurl': '/users/reg',
-                                          'reglabel':'가입' }));
+                                          'user':'가입' }));
        }
 };
 

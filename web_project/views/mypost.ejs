@@ -16,6 +16,8 @@
          </div>
         
         <div class="body-table">
+          <a class="a-table" href="/storage/form"><h4 class="h4-table">글 등록하기</h4></a>
+          <hr class="hr-table">
           <% docdata.forEach(function (item, index) { %>
           <a class="a-table" href="/storage/doc/?index=<%= item.docID %>">
             <div class="border-card">
@@ -32,7 +34,6 @@
                   <p class="caption"><%= item.date.toLocaleTimeString("en-US"); %></p>
                 </div>
               </div>
-              <i class="material-icons end-icon">more_vert</i>
             </div></a>
           <% }); %>
         
