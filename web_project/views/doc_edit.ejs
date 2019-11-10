@@ -45,7 +45,7 @@
                 });
             });
     </script>
-<form name=join onsubmit="return validate()" method=post action="/storage/document/edit/?index=<%= prodata.docID %>" enctype="multipart/form-data">
+<form name=join onsubmit="return validate()" method=post action="/storage/document/edit/?index=<%= docdata.docID %>" enctype="multipart/form-data">
 
 <div class="container">
     <div class="row">
@@ -56,17 +56,17 @@
 
         <tr>
             <th class="success">글번호</th>
-            <td><%= prodata.docID %></td>
+            <td><%= docdata.docID %></td>
             <th class="success">작성일</th>
-            <td><%= prodata.date.toLocaleString("en-US"); %></td>
+            <td><%= docdata.date.toLocaleString("en-US"); %></td>
         </tr>
            
          
         <tr>
             <th class="success">제목</th>
-            <td> <input type="text" class="form-control" name="title" value="<%= prodata.title %>" id="title"></td>
+            <td> <input type="text" class="form-control" name="title" value="<%= docdata.title %>" id="title"></td>
             <th class="success">비밀번호</th>
-            <td><input type="text" class="form-control" name="docPass" value="<%= prodata.docPass %>" id="docPass"></td>
+            <td><input type="text" class="form-control" name="docPass" value="<%= docdata.docPass %>" id="docPass"></td>
         </tr>
         
         <tr>
@@ -83,7 +83,7 @@
             </div>
         </table>
 
-        <tr><img class="doc-image" id="imgProfile" src= "<%= prodata.filePath %>"></tr>
+        <tr><img class="doc-image" id="imgProfile" src= "<%= docdata.filePath %>"></tr>
         
     </div>     
     </div>

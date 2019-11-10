@@ -9,17 +9,17 @@
 
         <tr>
             <th class="success">글번호</th>
-            <td><%= prodata.docID %></td>
+            <td><%= docdata.docID %></td>
             <th class="success">작성일</th>
-            <td><%= prodata.date.toLocaleString("en-US"); %></td>
+            <td><%= docdata.date.toLocaleString("en-US"); %></td>
         </tr>
            
          
         <tr>
             <th class="success">제목</th>
-            <td><%= prodata.title %></td>
+            <td><%= docdata.title %></td>
             <th class="success">작성자</th>
-            <td><%= prodata.userID %></td>
+            <td><%= docdata.userID %></td>
         </tr>
         
         <tr>
@@ -27,11 +27,11 @@
         </tr>
 
         <div class="btn-container"><a class="btn standard-btn" href="/storage/list">돌아가기</a>
-            <a class="btn standard-btn" href="/storage/edit/?index=<%= prodata.docID %>">수정하기</a>
-            <a class="btn standard-btn" onclick="return confirm('삭제하시겠습니까?')" href="/storage/document/eraser/?index=<%= prodata.docID %>">삭제하기</a></div>
+            <a class="btn standard-btn" href="/storage/edit/?index=<%= docdata.docID %>">수정하기</a>
+            <a class="btn standard-btn" onclick="return confirm('삭제하시겠습니까?')" href="/storage/document//?index=<%= docdata.docID %>">삭제하기</a></div>
         </table>
 
-        <tr><img class="doc-image" src= "<%= prodata.filePath %>"></tr>
+        <tr><img class="doc-image" src= "<%= docdata.filePath %>"></tr>
         
     </div>     
     </div>
