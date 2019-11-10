@@ -134,7 +134,9 @@ td {
   padding-right: 50px;
   margin-right: 50px;
 }
+/* 미디어쿼리 */
 
+/* map & contact */
 @media (min-width: 481px) and (max-width: 767px) {
   .map {
     margin: auto;
@@ -149,3 +151,9 @@ td {
     text-align: center;
   }
 }
+
+/* storage */
+@media (min-width: 481px) and (max-width: 767px) {
+  
+}
+
