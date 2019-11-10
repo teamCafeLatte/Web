@@ -235,54 +235,61 @@ const PrintEditProfile = (req, res) => {
   }
 }
 
-const EditProfile = (req, res) => {  // 정보수정
+const HandleEditProfile = (req, res) => {  // 정보수정
   let    body = req.body;
   let    htmlstream = '';
   let    datestr;
   let    userimage = '/images/uploads/userprofile/'; // 이미지 저장디렉터리
   let    picfile = req.file;
   let    userEmail=req.session.who; 
+  let   defaultPic='/images/uploads/userprofile/profile.jpg';
 
        if (req.session.auth) {
-           if (body.uid == '' || datestr == '') {
-             console.log("정보를 입력해주세요.");
-             res.status(561).end('<meta charset="utf-8">아이디가 입력되지 않아 추가할 수 없습니다');
-          }
-          else {
+         db.query('select userPic from user where userID=?', userEmail, (error, data)=>{
+          if(error){res.status(562).end("HandleEditProfile: DB query is failed");}
+          else{
             if(picfile){  // 사진 변경이 있을때
-              console.log(picfile);
               userimage = userimage + picfile.filename;
-
+              if(data[0].userPic!=defaultPic){  // 기본 이미지가 아닐때
+                delfile = '/../public' + data[0].userPic;
+                console.log(picfile);
+                fs.unlink(__dirname + delfile, (error, result) => {
+                  if(error) {console.error("error3");
+                    console.log(__dirname + delfile);
+                  } else {console.log('파일이 삭제되었습니다.');}
+                });
+              }                  
               db.query('UPDATE user SET userPass=?, userName=?, userPhone=?, userPic=?, userInfo=? where userID=?',
-                    [body.userPass, body.userName, body.userPhone, userimage, body.userInfo, userEmail], (error, results, fields) => {
-               if (error) {
-                   htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
-                   res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
-                                 'warn_title':'정보 수정 오류',
-                                 'warn_message':'수정할때 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
-                                 'return_url':'/' }));
+                [body.userPass, body.userName, body.userPhone, userimage, body.userInfo, userEmail], (error, results, fields) => {
+                if (error) {
+                    htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+                    res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+                                  'warn_title':'정보 수정 오류',
+                                  'warn_message':'수정할때 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
+                                  'return_url':'/' }));
                 } else {
-                   console.log("정보 수정에 성공하였습니다.!");
-                   res.redirect('/users/profile/?user='+userEmail);
+                    console.log("정보 수정에 성공하였습니다.!");
+                    res.redirect('/users/profile/?user='+userEmail);
                 }
-           });
+              });           
             }
             else{ // 사진 수정이 없을때
               db.query('UPDATE user SET userPass=?, userName=?, userPhone=?, userInfo=? where userID=?',
                     [body.userPass, body.userName, body.userPhone, body.userInfo, userEmail], (error, results, fields) => {
-               if (error) {
-                   htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
-                   res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
-                                 'warn_title':'정보 수정 오류',
-                                 'warn_message':'수정할때 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
-                                 'return_url':'/' }));
+                if (error) {
+                    htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+                    res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+                                  'warn_title':'정보 수정 오류',
+                                  'warn_message':'수정할때 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
+                                  'return_url':'/' }));
                 } else {
-                   console.log("정보 수정에 성공하였습니다.!");
-                   res.redirect('/users/profile/?user='+userEmail);
+                    console.log("정보 수정에 성공하였습니다.!");
+                    res.redirect('/users/profile/?user='+userEmail);
                 }
               });
-            }              
-       }
+            }
+          }
+         });
       }
      else {
          htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
@@ -294,29 +301,37 @@ const EditProfile = (req, res) => {  // 정보수정
 };
 
 // 유저 탈퇴 기능
-const DelUser = (req, res) => { 
-  let    body = req.body;
+const HandleDelUser = (req, res) => { 
+  let    delfile;
   let    htmlstream = '';
   let    userEmail=req.session.who; 
+  let   defaultPic='/images/uploads/userprofile/profile.jpg';
 
        if (req.session.auth) {
-        db.query('DELETE FROM user where userID = ?',
-        userEmail, (error, results, fields) => {
-          if (error) {
-              htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
-              res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
-                            'warn_title':'탈퇴 오류',
-                            'warn_message':'탈퇴할때 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
-                            'return_url':'/' }));
+        db.query('select userPic from user where userID=?', userEmail, (error, data)=>{
+          if(error){res.status(562).end("HandleDelUser: DB query is failed");}
+          else if(data[0].userPic!=defaultPic){ // 기본이미지가 아닐 경우 원래 있던 이미지 삭제
+            delfile = '/../public'+ data[0].userPic;
+            fs.unlink(__dirname + delfile, (error, result) => {
+              if(error) {console.error("error3");
+              console.log(__dirname + delfile);
+              }
+              else console.log('파일이 삭제되었습니다.');
+            });
+          }
+          db.query('DELETE FROM user where userID = ?', userEmail, (error, results, fields) => {
+            if (error) {
+                htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+                res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+                              'warn_title':'탈퇴 오류',
+                              'warn_message':'탈퇴할때 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
+                              'return_url':'/' }));
             } else {
               console.log("탈퇴에 성공하였습니다.!");
-              /*fs.unlink('delfile', (error) => {
-                if(error) console.error(error);
-                console.log('파일이 삭제되었습니다.');
-              });*/
               req.session.destroy();
               res.redirect('/');
             }
+          });
         });
       }
      else {
@@ -357,8 +372,8 @@ const PrintChat = (req, res) => {
 
 router.get('/profile', PrintProfile);     // 유저 프로필화면을 출력
 router.get('/profile/edit', PrintEditProfile); // 유저 프로필 수정 화면 출력
-router.post('/profile/edit', upload.single('file'), EditProfile); // 유저 프로필 수정내용을 DB에 저장처리
-router.get('/del', DelUser);  // 유저 삭제 내용을 DB에 처리
+router.post('/profile/edit', upload.single('file'), HandleEditProfile); // 유저 프로필 수정내용을 DB에 저장처리
+router.get('/del', HandleDelUser);  // 유저 삭제 내용을 DB에 처리
 router.get('/chat', PrintChat);  // 유저 채팅 화면 출력
 
 module.exports = router;

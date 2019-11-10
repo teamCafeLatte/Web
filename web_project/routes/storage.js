@@ -323,7 +323,7 @@ const HanldleDocumentEdit = (req, res) => {  // 글 수정
           else if(data[0].userID==req.session.who){ // 작성자만 수정가능
             db.query('SELECT filePath from document where docID=?',query.index, (error, data) => {
               if (error) {res.status(562).end("HandleDocumentEdit: DB query is failed");}
-              else if(data[0]==''){ //원래 이미지가 없는 경우-그냥 넣어주면됨
+              else if(data[0].filePath ==''||data[0].filePath == null){ //원래 이미지가 없는 경우-그냥 넣어주면됨
                 docimage = docimage + picfile.filename;
                 console.log(data);
                 db.query('UPDATE document SET docPass=?, title=?, filePath=? where docID=?',
@@ -344,7 +344,7 @@ const HanldleDocumentEdit = (req, res) => {  // 글 수정
                 pic=data[0].filePath;
                 if(picfile){//이미지 변경 있음
                   docimage = docimage + picfile.filename;
-                  delfile = pic;
+                  delfile = '/../public'+ pic;
                   console.log("사진변경있음");
                   console.log(delfile); // 삭제할 이미지
                   console.log(docimage);
@@ -364,9 +364,9 @@ const HanldleDocumentEdit = (req, res) => {  // 글 수정
                   } else {
                       console.log("수정에 성공하였습니다.!");
                       if (picfile&&pic) {  //기존이미지와 변경되는 이미지가 모두 존재할 경우
-                        fs.unlink(delfile, (error, result) => {
+                        fs.unlink(__dirname + delfile, (error, result) => {
                           if(error) {console.error("error3");
-                          console.log(delfile);
+                          console.log(__dirname + delfile);
                         }
                           else console.log('파일이 삭제되었습니다.');  //기존이미지 삭제
                         });
@@ -400,33 +400,52 @@ const HanldleDocumentDel = (req, res) => {  // 글 삭제
   let    body = req.body;
   let    htmlstream = '';
   let    datestr, delfile;
+  let    docimage = '/images/uploads/documents/'; // 이미지 저장디렉터리
   const query = url.parse(req.url, true).query;
 
        //delfile=body.pic;
 
        if (req.session.auth) {
-         db.query('select userID from document where docID=?', query.index,(error,data)=>{
+         db.query('select userID, filePath from document where docID=?', query.index,(error,data)=>{
            console.log(data[0].userID);
            console.log(req.session.who);
            if(error){res.status(562).end("HandleDocumentDel: DB query is failed");}
            else if(data[0].userID==req.session.who){ // 작성자만 삭제가능
-            db.query('DELETE FROM document where docID = ?',
-                query.index, (error, results, fields) => {
-            if (error) {
-                htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
-                res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
-                              'warn_title':'삭제 오류',
-                              'warn_message':'삭제할때 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
-                              'return_url':'/' }));
-            } else {
-                console.log("삭제에 성공하였습니다.!");
-                /*fs.unlink('delfile', (error) => {
-                  if(error) console.error(error);
-                  console.log('파일이 삭제되었습니다.');
-                });*/
-                res.redirect('/storage/list');
+              if(data[0].filePath == '' || data[0].filePath == null){ // 원래 이미지가 있는 경우만 이미지 삭제
+                db.query('DELETE FROM document where docID = ?', query.index, (error, results, fields) => {
+                  if (error) {
+                      htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+                      res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+                                    'warn_title':'삭제 오류',
+                                    'warn_message':'삭제할때 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
+                                    'return_url':'/' }));
+                  } else {
+                      console.log("삭제에 성공하였습니다.!");
+                      res.redirect('/storage/list');
+                    }
+                  });
               }
-            });
+              else{
+                delfile = delfile = '/../public'+ data[0].filePath;
+                fs.unlink(__dirname + delfile, (error, result) => {
+                  if(error) {console.error("error3");
+                  console.log(__dirname + delfile);
+                  }
+                  else console.log('파일이 삭제되었습니다.');  //기존이미지 삭제
+                  db.query('DELETE FROM document where docID = ?', query.index, (error, results, fields) => {
+                    if (error) {
+                        htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+                        res.status(562).end(ejs.render(htmlstream, { 'title': 'Error',
+                                      'warn_title':'삭제 오류',
+                                      'warn_message':'삭제할때 오류가 발생하였습니다. 원인을 파악하여 재시도 바랍니다',
+                                      'return_url':'/' }));
+                    } else {
+                        console.log("삭제에 성공하였습니다.!");
+                        res.redirect('/storage/list');
+                      }
+                    });
+                });
+              }            
            }
            else{
             htmlstream = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
