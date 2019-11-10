@@ -35,13 +35,13 @@ const PrintDocList = (req, res) => {
 
            db.query(sql_str, (error, results, fields) => {  // 글 조회 SQL실행
                if (error) { res.status(562).end("PrintDocList: DB query is failed"); }
-               else if (results.length <= 0) {  // 조회된 상품이 없다면, 오류메시지 출력
-                   htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
-                   res.status(562).end(ejs.render(htmlstream2, { 'title': 'Error',
-                                      'warn_title':'조회 오류',
-                                      'warn_message':'조회된 글이 없습니다.',
-                                      'return_url':'/' }));
-                   }
+              //  else if (results.length <= 0) {  // 조회된 상품이 없다면, 오류메시지 출력
+              //      htmlstream2 = fs.readFileSync(__dirname + '/../views/error.ejs','utf8');
+              //      res.status(562).end(ejs.render(htmlstream2, { 'title': 'Error',
+              //                         'warn_title':'조회 오류',
+              //                         'warn_message':'조회된 글이 없습니다.',
+              //                         'return_url':'/' }));
+              //      }
               else {  // 조회된 글이 있다면, 리스트 출력
                      res.end(ejs.render(htmlstream,  { 'title' : 'Our Note',
                                                        'logurl': '/users/logout',
