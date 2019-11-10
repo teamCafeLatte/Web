@@ -154,6 +154,14 @@ td {
 
 /* storage */
 @media (min-width: 481px) and (max-width: 767px) {
-  
+  .label-group .title {
+    padding-left: 120px;
+  }
+  .infoooo {
+    display: none;
+  }
+  .icon_close {
+    display: none;
+  }
 }
 
