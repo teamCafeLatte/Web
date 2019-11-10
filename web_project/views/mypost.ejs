@@ -3,7 +3,7 @@
  <!--  Content (배너이미지) 부분 -->
   <div> <img src="/images/mybanner.jpg" class="img-fluid" alt="내글배너이미지" width="100%"> </div>
 
-  <!-- 컨텐츠(예, 쇼핑몰일경우 판매제품리스트)헤더부분 -->
+  <!-- 컨텐츠 헤더부분 -->
    <div class="container-fluid" style="border: solid 20px white; border-radius: 1px">
      <div class="panel panel-default">
    	  <div class="panel-heading">
@@ -16,7 +16,7 @@
          </div>
         
         <div class="body-table">
-          <% prodata.forEach(function (item, index) { %>
+          <% docdata.forEach(function (item, index) { %>
           <a class="a-table" href="/storage/doc/?index=<%= item.docID %>">
             <div class="border-card">
               <div class="card-type-icon with-border"><%= item.docID %></div>
